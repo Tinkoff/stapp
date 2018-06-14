@@ -1,0 +1,699 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>createEvent · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="EventCreator.html" />
+    
+    
+    <link rel="prev" href="Stapp.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../#stapp">
+            
+                    
+                    Stapp
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="../">
+            
+                <a href="../#installation">
+            
+                    
+                    Installation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="../">
+            
+                <a href="../#introduction">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="../">
+            
+                <a href="../#stapp-core-concepts">
+            
+                    
+                    Stapp core concepts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" data-path="../">
+            
+                <a href="../#quick-start">
+            
+                    
+                    Quick start
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.5" data-path="../">
+            
+                <a href="../#modules">
+            
+                    
+                    Modules
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.6" data-path="../">
+            
+                <a href="../#peer-dependencies">
+            
+                    
+                    Peer dependencies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.7" data-path="../">
+            
+                <a href="../#license">
+            
+                    
+                    License
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Guides
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../usage/Modules.html">
+            
+                <a href="../usage/Modules.html">
+            
+                    
+                    Modules
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../usage/epics.html">
+            
+                <a href="../usage/epics.html">
+            
+                    
+                    Epics
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="../usage/react.html">
+            
+                <a href="../usage/react.html">
+            
+                    
+                    React
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="../usage/ssr.html">
+            
+                <a href="../usage/ssr.html">
+            
+                    
+                    SSR
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    API
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="createApp.html">
+            
+                <a href="createApp.html">
+            
+                    
+                    createApp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="Stapp.html">
+            
+                <a href="Stapp.html">
+            
+                    
+                    Stapp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.3" data-path="createEvent.html">
+            
+                <a href="createEvent.html">
+            
+                    
+                    createEvent
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="EventCreator.html">
+            
+                <a href="EventCreator.html">
+            
+                    
+                    EventCreator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="createEffect.html">
+            
+                <a href="createEffect.html">
+            
+                    
+                    createEffect
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="EffectCreator.html">
+            
+                <a href="EffectCreator.html">
+            
+                    
+                    EffectCreator
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="createReducer.html">
+            
+                <a href="createReducer.html">
+            
+                    
+                    createReducer
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="Reducer.html">
+            
+                <a href="Reducer.html">
+            
+                    
+                    Reducer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    Modules
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../modules/persist.html">
+            
+                <a href="../modules/persist.html">
+            
+                    
+                    persist
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../modules/loaders.html">
+            
+                <a href="../modules/loaders.html">
+            
+                    
+                    loaders
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../modules/formBase.html">
+            
+                <a href="../modules/formBase.html">
+            
+                    
+                    formBase
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../modules/validate.html">
+            
+                <a href="../modules/validate.html">
+            
+                    
+                    validate
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../types.html">
+            
+                <a href="../types.html">
+            
+                    
+                    Types definitions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >createEvent</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="createevent"><code>createEvent()</code></h1>
+<p>Creates an <a href="EventCreator.html">event creator</a>.</p>
+<p>Event creator is a function that accepts any number of arguments, transforms them into payload and returns an FSA-compliant object.</p>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<ul>
+<li><a href="#definition">Definition</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#typescript-examples">Typescript examples</a></li>
+</ul>
+</li>
+<li><a href="#type-definitions">Type definitions</a></li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h2 id="definition">Definition</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createEvent&lt;Payload, Meta&gt; = (
+  description?: <span class="hljs-built_in">string</span>,
+  payloadCreator?: (...args: <span class="hljs-built_in">any</span>[]) =&gt; Payload = identity,
+  metaCreator?: (...args: <span class="hljs-built_in">any</span>[]) =&gt; Meta
+) =&gt; EventCreator
+</code></pre>
+<p>A description is not required but strongly recommended if you are using inspecting tools like redux-devtools or redux-logger.</p>
+<h2 id="usage">Usage</h2>
+<p><code>createEvent</code> is quite a powerful tool. In a most primitive case, you&apos;ll pass only a description.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+
+<span class="hljs-keyword">const</span> increment = createEvent(<span class="hljs-string">&apos;Increment&apos;</span>)
+
+<span class="hljs-keyword">const</span> event = increment(<span class="hljs-number">1</span>)
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   type: &apos;Increment [0]&apos; // Number in the brackets is unique for each event creator,</span>
+<span class="hljs-comment">//   payload: 1,</span>
+<span class="hljs-comment">//   error: false</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p><code>createEvent</code> accepts a second argument - <code>payloadCreator</code>. It will be called with all arguments, provided to an event creator.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+
+<span class="hljs-keyword">const</span> doubleIncrement = createEvent(<span class="hljs-string">&apos;Increment&apos;</span>, n = n * <span class="hljs-number">2</span>)
+
+<span class="hljs-keyword">const</span> event = increment(<span class="hljs-number">1</span>)
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   type: &apos;Increment [0]&apos;</span>
+<span class="hljs-comment">//   payload: 2,</span>
+<span class="hljs-comment">//   error: false</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p>The third argument may be used for creating a custom meta for an event.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+
+<span class="hljs-keyword">const</span> incrementWithMeta = createEvent(<span class="hljs-string">&apos;Increment&apos;</span>, <span class="hljs-literal">undefined</span>, x =&gt; ({ myMeta: x * <span class="hljs-number">10</span> }))
+
+<span class="hljs-keyword">const</span> event = increment(<span class="hljs-number">1</span>)
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   type: &apos;Increment [0]&apos;</span>
+<span class="hljs-comment">//   payload: 1,</span>
+<span class="hljs-comment">//   meta: {</span>
+<span class="hljs-comment">//     myMeta: 10</span>
+<span class="hljs-comment">//   },</span>
+<span class="hljs-comment">//   error: false</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3 id="typescript-examples">Typescript examples</h3>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { createEvent } from <span class="hljs-string">&apos;stapp&apos;</span>
+
+<span class="hljs-comment">// An event creator that doesn&apos;t accept any arguments.</span>
+<span class="hljs-keyword">const</span> sumbit = createEvent(<span class="hljs-string">&apos;Submit&apos;</span>)
+
+<span class="hljs-comment">// An event creator that accepts a single argument and uses provided value as a payload.</span>
+<span class="hljs-keyword">const</span> add = createEvent&lt;<span class="hljs-built_in">number</span>&gt;(<span class="hljs-string">&apos;Add&apos;</span>)
+add(<span class="hljs-number">2</span>).payload <span class="hljs-comment">// -&gt; 2</span>
+
+<span class="hljs-comment">// An event creator that doesn&apos;t accept arguments but still have a payload</span>
+<span class="hljs-keyword">const</span> addOne = createEvent(<span class="hljs-string">&apos;Add one&apos;</span>, () =&gt; <span class="hljs-number">1</span>)
+addOne().payload <span class="hljs-comment">// -&gt; 1</span>
+
+<span class="hljs-comment">// An event creator that accepts and transforms a single argument</span>
+<span class="hljs-keyword">const</span> doubleAdd = createEvent(<span class="hljs-string">&apos;Double add&apos;</span>, (x: <span class="hljs-built_in">string</span>) =&gt; <span class="hljs-built_in">Number</span>(x) * <span class="hljs-number">2</span>)
+doubleAdd(<span class="hljs-string">&apos;10&apos;</span>).payload <span class="hljs-comment">// -&gt; 20</span>
+
+<span class="hljs-comment">// An event creator that accepts and transforms two arguments</span>
+<span class="hljs-keyword">const</span> sum = createEvent(<span class="hljs-string">&apos;Combine values&apos;</span>, (x: <span class="hljs-built_in">number</span>, y: <span class="hljs-built_in">string</span>) =&gt; x + <span class="hljs-built_in">Number</span>(y))
+sum(<span class="hljs-number">10</span>, <span class="hljs-string">&apos;20&apos;</span>).payload <span class="hljs-comment">// -&gt; 30</span>
+
+<span class="hljs-comment">// Well, you can use any number of arguments.</span>
+<span class="hljs-keyword">const</span> enfantTerrible = createEvent(<span class="hljs-string">&apos;Because I can&apos;</span>, (x: <span class="hljs-built_in">number</span>, y: <span class="hljs-built_in">string</span>, z: { n: <span class="hljs-built_in">number</span> }) =&gt; (x + <span class="hljs-built_in">Number</span>(y) - z.n).toString())
+enfantTerrible(<span class="hljs-number">10</span>, <span class="hljs-string">&apos;20&apos;</span>, { n: <span class="hljs-number">100</span> }).payload  <span class="hljs-comment">// -&gt; &apos;-70&apos;</span>
+</code></pre>
+<h2 id="type-definitions">Type definitions</h2>
+<ul>
+<li><a href="../types.html#createevent"><code>createEvent</code></a></li>
+<li><a href="../types.html#payloadtransformer0"><code>PayloadTransformer*</code></a></li>
+<li><a href="../types.html#eventcreator0"><code>EventCreator*</code></a></li>
+<li><a href="../types.html#event"><code>Event</code></a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Stapp.html" class="navigation navigation-prev " aria-label="Previous page: Stapp">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="EventCreator.html" class="navigation navigation-next " aria-label="Next page: EventCreator">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"createEvent","level":"1.3.3","depth":2,"next":{"title":"EventCreator","level":"1.3.4","depth":2,"path":"api/EventCreator.md","ref":"api/EventCreator.md","articles":[]},"previous":{"title":"Stapp","level":"1.3.2","depth":2,"path":"api/Stapp.md","ref":"api/Stapp.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"api/createEvent.md","mtime":"2018-06-14T15:05:51.037Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-14T15:06:01.980Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
