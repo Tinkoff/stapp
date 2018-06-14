@@ -1,0 +1,41 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+lib-cov
+coverage
+.nyc_output
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# IDE
+.DS_Store
+.vscode
+.idea
+
+# Compiled sources
+lib
+docs/_book
+_book
+.tempdocs
+compiled
+
+# Cache
+.awcache
+.rpt2_cache
+.npm
+
+# Private data
+.npmrc

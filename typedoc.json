@@ -1,0 +1,10 @@
+{
+  "hideGenerator": true,
+  "mode": "file",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "readme": "none",
+  "target": "es6",
+  "theme": "markdown",
+  "mdHideSources": true
+}
