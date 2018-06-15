@@ -9,7 +9,7 @@ import { isLoadingSelector } from 'stapp/lib/modules/loaders'
 
 const isValidating = createStructuredSelector({
   isValidating: isValidatingSelector(),
-  isLoading: isLoadingSelector
+  isLoading: isLoadingSelector()
 })
 
 
