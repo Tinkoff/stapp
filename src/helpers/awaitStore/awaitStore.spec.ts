@@ -21,10 +21,6 @@ describe('awaitStore', () => {
     expect(result).not.toBeDefined()
 
     setTimeout(() => {
-      expect(result).not.toBeDefined()
-    }, 50)
-
-    setTimeout(() => {
       expect(result).toEqual({
         test1: 1,
         test2: 2,
