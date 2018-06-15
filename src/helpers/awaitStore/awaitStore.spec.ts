@@ -2,7 +2,7 @@ import { awaitStore, whenReady } from './awaitStore'
 
 describe('awaitStore', () => {
   it('should collect promises', (done) => {
-    expect.assertions(3)
+    expect.assertions(2)
 
     const p1 = new Promise((resolve) => setTimeout(resolve, 25, 1))
     const p2 = new Promise((resolve) => setTimeout(resolve, 50, 2))
