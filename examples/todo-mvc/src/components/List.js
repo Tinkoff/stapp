@@ -7,7 +7,7 @@ export const List = () => {
   return <section className="main">
     <Consumer mapState={toggleSelector}>
       {
-        ({ state: { showToggle, isToggled }, api: { handleToggleClick } }) => showToggle ?
+        ({ showToggle, isToggled, handleToggleClick }) => showToggle ?
           <React.Fragment>
             <input id="toggleAll" className="toggle-all" type="checkbox" checked={ isToggled } onChange={ handleToggleClick } />
             <label htmlFor="toggleAll">Mark all as complete</label>
@@ -19,7 +19,7 @@ export const List = () => {
     <ul className="todo-list">
       <Consumer mapState={idsSelector}>
         {
-          ({ state: ids }) => ids.map(id => <ListItem
+          ({ ids }) => ids.map(id => <ListItem
             todoId={ id }
             key={ id }
           />)
