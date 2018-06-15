@@ -1,15 +1,4 @@
 /**
  * @private
  */
-export type ObjectKey = string | number | symbol
-
-/**
- * @private
- */
-export type Diff<T extends ObjectKey, U extends ObjectKey> = ({ [P in T]: P } &
-  { [P in U]: never } & { [x: string]: never })[T]
-
-/**
- * @private
- */
-export type Omit<T, K extends ObjectKey> = { [P in Diff<keyof T, K>]: T[P] }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
