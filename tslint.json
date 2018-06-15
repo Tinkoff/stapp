@@ -9,7 +9,7 @@
     "tslint-config-prettier"
   ],
   "exclude": [
-    "../node_modules/**/*"
+    "./node_modules/**/*"
   ],
   "rules": {
     "prefer-for-of": false,
