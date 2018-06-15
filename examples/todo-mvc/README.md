@@ -1,36 +1,25 @@
 # Stapp • [TodoMVC](http://todomvc.com)
+Classic TodoMVC example made with Stapp.
+See live at the [codesandbox.io](https://codesandbox.io/s/github/TinkoffCreditSystems/stapp/tree/master/examples/todo-mvc).
 
 Stapp is an application state-management tool based on redux and RxJS with significantly reduced
 boilerplate. Main goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
 Stapp comprises all the best practices and provides instruments to write understandable and predicable code.
 
-## Resources [TBD]
+## Resources
 
-- [Website]()
-- [Documentation]()
-- [Used by]()
-- [Blog]()
-- [FAQ]()
+- [Website](https://github.com/TinkoffCreditSystems/stapp)
+- [Documentation](https://tinkoffcreditsystems.github.io/stapp/)
 
-### Articles [TBD]
+### Support
 
-- [Interesting article]()
-
-### Support [TBD]
-
-- [Stack Overflow](http://stackoverflow.com/questions/tagged/__)
-- [Google Groups]()
-- [Twitter](http://twitter.com/__)
-- [Google+]()
-
-*Let us [know](https://github.com/tastejs/todomvc/issues) if you discover anything worth sharing.*
-
+- [Github issues](https://github.com/TinkoffCreditSystems/stapp/issues)
 
 ## Implementation
 
-The example is intentionally made overcomplicated to show some best practices.
+The example is intentionally made overcomplicated to show some best practices (overcomplication is not a best practice itself).
 
 ## Credit
 
-Created by [Your Name](http://your-website.com)
+Created by [Dmitry Korolev](https://github.com/dmitry-korolev)
