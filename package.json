@@ -17,7 +17,9 @@
     "docs:publish": "gh-pages -d _book",
     "postbuild": "npm run test",
     "cz": "git-cz",
-    "prepush": "npm run build"
+    "prepush": "npm run build",
+    "preversion": "npm run build && npm run docs",
+    "version": "conventional-changelog -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [

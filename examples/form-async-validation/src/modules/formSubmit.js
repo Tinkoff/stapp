@@ -34,14 +34,14 @@ const submitEpic = submit.epic((submit$, state$) => state$.pipe(
 
 const onSubmitStartEpic = asyncSubmit.start.epic(start$ => start$.pipe(
   mergeMapTo(of(
-    loaderEnd('submit'),
+    loaderStart('submit'),
     setSubmitting(true)
   ))
 ))
 
 const onSubmitEndEpic = (event$) => selectArray([asyncSubmit.fail, asyncSubmit.success], event$).pipe(
   mergeMapTo(of(
-    loaderStart('submit'),
+    loaderEnd('submit'),
     setSubmitting(false)
   ))
 )

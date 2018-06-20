@@ -43,7 +43,6 @@ export const createFormBaseReducers = (initialState: any) => {
 
   const errorsReducer = createReducer<any>({})
     .on(setError, commonHandler)
-    .on(setValue, (errors, newValues) => commonHandler(errors, mapObject(() => false, newValues)))
     .reset(resetForm)
 
   const touchedReducer = createReducer<any>({})
