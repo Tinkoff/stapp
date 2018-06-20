@@ -294,7 +294,6 @@ Type inferring will be available... someday Typings are still in... progress
 
 ___
 
-
 <a id="effectcreator"></a>
 
 ###  EffectCreator

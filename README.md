@@ -1,6 +1,6 @@
 # Stapp
 
-[![Build Status](https://travis-ci.org/TinkoffCreditSystems/stapp.svg?branch=master)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg)](https://www.typescriptlang.org/) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) ![https://www.npmjs.com/package/stapp](https://img.shields.io/npm/v/stapp.svg)
+[![Build Status](https://travis-ci.org/TinkoffCreditSystems/stapp.svg?branch=master)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg)](https://www.typescriptlang.org/) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![npm](https://img.shields.io/npm/v/stapp.svg)](https://www.npmjs.com/package/stapp)
 
 Stapp is the highly opinionated application state-management tool based on redux and RxJS with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
