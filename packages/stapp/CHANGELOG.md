@@ -10,7 +10,9 @@
 * Fix NPM link in the README (#9) ([7baac50](https://github.com/TinkoffCreditSystems/stapp/commit/7baac50)), closes [#9](https://github.com/TinkoffCreditSystems/stapp/issues/9)
 * build: fix and update build process to work with travis-ci ([208f1b8](https://github.com/TinkoffCreditSystems/stapp/commit/208f1b8))
 
-
+<a name="1.2.0"></a>
+## 1.3.0 (2018-06-15)
+Initial github release
 
 <a name="1.2.0"></a>
 ## 1.2.0 (2018-05-18)
