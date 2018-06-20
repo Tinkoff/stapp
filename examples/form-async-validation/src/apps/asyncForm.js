@@ -29,7 +29,7 @@ const asyncForm = createApp({
     persist({
       key: 'asyncForm',
       storage: toAsync(localStorage),
-      blackList: ['validating', 'loaders', 'errors']
+      blackList: ['validating', 'loaders']
     }),
     formBase(),
     loaders,

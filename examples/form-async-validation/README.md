@@ -1,36 +1,26 @@
 # Stapp • Form with async validation
+Various form validations made with Stapp.
 
-Stapp is an application state-management tool based on redux and RxJS with significantly reduced
+See live at the [codesandbox.io](https://codesandbox.io/s/github/TinkoffCreditSystems/stapp/tree/master/examples/form-async-validation).
+
+SStapp is an application state-management tool based on redux and RxJS with significantly reduced
 boilerplate. Main goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
 Stapp comprises all the best practices and provides instruments to write understandable and predicable code.
 
+## Resources
+
+- [Website](https://github.com/TinkoffCreditSystems/stapp)
+- [Documentation](https://tinkoffcreditsystems.github.io/stapp/)
+
+### Support
+
+- [Github issues](https://github.com/TinkoffCreditSystems/stapp/issues)
+
 ## Implementation
 
-This example shows handling of async validation, and usage of render prop pattern to avoid unnecessary re-render. 
-
-## Resources [TBD]
-
-- [Website]()
-- [Documentation]()
-- [Used by]()
-- [Blog]()
-- [FAQ]()
-
-### Articles [TBD]
-
-- [Interesting article]()
-
-### Support [TBD]
-
-- [Stack Overflow](http://stackoverflow.com/questions/tagged/__)
-- [Google Groups]()
-- [Twitter](http://twitter.com/__)
-- [Google+]()
-
-*Let us [know](https://github.com/tastejs/todomvc/issues) if you discover anything worth sharing.*
-
+The example is intentionally made overcomplicated to show some best practices (overcomplication is not a best practice itself).
 
 ## Credit
 
-Created by [Your Name](http://your-website.com)
+Created by [Dmitry Korolev](https://github.com/dmitry-korolev)
