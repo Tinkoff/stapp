@@ -29,7 +29,7 @@
     "build:bundle": "# rollup -c rollup.config.js",
     "prebuild": "rimraf lib",
     "test": "npm run test:lint && npm run test:jest && npm run test:type",
-    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ../../tslint.json",
+    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --runInBand",
     "test:type": "# type-coverage --at-least 95",
     "prepublishOnly": "npm run build && npm run docs"
@@ -56,7 +56,7 @@
       "/node_modules/"
     ],
     "setupFiles": [
-      "../../packages/react/testSetup.ts"
+      "<rootDir>/testSetup.ts"
     ],
     "coverageThreshold": {
       "global": {
@@ -94,6 +94,8 @@
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.3.6",
     "@types/react-dom": "^16.0.4",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "fbjs": "^0.8.16",
     "flux-standard-action": "^2.0.1",
     "jest": "^23.1.0",
@@ -103,7 +105,6 @@
     "redux": "^3.7.2",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
-    "rimraf": "^2.6.2",
     "rxjs": "^5.5.8",
     "rxjs-marbles": "^2.3.3",
     "size-limit": "^0.18.2",
@@ -115,7 +116,6 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
-    "typescript": "^2.8.1",
-    "webpack": "^4.12.0"
+    "typescript": "^2.8.1"
   }
 }
