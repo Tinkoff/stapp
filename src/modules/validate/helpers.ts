@@ -1,5 +1,4 @@
 import { concat } from 'rxjs/observable/concat'
-import { empty } from 'rxjs/observable/empty'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import { of } from 'rxjs/observable/of'
 import { catchError } from 'rxjs/operators/catchError'
@@ -17,15 +16,10 @@ import { ValidationFlags, ValidationRule } from './validate.h'
 /**
  * @private
  */
-export const normalizeResult = <State>(
+export const normalizeResult = (
   fieldName: string,
   result: any
 ): Observable<Event<any, any>> => {
-  // if it's falsy, ignore
-  if (result == null || result === false) {
-    return empty()
-  }
-
   // if it's a promise, unwrap
   if (isPromise(result)) {
     return fromPromise(result).pipe(
@@ -35,7 +29,7 @@ export const normalizeResult = <State>(
   }
 
   // if it's a plain object, return
-  if (typeof result === 'object') {
+  if (result != null && typeof result === 'object') {
     return of(setError(result))
   }
 
