@@ -1,4 +1,4 @@
-import { createReducer } from 'stapp'
+import { createReducer } from 'packages/core/src/stapp'
 import { everythingToggled } from '../apps/todoSelectors'
 
 const todosReducer = createReducer([])

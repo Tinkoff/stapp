@@ -1,4 +1,4 @@
-import { createApp } from 'stapp'
+import { createApp } from 'packages/core/src/stapp'
 import { createConsumer, createConsume } from 'stapp/lib/react/index'
 import { persist } from 'stapp/lib/modules/persist'
 import { handlers } from '../modules/handlers'

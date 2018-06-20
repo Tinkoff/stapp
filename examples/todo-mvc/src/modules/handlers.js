@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators/map'
-import { createEvent, combineEpics } from 'stapp'
+import { createEvent, combineEpics } from 'packages/core/src/stapp'
 import { events } from './todo'
 
 const handleSubmit = createEvent('Handle todo submit', event => event.target.value.trim())

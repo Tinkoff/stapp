@@ -1,6 +1,5 @@
 # Logs
 logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -39,10 +38,7 @@ compiled
 .npmrc
 
 # Other
-.editorconfig
-.prettierrc
 tsconfig.json
-tslint.json
 testSetup.ts
 src/
 examples/

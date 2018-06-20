@@ -1,4 +1,4 @@
-import { createApp } from 'stapp'
+import { createApp } from 'packages/core/src/stapp'
 import { createConsumer, createField, createForm } from 'stapp/lib/react'
 import { loaders } from 'stapp/lib/modules/loaders'
 import { formBase } from 'stapp/lib/modules/formBase'

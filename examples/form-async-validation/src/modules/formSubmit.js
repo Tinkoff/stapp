@@ -1,4 +1,4 @@
-import { createEffect, selectArray, combineEpics } from 'stapp'
+import { createEffect, selectArray, combineEpics } from 'packages/core/src/stapp'
 import { setSubmitting, submit } from 'stapp/lib/modules/formBase'
 import { createSelector } from 'reselect'
 import { of } from 'rxjs/observable/of'

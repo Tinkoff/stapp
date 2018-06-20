@@ -1,129 +1,56 @@
 {
   "name": "stapp",
-  "version": "1.3.0",
-  "description": "",
-  "keywords": [],
-  "main": "lib/stapp.js",
-  "typings": "lib/stapp.d.ts",
-  "files": [
-    "lib"
-  ],
-  "author": "Dmitry Korolev <d.a.korolev@tinkoff.ru>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TinkoffCreditSystems/stapp/"
-  },
+  "private": true,
   "engines": {
     "node": ">=8.0.0"
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run build:module && npm run build:bundle",
-    "build:module": "tsc",
-    "build:bundle": "# rollup -c rollup.config.js",
+    "build": "lerna run build",
+    "test": "lerna run test && npm run ",
+    "test:size": "size-limit",
     "docs": "npm run docs:toc && npm run docs:api && npm run docs:move && npm run docs:book && npm run docs:publish",
     "docs:toc": "doctoc docs/README.md docs/usage/. docs/api/. docs/modules/. --notitle --github",
-    "docs:api": "typedoc src --options typedoc.json --out .tempdocs",
+    "docs:api": "typedoc packages --options typedoc.json --out .tempdocs",
     "docs:move": "mv .tempdocs/README.md docs/types.md && rimraf .tempdocs && cp docs/README.md README.md && git add README.md docs",
     "docs:book": "gitbook build",
     "docs:publish": "gh-pages -d _book",
-    "test": "npm run test:lint && npm run test:jest && npm run test:type && npm run test:size",
-    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
-    "test:jest": "jest --runInBand",
-    "test:type": "# type-coverage --at-least 95",
-    "test:size": "size-limit",
-    "pretest": "rimraf lib && npm run build:module",
-    "prebuild": "rimraf lib",
     "postbuild": "npm run test",
-    "precommit": "npm run test:lint && npm run build:module && lint-staged",
     "cz": "git-cz",
-    "prepush": "npm run build",
-    "prepublishOnly": "npm run build && npm run docs"
+    "prepush": "npm run build"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": [
+    "packages/**/*.{ts,tsx}": [
       "prettier --write --config .prettierrc",
       "git add"
     ]
   },
-  "jest": {
-    "transform": {
-      ".(ts|tsx|js|jsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test|spec/",
-      "/examples/"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "setupFiles": [
-      "<rootDir>/testSetup.ts"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "globals": {
-      "process.env.NODE_ENV": "test"
-    }
-  },
   "size-limit": [
     {
-      "name": "main",
-      "path": "lib/stapp.js"
+      "name": "core",
+      "path": "packages/stapp/lib/stapp.js"
     },
     {
       "name": "modules: persist",
-      "path": "lib/modules/persist/index.js"
+      "path": "packages/stapp/lib/modules/persist/index.js"
     },
     {
       "name": "modules: formBase",
-      "path": "lib/modules/formBase/index.js"
+      "path": "packages/stapp/lib/modules/formBase/index.js"
     },
     {
       "name": "modules: loaders",
-      "path": "lib/modules/loaders/index.js"
+      "path": "packages/stapp/lib/modules/loaders/index.js"
     },
     {
       "name": "modules: validate",
-      "path": "lib/modules/validate/index.js"
+      "path": "packages/stapp/lib/modules/validate/index.js"
     },
     {
       "name": "react bindings",
-      "path": "lib/react/index.js"
+      "path": "packages/stapp/lib/react/index.js"
     }
   ],
-  "peerDependencies": {
-    "fbjs": ">=0.8",
-    "prop-types": ">=15.6",
-    "react": ">=15",
-    "redux": ">=3 <4",
-    "rxjs": ">=5",
-    "reselect": ">=3"
-  },
-  "dependencies": {
-    "is-observable": "^1.1.0"
-  },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
     "@types/enzyme-adapter-react-16": "^1.0.2",
@@ -145,6 +72,7 @@
     "gitbook-cli": "^2.3.2",
     "husky": "^0.14.3",
     "jest": "^23.1.0",
+    "lerna": "^2.11.0",
     "lint-staged": "^7.0.4",
     "prettier": "^1.11.1",
     "prop-types": "^15.6.1",
