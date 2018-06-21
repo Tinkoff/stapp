@@ -1,4 +1,4 @@
-import { has } from '../../helpers/has/has'
+import { has } from 'stapp/lib/helpers/has/has'
 
 // Models
 import { Transform } from './persist.h'
@@ -21,6 +21,7 @@ export const pick = (blackList?: string[], whiteList?: string[]) => (data: any):
     return whiteList.reduce(
       (result, key) => {
         if (has(key, data)) {
+          // tslint:disable-next-line no-unnecessary-type-assertion
           result[key] = (data as any)[key]
         }
 

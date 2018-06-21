@@ -1,17 +1,19 @@
 {
-  "name": "stapp",
-  "version": "2.0.0-0",
-  "description": "Modular state manager for microapp",
+  "name": "stapp-persist",
+  "version": "1.3.1",
+  "description": "Persistence module for stapp - module state manager",
   "keywords": [
     "state-management",
     "state",
     "reactive",
     "microservice",
     "epics",
+    "persistence",
+    "localStorage",
     "redux"
   ],
-  "main": "lib/stapp.js",
-  "typings": "lib/stapp.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
     "lib"
   ],
@@ -56,9 +58,6 @@
     "transformIgnorePatterns": [
       "/node_modules/"
     ],
-    "setupFiles": [
-      "<rootDir>/testSetup.ts"
-    ],
     "coverageThreshold": {
       "global": {
         "branches": 100,
@@ -78,24 +77,16 @@
   },
   "peerDependencies": {
     "fbjs": ">=0.8",
-    "redux": ">=3 <4",
-    "reselect": ">=3",
-    "rxjs": ">=5"
-  },
-  "dependencies": {
-    "is-observable": "^1.1.0"
+    "rxjs": ">=5",
+    "stapp": ">=2.0.0-0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",
     "@types/node": "^10.3.3",
     "fbjs": "^0.8.16",
-    "flux-standard-action": "^2.0.1",
     "jest": "^23.1.0",
-    "redux": "^3.7.2",
-    "request": "^2.85.0",
-    "reselect": "^3.0.1",
     "rxjs": "5.5.11",
-    "rxjs-marbles": "^2.3.3",
+    "stapp": "^2.0.0-0",
     "ts-jest": "^22.4.2",
     "ts-node": "^6.1.1",
     "tslib": "^1.9.0",

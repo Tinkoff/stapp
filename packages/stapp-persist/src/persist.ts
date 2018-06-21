@@ -10,10 +10,9 @@ import { mergeMapTo } from 'rxjs/operators/mergeMapTo'
 import { switchMap } from 'rxjs/operators/switchMap'
 import { timeout } from 'rxjs/operators/timeout'
 import { withLatestFrom } from 'rxjs/operators/withLatestFrom'
-import { combineEpics } from '../../epics/combineEpics/combineEpics'
-import { dangerouslyReplaceState } from '../../events/dangerous'
-import { identity } from '../../helpers/identity/identity'
-import { logError } from '../../helpers/logError/logError'
+import { combineEpics, dangerouslyReplaceState } from 'stapp'
+import { identity } from 'stapp/lib/helpers/identity/identity'
+import { logError } from 'stapp/lib/helpers/logError/logError'
 import { DEFAULT_TIMEOUT, PERSIST } from './constants'
 import {
   defaultDeserialize,
@@ -27,7 +26,7 @@ import {
 // Models
 // tslint:disable-next-line no-unused-variable // Needed for declarations
 import { Observable } from 'rxjs/Observable'
-import { Epic, Module } from '../../core/createApp/createApp.h'
+import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
 import { PersistConfig } from './persist.h'
 
 /**
@@ -71,6 +70,7 @@ export const persist = <State>({
       map(mapTransform(transforms)),
       switchMap((data) =>
         storage
+          // tslint:disable-next-line no-unnecessary-type-assertion
           .setItem(storageKey, (serialize as any)(data))
           .catch((error) => logError(PERSIST, error))
       ),

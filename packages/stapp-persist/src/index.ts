@@ -1,3 +1,3 @@
 export * from './persist'
 export * from './toAsync'
-export { PERSIST } from './constants'
+export * from './constants'
