@@ -1,5 +1,5 @@
-# Stapp
+# Stapp Persist
 
-Core part of [Stapp](https://github.com/TinkoffCreditSystems/stapp).
+Persistence module for [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
-See [documentation](https://tinkoffcreditsystems.github.io/stapp/#stapp) for more info.
+See [documentation](https://tinkoffcreditsystems.github.io/stapp/modules/persist.html) for more info.
