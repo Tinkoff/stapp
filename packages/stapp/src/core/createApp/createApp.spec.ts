@@ -75,6 +75,25 @@ describe('createApp', () => {
     expect(typeof app.api.a2).toBe('function')
   })
 
+  test('collected api should work', () => {
+    const a1 = createEvent<number>()
+    const r1 = createReducer(0).on(a1, (_, payload) => payload)
+    const m1 = {
+      name: 'm1',
+      api: { a1 },
+      state: { r1 }
+    }
+
+    const app = createApp({
+      modules: [m1]
+    })
+
+    expect(app.getState().r1).toEqual(0)
+
+    app.api.a1(1)
+    expect(app.getState().r1).toEqual(1)
+  })
+
   it('should use rootReducer from passed modules', () => {
     const a1 = createEvent()
     const a2 = createEvent()

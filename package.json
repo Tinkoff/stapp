@@ -32,24 +32,24 @@
       "path": "packages/stapp/lib/stapp.js"
     },
     {
-      "name": "react bindings",
+      "name": "bindings: react",
       "path": "packages/react/lib/index.js"
     },
     {
       "name": "modules: persist",
-      "path": "packages/stapp/lib/modules/persist/index.js"
+      "path": "packages/persist/lib/index.js"
     },
     {
       "name": "modules: formBase",
-      "path": "packages/stapp/lib/modules/formBase/index.js"
+      "path": "packages/formBase/lib/index.js"
     },
     {
       "name": "modules: loaders",
-      "path": "packages/stapp/lib/modules/loaders/index.js"
+      "path": "packages/loaders/lib/index.js"
     },
     {
       "name": "modules: validate",
-      "path": "packages/stapp/lib/modules/validate/index.js"
+      "path": "packages/validate/lib/index.js"
     }
   ],
   "devDependencies": {
