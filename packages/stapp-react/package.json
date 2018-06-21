@@ -20,7 +20,7 @@
   "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TinkoffCreditSystems/stapp/packages/react/"
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
   "engines": {
     "node": ">=8.0.0"

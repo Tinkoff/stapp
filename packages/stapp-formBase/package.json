@@ -19,7 +19,7 @@
   "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TinkoffCreditSystems/stapp/packages/stapp/"
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -85,7 +85,7 @@
     "jest": "^23.1.0",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
-    "rxjs": "^5.5.8",
+    "rxjs": "5.5.11",
     "stapp": "^2.0.0-0",
     "ts-jest": "^22.4.2",
     "ts-node": "^6.1.1",

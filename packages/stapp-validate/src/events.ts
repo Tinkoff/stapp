@@ -1,4 +1,4 @@
-import { createEvent } from '../../core/createEvent/createEvent'
+import { createEvent } from 'stapp'
 import { VALIDATE } from './constants'
 
 // tslint:disable-next-line no-unused-variable

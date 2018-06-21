@@ -3,14 +3,14 @@ import { fromPromise } from 'rxjs/observable/fromPromise'
 import { of } from 'rxjs/observable/of'
 import { catchError } from 'rxjs/operators/catchError'
 import { switchMap } from 'rxjs/operators/switchMap'
-import { isPromise } from '../../helpers/isPromise/isPromise'
-import { setError, setReady } from '../../../../stapp-formBase/src/events'
+import { setError, setReady } from 'stapp-formBase'
+import { isPromise } from 'stapp/lib/helpers/isPromise/isPromise'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
 // Models
 import { Observable } from 'rxjs'
-import { Event } from '../../core/createEvent/createEvent.h'
-import { FormBaseState } from '../../../../stapp-formBase/src/formBase.h'
+import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
+import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
 import { ValidationFlags, ValidationRule } from './validate.h'
 
 /**

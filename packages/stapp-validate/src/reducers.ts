@@ -1,11 +1,11 @@
-import { createReducer } from '../../core/createReducer/createReducer'
-import { resetForm } from '../../../../stapp-formBase/src/events'
+import { createReducer } from 'stapp'
+import { resetForm } from 'stapp-formBase'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
 // tslint:disable-next-line no-unused-variable
 import { Observable } from 'rxjs'
 // tslint:disable-next-line no-unused-variable
-import { Reducer } from '../../core/createReducer/createReducer.h'
+import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
 
 /**
  * @private
