@@ -6,13 +6,13 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 import { map } from 'rxjs/operators/map'
 import { startWith } from 'rxjs/operators/startWith'
 import { animationFrame } from 'rxjs/scheduler/animationFrame'
-import { identity } from '../../helpers/identity/identity'
+import { identity } from 'stapp/lib/helpers/identity/identity'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { renderPropType, selectorType } from '../helpers/propTypes'
 
 // Models
 import { Subscription } from 'rxjs/Subscription'
-import { Stapp } from '../../core/createApp/createApp.h'
+import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { ConsumerProps } from './createConsumer.h'
 

@@ -1,11 +1,11 @@
 // tslint:disable max-classes-per-file jsx-no-lambda no-shadowed-variable
 import { mount } from 'enzyme'
 import React from 'react'
-import { createApp } from '../../core/createApp/createApp'
-import { createEvent } from '../../core/createEvent/createEvent'
-import { createReducer } from '../../core/createReducer/createReducer'
-import { identity } from '../../helpers/identity/identity'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { createApp } from 'stapp/lib/core/createApp/createApp'
+import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
+import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
+import { identity } from 'stapp/lib/helpers/identity/identity'
+import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { createConsumer } from './createConsumer'
 

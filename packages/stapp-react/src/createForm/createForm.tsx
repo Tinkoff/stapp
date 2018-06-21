@@ -1,12 +1,13 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
-import { setActive, setTouched, setValue } from '../../modules/formBase/events'
-import { fieldSelector } from '../../modules/formBase/selectors'
+import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
+import { resetForm, submit } from 'stapp/lib/modules/formBase/events'
+import { formSelector } from 'stapp/lib/modules/formBase/selectors'
 import { createConsumer } from '../createConsumer/createConsumer'
 
 // Models
-import { Stapp } from '../../core/createApp/createApp.h'
+import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
-import { FieldProps } from './createField.h'
+import { FormProps } from './createForm.h'
 
 /**
  * Creates react form helpers
@@ -48,27 +49,29 @@ import { FieldProps } from './createField.h'
  *
  * @param app Stapp application
  */
-export const createField = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FieldProps> => {
+export const createForm = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FormProps> => {
   const Consumer = createConsumer(app)
 
-  return ({ name, children, render, component }) => {
-    const handleChange = (event: SyntheticEvent<HTMLInputElement>) =>
-      app.dispatch(
-        setValue({
-          [name]: event.currentTarget.value
-        })
-      )
+  const formDataSelector = formSelector()
 
-    const handleBlur = () => {
-      app.dispatch(setActive(null))
-      app.dispatch(setTouched({ [name]: true }))
+  const handle = (event: Event<any, any>) => (syntheticEvent: SyntheticEvent<any>) => {
+    // preventDefault might not exist in some environments (React Native e.g.)
+    /* istanbul ignore next */
+    // tslint:disable-next-line strict-type-predicates
+    if (syntheticEvent && typeof syntheticEvent.preventDefault === 'function') {
+      syntheticEvent.preventDefault()
     }
 
-    const handleFocus = () => app.dispatch(setActive(name))
+    app.dispatch(event)
+  }
 
+  const handleSubmit = handle(submit())
+  const handleReset = handle(resetForm())
+
+  return ({ children, render, component }) => {
     return (
-      <Consumer mapState={fieldSelector(name)}>
-        {({ value, error, dirty, touched, active }) =>
+      <Consumer mapState={formDataSelector}>
+        {({ submitting, valid, ready, dirty, pristine }) =>
           renderComponent(
             {
               children,
@@ -76,21 +79,15 @@ export const createField = <State, Api>(app: Stapp<State, Api>): StatelessCompon
               component
             },
             {
-              input: {
-                name,
-                value: value || '',
-                onChange: handleChange,
-                onBlur: handleBlur,
-                onFocus: handleFocus
-              },
-              meta: {
-                error,
-                touched,
-                active,
-                dirty
-              }
+              handleSubmit,
+              handleReset,
+              submitting,
+              valid,
+              ready,
+              dirty,
+              pristine
             },
-            'Field'
+            'Form'
           )
         }
       </Consumer>

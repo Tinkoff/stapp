@@ -1,0 +1,32 @@
+{
+  "rulesDirectory": [
+    "./node_modules/tslint-eslint-rules/dist/rules"
+  ],
+  "extends": [
+    "tslint:latest",
+    "tslint-react",
+    "tslint-config-standard",
+    "tslint-config-prettier"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ],
+  "rules": {
+    "prefer-for-of": false,
+    "object-literal-sort-keys": false,
+    "no-unused-variable": true,
+    "interface-name": false,
+    "max-line-length": [false],
+    "interface-over-type-literal": false,
+    "object-literal-key-quotes": false,
+    "prefer-object-spread": false,
+    "callable-types": false,
+
+    "no-submodule-imports": false,
+    "no-default-export": true,
+    "no-magic-numbers": false,
+    "promise-function-async": false,
+    "member-access": [true, "no-public"],
+    "no-implicit-dependencies": false
+  }
+}

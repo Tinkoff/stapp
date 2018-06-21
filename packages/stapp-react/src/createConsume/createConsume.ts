@@ -1,11 +1,11 @@
 import { Component, ComponentType, createElement } from 'react'
-import { identity } from '../../helpers/identity/identity'
+import { identity } from 'stapp/lib/helpers/identity/identity'
 import { createConsumer } from '../createConsumer/createConsumer'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { getDisplayName } from '../helpers/getDisplayName'
 
 // Models
-import { Stapp } from '../../core/createApp/createApp.h'
+import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { ConsumerHoc } from './createConsume.h'
 
 /**

@@ -1,5 +1,5 @@
 import { ComponentClass, ComponentType } from 'react'
-import { Omit } from '../../models/helpers.h'
+import { Omit } from 'stapp/lib/models/helpers.h'
 
 /**
  * @hidden

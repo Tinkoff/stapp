@@ -12,3 +12,6 @@ export { combineEpics } from './epics/combineEpics/combineEpics'
 // Events
 export { epicEnd } from './events/epicEnd'
 export { dangerouslyReplaceState, dangerouslyResetState } from './events/dangerous'
+
+// Typings
+export * from './core/createApp/createApp.h'

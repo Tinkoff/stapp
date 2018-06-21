@@ -1,9 +1,9 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { createApp } from '../../core/createApp/createApp'
-import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
-import { submit } from '../../modules/formBase/events'
-import { formBase } from '../../modules/formBase/formBase'
+import { createApp } from 'stapp/lib/core/createApp/createApp'
+import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
+import { submit } from 'stapp/lib/modules/formBase/events'
+import { formBase } from 'stapp/lib/modules/formBase/formBase'
 import { createField } from '../createField/createField'
 import { createForm } from './createForm'
 

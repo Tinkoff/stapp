@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "lerna run build",
-    "test": "lerna run test && npm run ",
+    "test": "lerna run test && npm run test:size",
     "test:size": "size-limit",
     "docs": "npm run docs:toc && npm run docs:api && npm run docs:move && npm run docs:book && npm run docs:publish",
     "docs:toc": "doctoc docs/README.md docs/usage/. docs/api/. docs/modules/. --notitle --github",
@@ -32,6 +32,10 @@
       "path": "packages/stapp/lib/stapp.js"
     },
     {
+      "name": "react bindings",
+      "path": "packages/react/lib/index.js"
+    },
+    {
       "name": "modules: persist",
       "path": "packages/stapp/lib/modules/persist/index.js"
     },
@@ -46,10 +50,6 @@
     {
       "name": "modules: validate",
       "path": "packages/stapp/lib/modules/validate/index.js"
-    },
-    {
-      "name": "react bindings",
-      "path": "packages/stapp/lib/react/index.js"
     }
   ],
   "devDependencies": {
