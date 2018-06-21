@@ -1,6 +1,5 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
-import { setActive, setTouched, setValue } from 'stapp/lib/modules/formBase/events'
-import { fieldSelector } from 'stapp/lib/modules/formBase/selectors'
+import { fieldSelector, setActive, setTouched, setValue } from 'stapp-formBase'
 import { createConsumer } from '../createConsumer/createConsumer'
 
 // Models

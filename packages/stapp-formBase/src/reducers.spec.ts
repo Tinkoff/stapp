@@ -1,4 +1,4 @@
-import { getInitialState } from '../../helpers/testHelpers/getInitialState/getInitialState'
+import { getInitialState } from 'stapp/lib/helpers/testHelpers/getInitialState/getInitialState'
 import { setActive, setError, setReady, setSubmitting, setTouched, setValue } from './events'
 import { createFormBaseReducers } from './reducers'
 
@@ -93,5 +93,40 @@ describe('formBase reducers', () => {
     expect(!!stateB.name).toBe(false)
     expect(!!stateB.age).toBe(true)
     expect(!!stateB.username).toBe(false)
+  })
+
+  test('pristine reducer should react to any setValue or setTouched event', () => {
+    const { pristine } = createFormBaseReducers({
+      name: 'Batman'
+    })
+
+    const initialState = getInitialState(pristine)
+    expect(initialState).toBe(true)
+
+    // should set false on setValue
+    const stateA = pristine(
+      true,
+      setValue({
+        name: 'Jocker'
+      })
+    )
+    expect(stateA).toBe(false)
+
+    // should set false on setTouched
+    const stateB = pristine(
+      true,
+      setTouched({
+        name: true
+      })
+    )
+    expect(stateB).toBe(false)
+
+    const stateC = pristine(
+      false,
+      setValue({
+        name: 'Batman'
+      })
+    )
+    expect(stateC).toBe(false)
   })
 })

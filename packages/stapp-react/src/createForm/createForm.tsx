@@ -1,12 +1,11 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
-import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
-import { resetForm, submit } from 'stapp/lib/modules/formBase/events'
-import { formSelector } from 'stapp/lib/modules/formBase/selectors'
+import { formSelector, resetForm, submit } from 'stapp-formBase'
 import { createConsumer } from '../createConsumer/createConsumer'
+import { renderComponent } from '../helpers/renderComponent'
 
 // Models
 import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
-import { renderComponent } from '../helpers/renderComponent'
+import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
 import { FormProps } from './createForm.h'
 
 /**

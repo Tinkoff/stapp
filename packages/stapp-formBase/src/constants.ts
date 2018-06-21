@@ -1,4 +1,4 @@
-import { APP_KEY } from '../../helpers/constants'
+import { APP_KEY } from 'stapp/lib/helpers/constants'
 
 /**
  * @hidden

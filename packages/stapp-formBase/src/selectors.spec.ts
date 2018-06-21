@@ -1,4 +1,11 @@
-import { fieldSelector, isDirtySelector, isReadySelector, isValidSelector } from './selectors'
+import {
+  fieldSelector,
+  formSelector,
+  isDirtySelector,
+  isPristineSelector,
+  isReadySelector,
+  isValidSelector
+} from './selectors'
 
 describe('FormBase selectors', () => {
   test('isValidSelector', () => {
@@ -71,6 +78,17 @@ describe('FormBase selectors', () => {
     ).toEqual(false)
   })
 
+  test('isPristineSelector', () => {
+    const selector = isPristineSelector()
+    expect(selector({
+      pristine: true
+    })).toBe(true)
+
+    expect(selector({
+      pristine: false
+    })).toBe(false)
+  })
+
   test('fieldSelector', () => {
     expect(
       fieldSelector('test')({
@@ -113,6 +131,73 @@ describe('FormBase selectors', () => {
       touched: true,
       dirty: true,
       active: true
+    })
+  })
+
+  test('formSelector', () => {
+    const selector = formSelector()
+
+    expect(selector({
+      pristine: true,
+      values: {
+        test: 123
+      },
+      ready: {},
+      errors: {
+        test: null
+      },
+      dirty: {
+        test: false
+      },
+      touched: {}
+    })).toEqual({
+      submitting: false,
+      valid: true,
+      ready: true,
+      dirty: false,
+      pristine: true
+    })
+
+    expect(selector({
+      pristine: true,
+      values: {
+        test: 123
+      },
+      ready: {},
+      errors: {
+        test: 'test'
+      },
+      dirty: {
+        test: false
+      },
+      touched: {}
+    })).toEqual({
+      submitting: false,
+      valid: false,
+      ready: true,
+      dirty: false,
+      pristine: true
+    })
+
+    expect(selector({
+      pristine: false,
+      values: {
+        test: 123
+      },
+      ready: {},
+      errors: {
+        test: null
+      },
+      dirty: {
+        test: false
+      },
+      touched: {}
+    })).toEqual({
+      submitting: false,
+      valid: true,
+      ready: true,
+      dirty: false,
+      pristine: false
     })
   })
 })

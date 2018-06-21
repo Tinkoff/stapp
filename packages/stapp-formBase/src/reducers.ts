@@ -1,5 +1,5 @@
-import { createReducer } from '../../core/createReducer/createReducer'
-import { mapObject } from '../../helpers/mapObject/mapObject'
+import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
+import { mapObject } from 'stapp/lib/helpers/mapObject/mapObject'
 import {
   resetForm,
   setActive,
@@ -12,7 +12,7 @@ import {
 
 // Models
 // tslint:disable-next-line no-unused-variable // needed for declarations
-import { Reducer } from '../../core/createReducer/createReducer.h'
+import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
 
 /**
  * @private

@@ -1,5 +1,5 @@
 import { createReducer } from '../../core/createReducer/createReducer'
-import { resetForm } from '../formBase/events'
+import { resetForm } from '../../../../stapp-formBase/src/events'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
 // tslint:disable-next-line no-unused-variable

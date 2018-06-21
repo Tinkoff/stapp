@@ -1,4 +1,4 @@
-import { getInitialState } from '../../helpers/testHelpers/getInitialState/getInitialState'
+import { getInitialState } from 'stapp/lib/helpers/testHelpers/getInitialState/getInitialState'
 import { formBase } from './formBase'
 
 describe('formBase', () => {
