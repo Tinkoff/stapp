@@ -1,19 +1,13 @@
-import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux'
+import { applyMiddleware, compose, createStore, Middleware } from 'redux'
 import { from } from 'rxjs/observable/from'
 import { createAsyncMiddleware } from '../../async/createAsyncMiddleware/createAsyncMiddleware'
-import { combineEpics } from '../../epics/combineEpics/combineEpics'
 import { createStateStreamEnhancer } from '../../epics/createStateStreamEnhancer/createStateStreamEnhancer'
 import { initDone } from '../../events/initDone'
 import { awaitStore } from '../../helpers/awaitStore/awaitStore'
-import { getEpics } from '../../helpers/getEpics/getEpics'
-import { getEvents } from '../../helpers/getEvents/getEvents'
-import { getModules } from '../../helpers/getModules/getModules'
-import { getReducer } from '../../helpers/getReducer/getReducer'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
-
-// Models
-import { AnyEventCreator } from '../createEvent/createEvent.h'
+import { bindApi } from './bindApi'
 import { AnyModule, CreateApp, Stapp } from './createApp.h'
+import { prepareModules } from './prepareModules'
 
 /**
  * @private
@@ -25,35 +19,6 @@ const useReduxEnhancer = () =>
   !!(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
 /**
- * @private
- */
-const bindFunction = (actionCreator: (...args: any[]) => any, store: Store<any>) => {
-  return (...args: any[]) => store.dispatch(actionCreator(...args))
-}
-
-/**
- * @private
- */
-const bindApi = <T>(api: T, store: Store<any>): T => {
-  const keys = Object.keys(api)
-  const result: any = {}
-
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i]
-    const element = (api as any)[key]
-
-    if (typeof element === 'function') {
-      result[key] = bindFunction(element, store)
-    }
-
-    if (typeof element === 'object' && element !== null) {
-      result[key] = bindApi(element, store)
-    }
-  }
-  return result as T
-}
-
-/**
  * Creates an application and returns a [[Stapp]].
  * @param config createApp config
  * @param config.name Application name
@@ -63,7 +28,7 @@ const bindApi = <T>(api: T, store: Store<any>): T => {
  */
 export const createApp: CreateApp = <Api, State, Extra>(config: {
   name?: string
-  modules: Array<AnyModule<any, Partial<State>, State, Partial<Extra>>>
+  modules: Array<AnyModule<Partial<Api>, Partial<State>, State, Partial<Extra>>>
   dependencies?: Extra
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
@@ -73,14 +38,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const middlewares = config.middlewares || []
 
   // Modules
-  const modules = getModules(config.modules, dependencies)
-  const rootReducer = getReducer(modules)
-  const rootEpic = combineEpics(getEpics(modules) as any)
-  const events = getEvents<Api>(modules)
-  const waitFor = modules.reduce(
-    (result: Array<AnyEventCreator | string>, module) => result.concat(module.waitFor || []),
-    []
-  )
+  const { rootReducer, rootEpic, events, waitFor } = prepareModules(config.modules, dependencies)
 
   // Epics
   const { stateStreamEnhancer } = createStateStreamEnhancer(rootEpic)

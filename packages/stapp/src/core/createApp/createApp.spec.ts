@@ -1,7 +1,10 @@
 import { compose, Middleware } from 'redux'
+import { empty } from 'rxjs/observable/empty'
+import { whenReady } from '../../helpers/awaitStore/awaitStore'
 import { createEvent } from '../createEvent/createEvent'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
+import { dangerouslyReplaceState, dangerouslyResetState } from '../../events/dangerous'
 
 describe('createApp', () => {
   const mockReducer = createReducer({})
@@ -19,6 +22,55 @@ describe('createApp', () => {
 
     expect(app.api).toEqual({})
     expect(typeof app.state$.subscribe).toBe('function')
+  })
+
+  it('should call module factory with passed extraArgument', () => {
+    const module = jest.fn()
+    module.mockReturnValue({
+      name: 'test',
+      reducers: { mockReducer }
+    })
+
+    const extraValue = { test: 123 }
+
+    createApp({
+      name: 'test',
+      modules: [module],
+      dependencies: extraValue
+    })
+
+    expect(module).toBeCalledWith(extraValue)
+  })
+
+  it("should throw if passed module doesn't have a name", () => {
+    const module = {}
+    const moduleFactory = () => ({})
+
+    expect(() => createApp({ modules: [module as any]})).toThrow()
+    expect(() => createApp({ modules: [moduleFactory]})).toThrow()
+  })
+
+  it('should check dependencies', () => {
+    const moduleA = {
+      name: 'testA',
+      reducers: { a: mockReducer },
+      dependencies: ['testB']
+    }
+
+    const moduleB = {
+      name: 'testB',
+      reducers: { b: mockReducer },
+      dependencies: ['testC']
+    }
+
+    const circular = {
+      name: 'testC',
+      reducers: { c: mockReducer },
+      dependencies: ['testA', 'testB']
+    }
+
+    expect(() => createApp({ modules: [moduleA, moduleB] })).toThrow()
+    expect(() => createApp({ modules: [moduleA, moduleB, circular] })).not.toThrow()
   })
 
   it('should collect api from passed modules', () => {
@@ -92,6 +144,41 @@ describe('createApp', () => {
 
     app.api.a1(1)
     expect(app.getState().r1).toEqual(1)
+  })
+
+  it('should work with provided epics', () => {
+    const events = jest.fn()
+    const state = jest.fn()
+    const m1 = {
+      name: 'm1',
+      state: { m: mockReducer },
+      epic: (event$: any, state$: any) => {
+        event$.subscribe(events)
+        state$.subscribe(state)
+
+        return empty()
+      }
+    }
+
+    const app = createApp({
+      modules: [m1]
+    })
+
+    // Ignore initializing events
+    const eventsInitialLength = events.mock.calls.length
+    const stateInitialLength = state.mock.calls.length
+
+    app.dispatch({ type: 'test' })
+    expect(events.mock.calls).toHaveLength(1 + eventsInitialLength)
+    expect(state.mock.calls).toHaveLength(1 + stateInitialLength)
+    expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({ type: 'test' })
+    expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
+
+    app.dispatch({ type: 'test2' })
+    expect(events.mock.calls).toHaveLength(2 + eventsInitialLength)
+    expect(state.mock.calls).toHaveLength(2 + stateInitialLength)
+    expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({ type: 'test2' })
+    expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
   })
 
   it('should use rootReducer from passed modules', () => {
@@ -215,5 +302,27 @@ describe('createApp', () => {
 
     expect(mock).toBeDefined()
     expect(mock).toBeCalled()
+  })
+})
+
+describe('app root reducer', () => {
+  it('should react to special events', () => {
+    const m1 = {
+      name: 'm1',
+      reducers: { r1: createReducer({}) }
+    }
+
+    const app = createApp({
+      name: 'testApp',
+      modules: [m1]
+    })
+
+    expect(app.getState()).toEqual({ r1: {} })
+
+    app.dispatch(dangerouslyReplaceState({ r1: { test: 123 }}))
+    expect(app.getState()).toEqual({ r1: { test: 123 }})
+
+    app.dispatch(dangerouslyResetState())
+    expect(app.getState()).toEqual({ r1: {} })
   })
 })

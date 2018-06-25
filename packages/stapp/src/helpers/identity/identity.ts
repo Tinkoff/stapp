@@ -1,8 +1,6 @@
 /**
  * Returns passed argument
  *
- * @param x The value to return.
- * @param other Ignored params
  * @return The input value
  * @private
  */

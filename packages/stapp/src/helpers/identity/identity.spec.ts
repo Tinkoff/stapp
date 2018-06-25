@@ -8,4 +8,8 @@ describe('identity', () => {
       expect(identity(value)).toBe(value)
     })
   })
+
+  it('should ignore any arguments except the first', () => {
+    expect(identity(1, 2, 3)).toBe(1)
+  })
 })
