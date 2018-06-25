@@ -16,10 +16,10 @@ const dangerouslyResetStateType = dangerouslyResetState.getType()
  * And remember, Pete, great power comes with great responsibility.
  * @private
  */
-export const getRootReducer = (reducers: {[K: string]: Reducer<any>}): Reducer<any> => {
-  const rootReducer = combineReducers(reducers)
+export const getRootReducer = <State>(reducers: {[K in keyof State]: Reducer<State[K]>}, initialState: Partial<State>): Reducer<State> => {
+  const rootReducer = combineReducers<State>(reducers)
 
-  return (oldState, event) => {
+  return (oldState: any, event) => {
     let state = oldState
 
     if (event.type === dangerouslyReplaceStateType) {
@@ -27,7 +27,7 @@ export const getRootReducer = (reducers: {[K: string]: Reducer<any>}): Reducer<a
     }
 
     if (event.type === dangerouslyResetStateType) {
-      state = {}
+      state = initialState
     }
 
     return rootReducer(state, event)

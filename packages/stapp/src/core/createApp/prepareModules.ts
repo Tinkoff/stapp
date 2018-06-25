@@ -9,7 +9,11 @@ import { getRootReducer } from './getRootReducer'
 /**
  * @private
  */
-export const prepareModules = <Api, State, Extra>(modules: Array<AnyModule<Partial<Api>, Partial<State>, State, Partial<Extra>>>, dependencies: Extra): {
+export const prepareModules = <Api, State, Extra>(
+  modules: Array<AnyModule<Partial<Api>, Partial<State>, State, Partial<Extra>>>,
+  initialState: Partial<State>,
+  dependencies: Extra
+): {
   rootReducer: Reducer<State>
   rootEpic: Epic<State>
   events: {[K in keyof Api]: Api[K]}
@@ -67,7 +71,7 @@ export const prepareModules = <Api, State, Extra>(modules: Array<AnyModule<Parti
   }
 
   return {
-    rootReducer: getRootReducer(state),
+    rootReducer: getRootReducer(state, initialState),
     rootEpic: combineEpics(epics),
     events: api,
     waitFor

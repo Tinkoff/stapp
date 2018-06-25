@@ -38,7 +38,11 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const middlewares = config.middlewares || []
 
   // Modules
-  const { rootReducer, rootEpic, events, waitFor } = prepareModules(config.modules, dependencies)
+  const { rootReducer, rootEpic, events, waitFor } = prepareModules(
+    config.modules,
+    config.rehydrate || {},
+    dependencies
+  )
 
   // Epics
   const { stateStreamEnhancer } = createStateStreamEnhancer(rootEpic)
