@@ -1,4 +1,4 @@
-import { createSelector, createStructuredSelector,  } from 'reselect'
+import { createSelector, createStructuredSelector } from 'reselect'
 import { FormBaseState } from './formBase.h'
 
 export const isValidSelector = () =>
@@ -22,9 +22,11 @@ export const isDirtySelector = () =>
 export const isPristineSelector = () => <State extends FormBaseState>(state: State) =>
   state.pristine
 
+const noop = () => undefined as any
+
 export const fieldSelector = <State extends FormBaseState, Custom = undefined>(
   name: string,
-  customSelector: (state: State) => Custom = () => undefined as any
+  customSelector: (state: State) => Custom = noop
 ) =>
   createStructuredSelector({
     value: (state: State) => state.values[name],

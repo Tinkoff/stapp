@@ -136,7 +136,7 @@ type FormApi = {
 
 type Field<State extends FormBaseState> = React.Component<{
   name: string, // field name
-  customSelector: (state: State) => any
+  customSelector: (state: State) => any,
 
   children?: (props: FieldApi) => React.ReactElement | null,
   render?: (props: FieldApi) => React.ReactElement | null,
@@ -156,7 +156,7 @@ type FieldApi<Custom = undefined> = {
     touched: boolean // field was focused
     active: boolean // field is in focus
     dirty: boolean // field value differs from initial value
-  },
+  }
   custom: Custom
 }
 ```
