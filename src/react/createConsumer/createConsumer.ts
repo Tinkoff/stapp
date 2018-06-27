@@ -22,7 +22,11 @@ import { ConsumerProps } from './createConsumer.h'
 /**
  * @private
  */
-const consumers: { [K: string]: ComponentClass<ConsumerProps<any, any, any, any, any>> } = {}
+
+const consumers = new WeakMap<
+  Stapp<any, any>,
+  ComponentClass<ConsumerProps<any, any, any, any, any>>
+>()
 
 /**
  * @private
@@ -41,13 +45,11 @@ const consumerPropTypes = {
 export const createConsumer = <State, Api>(
   app: Stapp<State, Api>
 ): ComponentClass<ConsumerProps<State, Api, any, any, any>> => {
-  if (consumers[app.name]) {
-    return consumers[app.name]
+  if (consumers.has(app)) {
+    return consumers.get(app) as ComponentClass<ConsumerProps<any, any, any, any, any>>
   }
 
-  return (consumers[app.name] = class Consumer extends Component<
-    ConsumerProps<State, Api, any, any, any>
-  > {
+  const consumer = class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
     static propTypes = consumerPropTypes
 
     subscription!: Subscription
@@ -112,5 +114,9 @@ export const createConsumer = <State, Api>(
         'Consumer'
       )
     }
-  })
+  }
+
+  consumers.set(app, consumer)
+
+  return consumer
 }
