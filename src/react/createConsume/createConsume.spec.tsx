@@ -8,7 +8,7 @@ import { createReducer } from '../../core/createReducer/createReducer'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { createConsume } from './createConsume'
 
-describe('createConsumer', () => {
+describe('createConsume', () => {
   const initialState = {
     test: 0
   }
