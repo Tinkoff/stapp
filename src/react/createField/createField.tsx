@@ -1,10 +1,9 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
 import { setActive, setTouched, setValue } from '../../modules/formBase/events'
 import { fieldSelector } from '../../modules/formBase/selectors'
-import { createConsumer } from '../createConsumer/createConsumer'
 
 // Models
-import { Stapp } from '../../core/createApp/createApp.h'
+import { ConsumerClass } from '../createConsumer/createConsumer.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { FieldProps } from './createField.h'
 
@@ -46,10 +45,12 @@ import { FieldProps } from './createField.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
-export const createField = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FieldProps> => {
-  const Consumer = createConsumer(app)
+export const createField = <State, Api>(
+  Consumer: ConsumerClass<State, Api, any, any, any>
+): StatelessComponent<FieldProps> => {
+  const app = Consumer.app
 
   return ({ name, children, render, component }) => {
     const handleChange = (event: SyntheticEvent<HTMLInputElement>) =>

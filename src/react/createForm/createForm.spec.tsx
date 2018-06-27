@@ -1,5 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
+import { createConsumer } from '..'
 import { createApp } from '../../core/createApp/createApp'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 import { submit } from '../../modules/formBase/events'
@@ -14,8 +15,9 @@ describe('createForm', () => {
   })
 
   const last = (a: any[]) => a[a.length - 1]
-  const Form = createForm(app)
-  const Field = createField(app)
+  const Consumer = createConsumer(app)
+  const Form = createForm(Consumer)
+  const Field = createField(Consumer)
 
   const DummyForm = () => {
     return (

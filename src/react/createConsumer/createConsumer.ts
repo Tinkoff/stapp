@@ -1,6 +1,6 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
 // tslint:disable-next-line no-unused-variable // Needed for declarations
-import { Component, ComponentClass } from 'react'
+import { Component } from 'react'
 import { debounceTime } from 'rxjs/operators/debounceTime'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 import { map } from 'rxjs/operators/map'
@@ -14,19 +14,10 @@ import { renderPropType, selectorType } from '../helpers/propTypes'
 import { Subscription } from 'rxjs/Subscription'
 import { Stapp } from '../../core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
-import { ConsumerProps } from './createConsumer.h'
+import { ConsumerClass, ConsumerProps } from './createConsumer.h'
 
 // tslint:disable-next-line no-unused-variable // Needed for declarations
 // import { Requireable } from 'prop-types'
-
-/**
- * @private
- */
-
-const consumers = new WeakMap<
-  Stapp<any, any>,
-  ComponentClass<ConsumerProps<any, any, any, any, any>>
->()
 
 /**
  * @private
@@ -44,12 +35,10 @@ const consumerPropTypes = {
  */
 export const createConsumer = <State, Api>(
   app: Stapp<State, Api>
-): ComponentClass<ConsumerProps<State, Api, any, any, any>> => {
-  if (consumers.has(app)) {
-    return consumers.get(app) as ComponentClass<ConsumerProps<any, any, any, any, any>>
-  }
+): ConsumerClass<State, Api, any, any, any> => {
+  return class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
+    static app = app
 
-  const consumer = class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
     static propTypes = consumerPropTypes
 
     subscription!: Subscription
@@ -115,8 +104,4 @@ export const createConsumer = <State, Api>(
       )
     }
   }
-
-  consumers.set(app, consumer)
-
-  return consumer
 }
