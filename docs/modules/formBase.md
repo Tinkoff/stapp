@@ -104,13 +104,15 @@ type submit = () => Event<void>
 `formBase` is shipped with a bunch of memoized selectors.
 
 ```typescript
-type fieldSelector = (name: string) => <State>(state: State) => ({
-  value: string | undefined,
-  error: any,
-  dirty: boolean,
-  touched: boolean,
-  active: boolean
-})
+type fieldSelector = <State, Extra>(name: string, extraSelector: (state: State) => Extra) => 
+  (state: State) => ({
+    value: string | undefined,
+    error: any,
+    dirty: boolean,
+    touched: boolean,
+    active: boolean,
+    extra?: Extra
+  })
 
 type formSelector = () => <State>(state: State) => ({
     submitting: boolean,

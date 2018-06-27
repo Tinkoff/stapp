@@ -1,7 +1,8 @@
 import { SyntheticEvent } from 'react'
+import { FormBaseState } from '../../modules/formBase/formBase.h'
 import { RenderProps } from '../createConsumer/createConsumer.h'
 
-export type FieldApi = {
+export type FieldApi<Extra = undefined> = {
   input: {
     name: string
     value: string
@@ -14,8 +15,10 @@ export type FieldApi = {
     touched: boolean
     active: boolean
   }
+  extra: Extra
 }
 
-export type FieldProps = RenderProps<FieldApi> & {
+export type FieldProps<State extends FormBaseState, Extra> = RenderProps<FieldApi<Extra>> & {
   name: string
+  extraSelector?: (state: State) => Extra
 }

@@ -135,15 +135,16 @@ type FormApi = {
   pristine: boolean // fields were not touched
 }
 
-type Field = React.Component<{
+type Field<State extends FormBaseState, Extra> = React.Component<{
   name: string, // field name
+  extraSelector: (state: State) => Extra,
 
   children?: (props: FieldApi) => React.ReactElement | null,
   render?: (props: FieldApi) => React.ReactElement | null,
-  component?: React.ReactType<FieldApi>
+  component?: React.ReactType<FieldApi<Extra>>
 }>
 
-type FieldApi = {
+type FieldApi<Extra = undefined> = {
   input: {
     name: string
     value: string
@@ -157,6 +158,7 @@ type FieldApi = {
     active: boolean // field is in focus
     dirty: boolean // field value differs from initial value
   }
+  extra: Extra
 }
 ```
 
