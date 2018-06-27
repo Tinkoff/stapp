@@ -117,30 +117,29 @@ describe('FormBase selectors', () => {
     })
 
     expect(
-      fieldSelector<FormBaseState & { customValue: string }>(
-        'test',
-        ({ customValue }) => customValue
-      )({
-        values: {},
-        errors: {
-          test: 'Some error'
-        },
-        touched: {
-          test: true
-        },
-        dirty: {
-          test: true
-        },
-        active: 'test',
-        customValue: 'Some custom value'
-      })
+      fieldSelector<FormBaseState & { extraValue: string }>('test', ({ extraValue }) => extraValue)(
+        {
+          values: {},
+          errors: {
+            test: 'Some error'
+          },
+          touched: {
+            test: true
+          },
+          dirty: {
+            test: true
+          },
+          active: 'test',
+          extraValue: 'Some value'
+        }
+      )
     ).toEqual({
       value: undefined,
       error: 'Some error',
       touched: true,
       dirty: true,
       active: true,
-      custom: 'Some custom value'
+      extra: 'Some value'
     })
   })
 })

@@ -24,9 +24,9 @@ export const isPristineSelector = () => <State extends FormBaseState>(state: Sta
 
 const noop = () => undefined as any
 
-export const fieldSelector = <State extends FormBaseState, Custom = undefined>(
+export const fieldSelector = <State extends FormBaseState, Extra = undefined>(
   name: string,
-  customSelector: (state: State) => Custom = noop
+  extraSelector: (state: State) => Extra = noop
 ) =>
   createStructuredSelector({
     value: (state: State) => state.values[name],
@@ -34,7 +34,7 @@ export const fieldSelector = <State extends FormBaseState, Custom = undefined>(
     dirty: (state: State) => !!state.dirty[name],
     touched: (state: State) => !!state.touched[name],
     active: (state: State) => state.active === name,
-    custom: customSelector
+    extra: extraSelector
   })
 
 export const formSelector = () =>

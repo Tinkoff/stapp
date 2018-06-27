@@ -48,10 +48,12 @@ import { FieldProps } from './createField.h'
  *
  * @param app Stapp application
  */
-export const createField = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FieldProps<any>> => {
+export const createField = <State, Api>(
+  app: Stapp<State, Api>
+): StatelessComponent<FieldProps<any>> => {
   const Consumer = createConsumer(app)
 
-  return ({ name, customSelector, children, render, component }) => {
+  return ({ name, extraSelector, children, render, component }) => {
     const handleChange = (event: SyntheticEvent<HTMLInputElement>) =>
       app.dispatch(
         setValue({
@@ -67,8 +69,8 @@ export const createField = <State, Api>(app: Stapp<State, Api>): StatelessCompon
     const handleFocus = () => app.dispatch(setActive(name))
 
     return (
-      <Consumer mapState={fieldSelector(name, customSelector)}>
-        {({ value, error, dirty, touched, active, custom }) =>
+      <Consumer mapState={fieldSelector(name, extraSelector)}>
+        {({ value, error, dirty, touched, active, extra }) =>
           renderComponent(
             {
               children,
@@ -89,7 +91,7 @@ export const createField = <State, Api>(app: Stapp<State, Api>): StatelessCompon
                 active,
                 dirty
               },
-              custom
+              extra
             },
             'Field'
           )
