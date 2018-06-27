@@ -58,16 +58,6 @@ describe('formBase reducers', () => {
     })
   })
 
-  test('errors reducer should handle setValue event', () => {
-    const initialState = getInitialState(errors)
-    const error = { test: 'testError' }
-    const value = { test: 123 }
-    const expected = { test: false }
-    const nextState = errors(initialState, setError(error))
-
-    expect(errors(nextState, setValue(value))).toEqual(expected)
-  })
-
   test('dirty reducer', () => {
     const { dirty } = createFormBaseReducers({
       name: 'Batman',

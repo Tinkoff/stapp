@@ -13,6 +13,14 @@ import { ValidateConfig } from './validate.h'
 describe('validate', () => {
   const getApp = (validateConfig: ValidateConfig<any>, formConfig?: FormBaseConfig<any>) =>
     createApp({
+      modules: [formBase(formConfig), validate(validateConfig)]
+    })
+
+  const getAppWithLogger = (
+    validateConfig: ValidateConfig<any>,
+    formConfig?: FormBaseConfig<any>
+  ) =>
+    createApp({
       modules: [loggerModule, formBase(formConfig), validate(validateConfig)]
     })
 
@@ -53,7 +61,7 @@ describe('validate', () => {
       const name = jest.fn()
       const username = jest.fn()
 
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age,
           name,
@@ -150,7 +158,7 @@ describe('validate', () => {
 
   describe('sync validation', () => {
     it('should accept strings as errors', () => {
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age(value) {
             if (!value) {
@@ -175,7 +183,7 @@ describe('validate', () => {
     })
 
     it('should accept objects as errors', () => {
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age(value) {
             if (!value) {
@@ -205,7 +213,7 @@ describe('validate', () => {
     })
 
     it('should handle sync exceptions', () => {
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age(value) {
             if (!value) {
@@ -243,7 +251,7 @@ describe('validate', () => {
 
   describe('async validation', () => {
     it('should dispatch asyncValidationStart, asyncValidationEnd and setReady events', async () => {
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           async age(value) {
             if (!value) {
@@ -274,7 +282,7 @@ describe('validate', () => {
     })
 
     it('should handle rejections', async () => {
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           async age(value) {
             if (!value) {
@@ -321,7 +329,7 @@ describe('validate', () => {
 
     it('async validation events', async () => {
       const selector = isValidatingSelector()
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           async age() {
             await wait(100)
@@ -409,7 +417,7 @@ describe('validate', () => {
       const name = jest.fn()
       const username = jest.fn()
 
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age,
           name,
@@ -431,7 +439,7 @@ describe('validate', () => {
       const name = jest.fn()
       const username = jest.fn()
 
-      const app = getApp({
+      const app = getAppWithLogger({
         rules: {
           age,
           name,

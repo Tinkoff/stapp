@@ -60,7 +60,6 @@ const app = createForm({
   * `resetForm` event: sets values back to initial.
 * **`errors`**: `{ [fieldName]: fieldError} `. Value of any type can be an error. Related:
   * `setError` event: sets errors.
-  * `setValue` event: sets error value of corresponding fields to `false`.
   * `resetForm` event: clears all errors.
   * `isValidSelector` selector creator: creates a selector that returnes `true` if there is no errors, `false ` otherwise.
 * **`touched`**: `{ [fieldName]: boolean }`. Indicates that a field was active at some time. Related:
