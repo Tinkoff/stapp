@@ -22,13 +22,23 @@ export const isDirtySelector = () =>
 export const isPristineSelector = () => <State extends FormBaseState>(state: State) =>
   state.pristine
 
-const noop = () => undefined as any
+const noop = () => undefined
 
 export const fieldSelector = <State extends FormBaseState, Extra = undefined>(
   name: string,
-  extraSelector: (state: State) => Extra = noop
+  extraSelector: ((state: State) => Extra) = noop as any
 ) =>
-  createStructuredSelector({
+  createStructuredSelector<
+    State,
+    {
+      value: any
+      error: any
+      dirty: boolean
+      touched: boolean
+      active: boolean
+      extra: Extra
+    }
+  >({
     value: (state: State) => state.values[name],
     error: (state: State) => state.errors[name],
     dirty: (state: State) => !!state.dirty[name],

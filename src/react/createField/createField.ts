@@ -1,5 +1,7 @@
-import React, { StatelessComponent, SyntheticEvent } from 'react'
+// tslint:disable-next-line no-unused-variable
+import React, { createElement, SyntheticEvent } from 'react'
 import { setActive, setTouched, setValue } from '../../modules/formBase/events'
+import { FormBaseState } from '../../modules/formBase/formBase.h'
 import { fieldSelector } from '../../modules/formBase/selectors'
 import { createConsumer } from '../createConsumer/createConsumer'
 
@@ -48,12 +50,16 @@ import { FieldProps } from './createField.h'
  *
  * @param app Stapp application
  */
-export const createField = <State, Api>(
-  app: Stapp<State, Api>
-): StatelessComponent<FieldProps<any>> => {
+export const createField = <State extends FormBaseState, Api>(app: Stapp<State, Api>) => {
   const Consumer = createConsumer(app)
 
-  return ({ name, extraSelector, children, render, component }) => {
+  return <Extra>({
+    name,
+    extraSelector,
+    children,
+    render,
+    component
+  }: FieldProps<State, Extra>) => {
     const handleChange = (event: SyntheticEvent<HTMLInputElement>) =>
       app.dispatch(
         setValue({
@@ -68,35 +74,33 @@ export const createField = <State, Api>(
 
     const handleFocus = () => app.dispatch(setActive(name))
 
-    return (
-      <Consumer mapState={fieldSelector(name, extraSelector)}>
-        {({ value, error, dirty, touched, active, extra }) =>
-          renderComponent(
-            {
-              children,
-              render,
-              component
+    return createElement(Consumer, {
+      mapState: fieldSelector(name, extraSelector),
+      render: ({ value, error, dirty, touched, active, extra }: any) =>
+        renderComponent(
+          {
+            children,
+            render,
+            component
+          },
+          {
+            input: {
+              name,
+              value: value || '',
+              onChange: handleChange,
+              onBlur: handleBlur,
+              onFocus: handleFocus
             },
-            {
-              input: {
-                name,
-                value: value || '',
-                onChange: handleChange,
-                onBlur: handleBlur,
-                onFocus: handleFocus
-              },
-              meta: {
-                error,
-                touched,
-                active,
-                dirty
-              },
-              extra
+            meta: {
+              error,
+              touched,
+              active,
+              dirty
             },
-            'Field'
-          )
-        }
-      </Consumer>
-    )
+            extra
+          },
+          'Field'
+        )
+    })
   }
 }
