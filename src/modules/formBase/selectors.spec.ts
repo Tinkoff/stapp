@@ -1,3 +1,4 @@
+import { FormBaseState } from './formBase.h'
 import { fieldSelector, isDirtySelector, isReadySelector, isValidSelector } from './selectors'
 
 describe('FormBase selectors', () => {
@@ -113,6 +114,32 @@ describe('FormBase selectors', () => {
       touched: true,
       dirty: true,
       active: true
+    })
+
+    expect(
+      fieldSelector<FormBaseState & { extraValue: string }>('test', ({ extraValue }) => extraValue)(
+        {
+          values: {},
+          errors: {
+            test: 'Some error'
+          },
+          touched: {
+            test: true
+          },
+          dirty: {
+            test: true
+          },
+          active: 'test',
+          extraValue: 'Some value'
+        }
+      )
+    ).toEqual({
+      value: undefined,
+      error: 'Some error',
+      touched: true,
+      dirty: true,
+      active: true,
+      extra: 'Some value'
     })
   })
 })

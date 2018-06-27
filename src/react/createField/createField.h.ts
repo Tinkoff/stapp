@@ -1,7 +1,7 @@
 import { SyntheticEvent } from 'react'
 import { RenderProps } from '../createConsumer/createConsumer.h'
 
-export type FieldApi = {
+export type FieldApi<Extra = undefined> = {
   input: {
     name: string
     value: string
@@ -14,8 +14,10 @@ export type FieldApi = {
     touched: boolean
     active: boolean
   }
+  extra: Extra
 }
 
-export type FieldProps = RenderProps<FieldApi> & {
+export type FieldProps<Extra> = RenderProps<FieldApi<Extra>> & {
   name: string
+  extraSelector?: () => Extra
 }
