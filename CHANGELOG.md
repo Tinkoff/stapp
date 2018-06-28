@@ -1,3 +1,20 @@
+<a name="1.4.0"></a>
+## 1.4.0 (2018-06-28)
+
+* build(typedoc): temporary disable typedoc generation ([5db9c86](https://github.com/TinkoffCreditSystems/stapp/commit/5db9c86))
+* chore(package): add homepage and issue-tracker links ([18ff6d8](https://github.com/TinkoffCreditSystems/stapp/commit/18ff6d8))
+* comments ([f0b8437](https://github.com/TinkoffCreditSystems/stapp/commit/f0b8437))
+* createConsumer => createConsume ([c2f7524](https://github.com/TinkoffCreditSystems/stapp/commit/c2f7524))
+* feat(react/create(Consumer,consume,Form,Field,Componets)): React bindings reworked ([0870587](https://github.com/TinkoffCreditSystems/stapp/commit/0870587))
+* feat(react/createField): Add ability to provide custom state selector to Field ([0fb955b](https://github.com/TinkoffCreditSystems/stapp/commit/0fb955b))
+* fix(react/createConsumer): Use WeakMap (instead of object) to store consumers ([5959e27](https://github.com/TinkoffCreditSystems/stapp/commit/5959e27))
+
+
+### BREAKING CHANGE
+
+* You must pass Consumer to 'createConsume', 'createForm', 'createField' instead of Stapp instance
+
+
 <a name="1.3.1"></a>
 ## <small>1.3.1 (2018-06-20)</small>
 
