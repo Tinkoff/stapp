@@ -536,6 +536,7 @@
 <li><a href="#createconsumer"><code>createConsumer()</code></a></li>
 <li><a href="#createconsume"><code>createConsume()</code></a></li>
 <li><a href="#createform-and-createfield"><code>createForm()</code> and <code>createField()</code></a></li>
+<li><a href="#createcomponents"><code>createComponents()</code></a></li>
 </ul>
 </li>
 <li><a href="#type-definitions">Type definitions</a></li>
@@ -590,8 +591,8 @@
 const App = () =&gt; &lt;Consumer component={ List } /&gt;
 </code></pre>
 <h3 id="createconsume"><code>createConsume()</code></h3>
-<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createConsume = (app: Stapp) =&gt; Consume
-<span class="hljs-keyword">type</span> createInject = (app: Stapp) =&gt; Consume <span class="hljs-comment">// theese are aliases</span>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createConsume = (Consumer: Consumer) =&gt; ConsumerHoc
+<span class="hljs-keyword">type</span> createInject = (Consumer: Consumer) =&gt; ConsumerHoc <span class="hljs-comment">// theese are aliases</span>
 
 <span class="hljs-keyword">type</span> ConsumerHoc = (
     mapState?: (state, props) =&gt; <span class="hljs-built_in">any</span>,
@@ -619,8 +620,8 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
 })
 </span></code></pre>
 <h3 id="createform-and-createfield"><code>createForm()</code> and <code>createField()</code></h3>
-<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createForm = (app: Stapp) =&gt; Form
-<span class="hljs-keyword">type</span> createFiled = (app: Stapp) =&gt; Field
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createForm = (Consumer: Consumer) =&gt; Form
+<span class="hljs-keyword">type</span> createFiled = (Consumer: Consumer) =&gt; Field
 
 <span class="hljs-keyword">type</span> Form = React.Component&lt;{
   children?: (props: FormApi) =&gt; React.ReactElement | <span class="hljs-literal">null</span>,
@@ -638,15 +639,16 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
   pristine: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// fields were not touched</span>
 }
 
-<span class="hljs-keyword">type</span> Field = React.Component&lt;{
+<span class="hljs-keyword">type</span> Field&lt;State extends FormBaseState, Extra&gt; = React.Component&lt;{
   name: <span class="hljs-built_in">string</span>, <span class="hljs-comment">// field name</span>
+  extraSelector: (state: State) =&gt; Extra,
 
   children?: (props: FieldApi) =&gt; React.ReactElement | <span class="hljs-literal">null</span>,
   render?: (props: FieldApi) =&gt; React.ReactElement | <span class="hljs-literal">null</span>,
-  component?: React.ReactType&lt;FieldApi&gt;
+  component?: React.ReactType&lt;FieldApi&lt;Extra&gt;&gt;
 }&gt;
 
-<span class="hljs-keyword">type</span> FieldApi = {
+<span class="hljs-keyword">type</span> FieldApi&lt;Extra = <span class="hljs-literal">undefined</span>&gt; = {
   input: {
     name: <span class="hljs-built_in">string</span>
     value: <span class="hljs-built_in">string</span>
@@ -660,6 +662,7 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
     active: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// field is in focus</span>
     dirty: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// field value differs from initial value</span>
   }
+  extra: Extra
 }
 </code></pre>
 <p>These methods create form helpers, who handle every common operation with forms. You can find a comprehensive example in the <code>examples/form-async-validation</code> folder. Note that form helpers are intended to be used with <code>formBase</code> module (see <a href="../modules/formBase.html">formBase documentation</a>).</p>
@@ -693,12 +696,21 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
   <span class="hljs-tag">&lt;/<span class="hljs-name">Form</span>&gt;</span>
 }
 </span></code></pre>
+<h3 id="createcomponents"><code>createComponents()</code></h3>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createComponents = (app: Stapp) =&gt; {
+  Consumer: Consumer,
+  consume: ConsumerHoc,
+  Form: Form,
+  Field: Field
+}
+</code></pre>
 <h2 id="type-definitions">Type definitions</h2>
 <ul>
 <li><a href="../types.html#createconsumer"><code>createConsumer</code></a></li>
 <li><a href="../types.html#createconsume"><code>createConsume</code></a></li>
 <li><a href="../types.html#createform"><code>createForm</code></a></li>
 <li><a href="../types.html#createfield"><code>createField</code></a></li>
+<li><a href="../types.html#createcomponents"><code>createComponents</code></a></li>
 </ul>
 
                                 
@@ -743,7 +755,7 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"React","level":"1.2.3","depth":2,"next":{"title":"SSR","level":"1.2.4","depth":2,"path":"usage/ssr.md","ref":"usage/ssr.md","articles":[]},"previous":{"title":"Epics","level":"1.2.2","depth":2,"path":"usage/epics.md","ref":"usage/epics.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"usage/react.md","mtime":"2018-06-20T15:25:43.533Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-20T15:25:53.424Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"React","level":"1.2.3","depth":2,"next":{"title":"SSR","level":"1.2.4","depth":2,"path":"usage/ssr.md","ref":"usage/ssr.md","articles":[]},"previous":{"title":"Epics","level":"1.2.2","depth":2,"path":"usage/epics.md","ref":"usage/epics.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"usage/react.md","mtime":"2018-06-28T12:44:33.370Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-28T12:44:36.623Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
