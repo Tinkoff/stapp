@@ -46,7 +46,7 @@ import { FormProps } from './createForm.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
 export const createForm = <State, Api>(
   Consumer: ConsumerClass<State, Api, any, any, any>

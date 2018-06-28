@@ -1,36 +1,38 @@
-import { StatelessComponent } from 'react'
+// tslint:disable-next-line no-unused-variable // Needed for declarations
+import PropTypes from 'prop-types'
+// tslint:disable-next-line no-unused-variable // Needed for declarations
+import React, { ReactElement, StatelessComponent } from 'react'
+// tslint:disable-next-line no-unused-variable // Needed for declarations
+import RxJS from 'rxjs'
 import { createConsume, createConsumer, createField, createForm } from '..'
 import { Stapp } from '../../core/createApp/createApp.h'
 import { FormBaseState } from '../../modules/formBase/formBase.h'
 import { ConsumerHoc } from '../createConsume/createConsume.h'
-import { ConsumerClass } from '../createConsumer/createConsumer.h'
+import { ConsumerProps } from '../createConsumer/createConsumer.h'
 import { FieldProps } from '../createField/createField.h'
 import { FormProps } from '../createForm/createForm.h'
-import { StappComponents } from './createComponents.h'
 
-export const createComponents = <State extends FormBaseState, Api>(
-  app: Stapp<State, Api>
-): StappComponents<State, Api> => {
-  let Consumer: ConsumerClass<State, Api, any, any, any>
+export const createComponents = <State extends FormBaseState, Api>(app: Stapp<State, Api>) => {
+  const Consumer = createConsumer(app)
   let consume: ConsumerHoc<State, Api>
   let Form: StatelessComponent<FormProps>
-  let Field: StatelessComponent<FieldProps<State, Api>>
+  let Field: <Extra>(
+    config: FieldProps<State, Extra>
+  ) => ReactElement<ConsumerProps<State, Api, any, any, any>>
 
   return {
-    get Consumer() {
-      return Consumer || (Consumer = createConsumer(app))
-    },
+    Consumer,
 
     get consume() {
-      return consume || (consume = createConsume(this.Consumer))
+      return consume || (consume = createConsume(Consumer))
     },
 
     get Form() {
-      return Form || (Form = createForm(this.Consumer))
+      return Form || (Form = createForm(Consumer))
     },
 
     get Field() {
-      return Field || (Field = createField(this.Consumer))
+      return Field || (Field = createField(Consumer))
     }
   }
 }
