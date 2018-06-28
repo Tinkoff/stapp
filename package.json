@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "https://tinkoffcreditsystems.github.io/stapp/#stapp",
+  "bugs": {
+    "url": "https://github.com/TinkoffCreditSystems/stapp/issues"
+  },
   "engines": {
     "node": ">=8.0.0"
   },
