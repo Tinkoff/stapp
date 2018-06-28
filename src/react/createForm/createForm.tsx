@@ -2,10 +2,9 @@ import React, { StatelessComponent, SyntheticEvent } from 'react'
 import { Event } from '../../core/createEvent/createEvent.h'
 import { resetForm, submit } from '../../modules/formBase/events'
 import { formSelector } from '../../modules/formBase/selectors'
-import { createConsumer } from '../createConsumer/createConsumer'
 
 // Models
-import { Stapp } from '../../core/createApp/createApp.h'
+import { ConsumerClass } from '../createConsumer/createConsumer.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { FormProps } from './createForm.h'
 
@@ -47,11 +46,12 @@ import { FormProps } from './createForm.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
-export const createForm = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FormProps> => {
-  const Consumer = createConsumer(app)
-
+export const createForm = <State, Api>(
+  Consumer: ConsumerClass<State, Api, any, any, any>
+): StatelessComponent<FormProps> => {
+  const app = Consumer.app
   const formDataSelector = formSelector()
 
   const handle = (event: Event<any, any>) => (syntheticEvent: SyntheticEvent<any>) => {

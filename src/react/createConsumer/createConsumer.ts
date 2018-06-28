@@ -1,6 +1,8 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
 // tslint:disable-next-line no-unused-variable // Needed for declarations
-import { Component, ComponentClass } from 'react'
+import PropTypes from 'prop-types'
+// tslint:disable-next-line no-unused-variable // Needed for declarations
+import React, { Component } from 'react'
 import { debounceTime } from 'rxjs/operators/debounceTime'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 import { map } from 'rxjs/operators/map'
@@ -22,11 +24,6 @@ import { ConsumerProps } from './createConsumer.h'
 /**
  * @private
  */
-const consumers: { [K: string]: ComponentClass<ConsumerProps<any, any, any, any, any>> } = {}
-
-/**
- * @private
- */
 const consumerPropTypes = {
   render: renderPropType,
   children: renderPropType,
@@ -38,16 +35,10 @@ const consumerPropTypes = {
 /**
  * Creates Consumer component
  */
-export const createConsumer = <State, Api>(
-  app: Stapp<State, Api>
-): ComponentClass<ConsumerProps<State, Api, any, any, any>> => {
-  if (consumers[app.name]) {
-    return consumers[app.name]
-  }
+export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
+  return class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
+    static app = app
 
-  return (consumers[app.name] = class Consumer extends Component<
-    ConsumerProps<State, Api, any, any, any>
-  > {
     static propTypes = consumerPropTypes
 
     subscription!: Subscription
@@ -112,5 +103,5 @@ export const createConsumer = <State, Api>(
         'Consumer'
       )
     }
-  })
+  }
 }

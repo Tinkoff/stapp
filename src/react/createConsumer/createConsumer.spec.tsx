@@ -19,9 +19,9 @@ describe('createContext', () => {
 
   const wait = (n: number) => new Promise((resolve) => setTimeout(resolve, n))
 
-  const getApp = () =>
+  const getApp = (appName = 'test' + uniqueId()) =>
     createApp({
-      name: 'test' + uniqueId(),
+      name: appName,
       modules: [
         {
           name: 'test',
@@ -234,22 +234,5 @@ describe('createContext', () => {
     const Consumer = createConsumer(app)
 
     mount(<Consumer component={DummyComponent} />)
-  })
-
-  it('should memoize components', () => {
-    const app1 = getApp()
-    const app2 = getApp()
-    const app3 = getApp()
-
-    const Consumer1 = createConsumer(app1)
-    const Consumer2 = createConsumer(app2)
-    const Consumer3 = createConsumer(app1)
-    const Consumer4 = createConsumer(app3)
-    const Consumer5 = createConsumer(app1)
-
-    expect(Consumer1).toBe(Consumer3)
-    expect(Consumer1).toBe(Consumer5)
-    expect(Consumer1).not.toBe(Consumer2)
-    expect(Consumer1).not.toBe(Consumer4)
   })
 })

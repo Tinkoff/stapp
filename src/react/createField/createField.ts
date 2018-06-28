@@ -1,12 +1,11 @@
 // tslint:disable-next-line no-unused-variable
 import React, { createElement, SyntheticEvent } from 'react'
 import { setActive, setTouched, setValue } from '../../modules/formBase/events'
-import { FormBaseState } from '../../modules/formBase/formBase.h'
 import { fieldSelector } from '../../modules/formBase/selectors'
-import { createConsumer } from '../createConsumer/createConsumer'
 
 // Models
-import { Stapp } from '../../core/createApp/createApp.h'
+import { FormBaseState } from '../../modules/formBase/formBase.h'
+import { ConsumerClass } from '../createConsumer/createConsumer.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { FieldProps } from './createField.h'
 
@@ -48,10 +47,12 @@ import { FieldProps } from './createField.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
-export const createField = <State extends FormBaseState, Api>(app: Stapp<State, Api>) => {
-  const Consumer = createConsumer(app)
+export const createField = <State extends FormBaseState, Api>(
+  Consumer: ConsumerClass<State, Api, any, any, any>
+) => {
+  const app = Consumer.app
 
   return <Extra>({
     name,
