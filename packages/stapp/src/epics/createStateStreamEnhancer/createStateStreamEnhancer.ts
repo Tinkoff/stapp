@@ -1,5 +1,5 @@
 import { createSubject, forEach, Observable, pipe, Subscription } from 'light-observable'
-import { StoreEnhancer } from 'redux'
+import { DeepPartial, Reducer, StoreEnhancer, StoreEnhancerStoreCreator } from 'redux'
 import { Dispatch, Epic } from '../../core/createApp/createApp.h'
 import { Event } from '../../core/createEvent/createEvent.h'
 import { epicEnd } from '../../events/epicEnd'
@@ -18,8 +18,8 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
   const [epic$, epicInput$] = createSubject<Epic<State>>()
   let dispatch: Dispatch<State>
 
-  const stateStreamEnhancer: StoreEnhancer<State> = (createStore) => {
-    return (reducer, preloadedState) => {
+  const stateStreamEnhancer = (createStore: StoreEnhancerStoreCreator) => {
+    return <S>(reducer: Reducer<S, Event<any, any>>, preloadedState: DeepPartial<S>) => {
       const store = createStore(reducer, preloadedState)
       const state$ = Observable.from(store as any)
       const callNextEpic = (nextEpic: Epic<State>) => nextEpic(event$, state$)

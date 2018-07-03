@@ -45,7 +45,7 @@ export function createAsyncMiddleware<State>(
 
         if (toWait.size === 0) {
           ready = true
-          resolve(middlewareApi.getState() as any)
+          resolve(middlewareApi.getState())
         }
 
         return result

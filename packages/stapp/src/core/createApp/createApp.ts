@@ -10,7 +10,8 @@ import { prepareModules } from './prepareModules'
 
 // Modules
 import { PartialObserver } from 'light-observable/es/types.h'
-import { AnyModule, CreateApp, Dispatch, Stapp } from './createApp.h'
+import { Event } from '../createEvent/createEvent.h'
+import { AnyModule, CreateApp, Stapp } from './createApp.h'
 
 /**
  * @private
@@ -60,7 +61,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
       })
     : compose
 
-  const store = createStore<State>(
+  const store = createStore<State, Event<any, any>, void, void>(
     rootReducer,
     config.rehydrate || ({} as any),
     composeEnhancers(applyMiddleware(...middlewares, asyncMiddleware), stateStreamEnhancer)

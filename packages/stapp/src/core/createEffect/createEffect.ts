@@ -68,15 +68,13 @@ export const createEffect = <Payload, Result>(
 
       dispatch(start({ id, payload }))
 
-      return (
-        run(payload, _effect!)
-          .then((result) => dispatch(success(result)))
-          .catch((error) => dispatch(fail(error)))
+      return run(payload, _effect!)
+        .then((result) => dispatch(success(result)))
+        .catch((error) => dispatch(fail(error)))
+        .then(() => {
           // tslint:disable-next-line no-floating-promises
-          .then(() => {
-            dispatch({ type: id })
-          })
-      )
+          dispatch({ type: id })
+        })
     }
   }
 
