@@ -1,10 +1,10 @@
+import { EMPTY } from 'light-observable'
 import { compose, Middleware } from 'redux'
-import { empty } from 'rxjs/observable/empty'
-import { whenReady } from '../../helpers/awaitStore/awaitStore'
+import { dangerouslyReplaceState, dangerouslyResetState } from '../../events/dangerous'
 import { createEvent } from '../createEvent/createEvent'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
-import { dangerouslyReplaceState, dangerouslyResetState } from '../../events/dangerous'
+import { Epic } from './createApp.h'
 
 describe('createApp', () => {
   const mockReducer = createReducer({})
@@ -21,7 +21,7 @@ describe('createApp', () => {
     })
 
     expect(app.api).toEqual({})
-    expect(typeof app.state$.subscribe).toBe('function')
+    expect(typeof app.subscribe).toBe('function')
   })
 
   it('should call module factory with passed extraArgument', () => {
@@ -46,8 +46,8 @@ describe('createApp', () => {
     const module = {}
     const moduleFactory = () => ({})
 
-    expect(() => createApp({ modules: [module as any]})).toThrow()
-    expect(() => createApp({ modules: [moduleFactory]})).toThrow()
+    expect(() => createApp({ modules: [module as any] })).toThrow()
+    expect(() => createApp({ modules: [moduleFactory] })).toThrow()
   })
 
   it('should check dependencies', () => {
@@ -149,14 +149,14 @@ describe('createApp', () => {
   it('should work with provided epics', () => {
     const events = jest.fn()
     const state = jest.fn()
-    const m1 = {
+    const m1: { epic: Epic<any>; name: string; state: any } = {
       name: 'm1',
       state: { m: mockReducer },
-      epic: (event$: any, state$: any) => {
+      epic: (event$, state$) => {
         event$.subscribe(events)
         state$.subscribe(state)
 
-        return empty()
+        return EMPTY
       }
     }
 
@@ -206,7 +206,7 @@ describe('createApp', () => {
     })
 
     let state: any
-    app.state$.subscribe((s) => (state = s))
+    app.subscribe((s) => (state = s))
 
     expect(state).toEqual({
       r1: {},
@@ -247,7 +247,7 @@ describe('createApp', () => {
     })
 
     let state: any
-    app.state$.subscribe((s) => (state = s))
+    app.subscribe((s) => (state = s))
 
     expect(state).toEqual({
       r1: {
@@ -319,8 +319,8 @@ describe('app root reducer', () => {
 
     expect(app.getState()).toEqual({ r1: {} })
 
-    app.dispatch(dangerouslyReplaceState({ r1: { test: 123 }}))
-    expect(app.getState()).toEqual({ r1: { test: 123 }})
+    app.dispatch(dangerouslyReplaceState({ r1: { test: 123 } }))
+    expect(app.getState()).toEqual({ r1: { test: 123 } })
 
     app.dispatch(dangerouslyResetState())
     expect(app.getState()).toEqual({ r1: {} })

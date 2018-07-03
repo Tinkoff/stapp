@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs/Observable'
-import { Event, EventCreator1 } from '../createEvent/createEvent.h'
+import { Thunk } from '../createApp/createApp.h'
+import { EventCreator1 } from '../createEvent/createEvent.h'
 
 export type EffectCreator<Payload, Result> = {
-  (payload: Payload): Observable<Event<any, any>>
+  (payload: Payload): Thunk<any, Promise<void>>
   start: EventCreator1<Payload>
   success: EventCreator1<Result>
   fail: EventCreator1<any>

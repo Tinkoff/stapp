@@ -16,7 +16,7 @@ export const prepareModules = <Api, State, Extra>(
 ): {
   rootReducer: Reducer<State>
   rootEpic: Epic<State>
-  events: {[K in keyof Api]: Api[K]}
+  events: { [K in keyof Api]: Api[K] }
   waitFor: Array<AnyEventCreator | string>
 } => {
   const moduleNames = new Set()
@@ -26,8 +26,10 @@ export const prepareModules = <Api, State, Extra>(
   let epics: any = []
   let waitFor: any = []
 
-  for(const anyModule of modules) {
-    const module: Module<any, Partial<State>, State> = isModule(anyModule) ? anyModule : anyModule(dependencies)
+  for (const anyModule of modules) {
+    const module: Module<any, Partial<State>, State> = isModule(anyModule)
+      ? anyModule
+      : anyModule(dependencies)
     const moduleApi: any = module.api || module.events
     const moduleState: any = module.state || module.reducers
 
@@ -67,7 +69,9 @@ export const prepareModules = <Api, State, Extra>(
   const unmetDependencies = diffSet(moduleNames, moduleDependencies)
 
   if (unmetDependencies.size !== 0) {
-    throw new Error(`Stapp error: Please, provide dependencies: ${Array.from(unmetDependencies).join(', ')}`)
+    throw new Error(
+      `Stapp error: Please, provide dependencies: ${Array.from(unmetDependencies).join(', ')}`
+    )
   }
 
   return {

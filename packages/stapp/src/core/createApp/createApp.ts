@@ -1,13 +1,16 @@
+import { Observable } from 'light-observable'
 import { applyMiddleware, compose, createStore, Middleware } from 'redux'
-import { from } from 'rxjs/observable/from'
 import { createAsyncMiddleware } from '../../async/createAsyncMiddleware/createAsyncMiddleware'
 import { createStateStreamEnhancer } from '../../epics/createStateStreamEnhancer/createStateStreamEnhancer'
 import { initDone } from '../../events/initDone'
 import { awaitStore } from '../../helpers/awaitStore/awaitStore'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { bindApi } from './bindApi'
-import { AnyModule, CreateApp, Stapp } from './createApp.h'
 import { prepareModules } from './prepareModules'
+
+// Modules
+import { PartialObserver } from 'light-observable/es/types.h'
+import { AnyModule, CreateApp, Dispatch, Stapp } from './createApp.h'
 
 /**
  * @private
@@ -66,12 +69,23 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   awaitStore(name, ready)
 
   store.dispatch(initDone())
+  const observableStore = Observable.from(store as any)
 
   return {
     name,
-    state$: from(store as any),
-    dispatch: store.dispatch,
-    getState: store.getState,
+    subscribe(
+      next?: PartialObserver<State> | ((value: State) => void),
+      error?: (reason: any) => void,
+      complete?: () => void
+    ) {
+      return observableStore.subscribe(next, error, complete)
+    },
+    dispatch(event: any) {
+      return store.dispatch(event)
+    },
+    getState() {
+      return store.getState()
+    },
     api: bindApi(events, store)
   }
 }

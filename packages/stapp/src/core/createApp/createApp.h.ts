@@ -1,5 +1,5 @@
+import { Subscribable } from 'light-observable'
 import { Middleware } from 'redux'
-import { Observable } from 'rxjs/Observable'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
 
 /**
@@ -12,9 +12,9 @@ import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
  * @param state$ Stream of state
  */
 export type EventEpic<Payload, Meta, State> = (
-  event$: Observable<Event<Payload, Meta>>,
-  state$: Observable<State>
-) => Observable<any>
+  event$: Subscribable<Event<Payload, Meta>>,
+  state$: Subscribable<State>
+) => Subscribable<any>
 
 /**
  * Epic is a function, that must return an Observable.
@@ -78,15 +78,26 @@ export type AnyModule<Api, State, Full extends Partial<State>, Extra> =
   | Module<Api, State, Full>
 
 /**
+ * @private
+ */
+export type Dispatch<State> = <T>(
+  event: T
+) => T extends Event<any, any>
+  ? Event<any, any>
+  : T extends Subscribable<any>
+    ? Promise<void>
+    : T extends Promise<infer P> ? P : T extends Thunk<State, infer R> ? R : T
+
+export type Thunk<State, Result> = (getState: () => State, dispatch: Dispatch<State>) => Result
+/**
  * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
  * @typeparam State Application state shape
  * @typeparam Api Application api interface
  */
-export type Stapp<State, Api> = {
+export type Stapp<State, Api> = Subscribable<State> & {
   name: string
-  state$: Observable<State>
   api: Api
-  dispatch: (event: any) => any
+  dispatch: Dispatch<State>
   getState: () => State
 }
 

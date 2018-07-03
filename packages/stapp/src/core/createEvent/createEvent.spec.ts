@@ -1,7 +1,6 @@
 import { FluxStandardAction } from 'flux-standard-action'
-import { empty } from 'rxjs/observable/empty'
-import { of } from 'rxjs/observable/of'
-import { collectEvents } from '../../helpers/testHelpers/collectEvents/collectEvents'
+import { EMPTY, Observable } from 'light-observable'
+import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { createEvent } from './createEvent'
 
 describe('createEvent', () => {
@@ -129,13 +128,9 @@ describe('createEvent', () => {
   it('should create a filtered epic', async () => {
     const a = createEvent()
     const b = createEvent()
-
     const aEpic = a.epic((event$) => event$)
-
-    const events$ = of(a(), b())
-    const state$ = empty()
-
-    const result = await collectEvents(aEpic(events$, state$))
+    const events$ = Observable.of(a(), b())
+    const result = await collectData(aEpic(events$, EMPTY))
 
     expect(result).toEqual([a()])
   })

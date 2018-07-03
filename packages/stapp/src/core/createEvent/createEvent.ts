@@ -1,9 +1,9 @@
-import { select } from '../../epics/select/select'
+import { filter } from 'light-observable'
 import { identity } from '../../helpers/identity/identity'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
-import { Epic } from '../createApp/createApp.h'
 
 // Models
+import { Epic } from '../createApp/createApp.h'
 import {
   AnyEventCreator,
   AnyPayloadTransformer,
@@ -138,7 +138,7 @@ export function createEvent(
   eventCreator.is = (event: Event<any, any>) => event.type === type
 
   eventCreator.epic = (fn: Epic<any>): Epic<any> => (events$, state$) =>
-    fn(select(type, events$), state$)
+    fn(filter((event: Event<any, any>) => event.type === type)(events$), state$)
 
   return eventCreator
 }

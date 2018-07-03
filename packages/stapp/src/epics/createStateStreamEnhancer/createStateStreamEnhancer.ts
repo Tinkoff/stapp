@@ -1,18 +1,10 @@
-import isObservable from 'is-observable'
-import { from } from 'rxjs/observable/from'
-import { map } from 'rxjs/operators/map'
-import { switchAll } from 'rxjs/operators/switchAll'
-import { Subject } from 'rxjs/Subject'
-import { isEvent } from '../../helpers/isEvent/isEvent'
-
-// Events
-import { epicEnd } from '../../events/epicEnd'
-
-// Models
+import { createSubject, forEach, Observable, pipe, Subscription } from 'light-observable'
 import { StoreEnhancer } from 'redux'
-import { Observable } from 'rxjs/Observable'
-import { Epic } from '../../core/createApp/createApp.h'
+import { Dispatch, Epic } from '../../core/createApp/createApp.h'
 import { Event } from '../../core/createEvent/createEvent.h'
+import { epicEnd } from '../../events/epicEnd'
+import { isEvent } from '../../helpers/isEvent/isEvent'
+import { isSubscribable } from '../../helpers/isSubscribable/isSubscribable'
 
 /**
  * Used to pass a stream of state to the middleware. Also, allows to dispatch observables instead of events.
@@ -21,20 +13,21 @@ import { Event } from '../../core/createEvent/createEvent.h'
  * @private
  */
 export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
-  const eventInput$ = new Subject<Event<any, any>>()
-  const event$ = from(eventInput$)
-  const epic$ = new Subject<Epic<State>>()
-  let dispatch: any // Dispatch<State>
+  const [event$, eventInput$] = createSubject<Event<any, any>>()
+
+  const [epic$, epicInput$] = createSubject<Epic<State>>()
+  let dispatch: Dispatch<State>
 
   const stateStreamEnhancer: StoreEnhancer<State> = (createStore) => {
     return (reducer, preloadedState) => {
       const store = createStore(reducer, preloadedState)
-      const state$: Observable<State> = from(store as any)
+      const state$ = Observable.from(store as any)
       const callNextEpic = (nextEpic: Epic<State>) => nextEpic(event$, state$)
+      let epicSubscription: Subscription
 
-      dispatch = (event: any) => {
+      dispatch = (event?: any) => {
         if (!event) {
-          return
+          return undefined
         }
 
         if (isEvent<{}, any>(event)) {
@@ -44,8 +37,8 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
           return result
         }
 
-        if (isObservable(event)) {
-          return event.forEach(dispatch)
+        if (isSubscribable(event)) {
+          return pipe(forEach(dispatch))(event)
         }
 
         if (typeof event === 'function') {
@@ -53,10 +46,14 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
         }
       }
 
-      epic$.pipe(map(callNextEpic), switchAll()).subscribe(dispatch)
+      epic$.subscribe((epic) => {
+        const nextEpic = callNextEpic(epic)
+        epicSubscription && epicSubscription.unsubscribe()
+        epicSubscription = nextEpic.subscribe(dispatch)
+      })
 
       // Setup initial root epic
-      epic$.next(rootEpic)
+      epicInput$.next(rootEpic)
 
       return Object.assign({}, store, { dispatch })
     }
@@ -68,7 +65,7 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
     dispatch(epicEnd())
     // switches to the new root Epic, synchronously terminating
     // the previous one
-    epic$.next(newRootEpic)
+    epicInput$.next(newRootEpic)
   }
 
   return {

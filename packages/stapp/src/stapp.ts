@@ -6,7 +6,6 @@ export { createReducer } from './core/createReducer/createReducer'
 export { whenReady } from './helpers/awaitStore/awaitStore'
 
 // Epic utils
-export { select, selectArray } from './epics/select/select'
 export { combineEpics } from './epics/combineEpics/combineEpics'
 
 // Events

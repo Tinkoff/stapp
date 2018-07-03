@@ -1,9 +1,3 @@
-import invariant from 'fbjs/lib/invariant'
-import { concat } from 'rxjs/observable/concat'
-import { empty } from 'rxjs/observable/empty'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { merge } from 'rxjs/observable/merge'
-import { of } from 'rxjs/observable/of'
 import { COMPLETE } from '../../helpers/constants'
 import { isPromise } from '../../helpers/isPromise/isPromise'
 import { T } from '../../helpers/t/t'
@@ -11,6 +5,7 @@ import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { createEvent } from '../createEvent/createEvent'
 
 // Models
+import { Dispatch } from '../createApp/createApp.h'
 import { EffectCreator } from './createEffect.h'
 
 /**
@@ -37,21 +32,6 @@ const run = <Payload, Result>(
 /**
  * Creates an effect creator. Effect is a stream, that uses provided function, and emits start, success, error and complete types.
  *
- * ### Usage in epic example
- * ```typescript
- *  const payEffect = createEffect('Perform payment', pay)
- *
- *  const payEpic = (event$, state$) => state$.pipe(
- *    sample(select(submit, event$)),
- *    switchMap(state => payEffect(state.values))
- *  )
- *  ```
- *
- * ### Usage as an api method
- * ```typescript
- * ({ api }) => <Button onClick={api.payEffect} />
- * ```
- *
  * @param description
  * @param effect Side effect performing function, should return a Promise.
  * @param condition Function, that defines if an effect should run. Must return boolean. T by default. E.g. can be used to separate server-side effects.
@@ -75,27 +55,29 @@ export const createEffect = <Payload, Result>(
   let _effect = effect
 
   const runEffect: any = (payload: Payload) => {
-    invariant(_effect, 'Stapp error: Effect is not provided!')
-
-    if (!condition(payload)) {
-      return empty()
+    if (!_effect) {
+      throw new Error('Stapp error: Effect is not provided!')
     }
 
-    const id = `${description}: COMPLETE [${uniqueId()}]`
+    return (_: any, dispatch: Dispatch<any>): Promise<void> => {
+      if (!condition(payload)) {
+        return Promise.resolve()
+      }
 
-    return concat(
-      merge(
-        of(start({ id, payload })),
-        fromPromise(
-          run(payload, _effect!)
-            .then((result) => success(result))
-            .catch((error) => fail(error))
-        )
-      ),
-      of({
-        type: id
-      })
-    )
+      const id = `${description}: COMPLETE [${uniqueId()}]`
+
+      dispatch(start({ id, payload }))
+
+      return (
+        run(payload, _effect!)
+          .then((result) => dispatch(success(result)))
+          .catch((error) => dispatch(fail(error)))
+          // tslint:disable-next-line no-floating-promises
+          .then(() => {
+            dispatch({ type: id })
+          })
+      )
+    }
   }
 
   return Object.assign(runEffect, {

@@ -16,7 +16,10 @@ const dangerouslyResetStateType = dangerouslyResetState.getType()
  * And remember, Pete, great power comes with great responsibility.
  * @private
  */
-export const getRootReducer = <State>(reducers: {[K in keyof State]: Reducer<State[K]>}, initialState: Partial<State>): Reducer<State> => {
+export const getRootReducer = <State>(
+  reducers: { [K in keyof State]: Reducer<State[K]> },
+  initialState: Partial<State>
+): Reducer<State> => {
   const rootReducer = combineReducers<State>(reducers)
 
   return (oldState: any, event) => {

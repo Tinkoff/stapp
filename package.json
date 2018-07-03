@@ -15,6 +15,7 @@
     "docs:move": "mv .tempdocs/README.md docs/types.md && rimraf .tempdocs && cp docs/README.md README.md && git add README.md docs",
     "docs:book": "gitbook build",
     "docs:publish": "gh-pages -d _book",
+    "precommit": "lint-staged",
     "postbuild": "npm run test",
     "cz": "git-cz",
     "prepush": "npm run build",
@@ -30,26 +31,6 @@
     {
       "name": "core",
       "path": "packages/stapp/lib/stapp.js"
-    },
-    {
-      "name": "bindings: react",
-      "path": "packages/react/lib/index.js"
-    },
-    {
-      "name": "modules: persist",
-      "path": "packages/persist/lib/index.js"
-    },
-    {
-      "name": "modules: formBase",
-      "path": "packages/formBase/lib/index.js"
-    },
-    {
-      "name": "modules: loaders",
-      "path": "packages/loaders/lib/index.js"
-    },
-    {
-      "name": "modules: validate",
-      "path": "packages/validate/lib/index.js"
     }
   ],
   "devDependencies": {

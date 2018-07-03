@@ -1,7 +1,5 @@
-import { Observable } from 'rxjs/Observable'
-import { scan } from 'rxjs/operators/scan'
 import { COMPLETE } from '../../helpers/constants'
-import { collectEvents } from '../../helpers/testHelpers/collectEvents/collectEvents'
+import { collectData, collectThunkData } from '../../helpers/testHelpers/collectData/collectData'
 import { Event } from '../createEvent/createEvent.h'
 import { createEffect } from './createEffect'
 
@@ -24,30 +22,29 @@ describe('createEffect', () => {
     expect(() => effect(1)).toThrow()
   })
 
-  it('should change the effect function use method called', () => {
+  it('should change the effect function use method called', async () => {
     const effect = createEffect('test')
     const effectFnA = jest.fn()
     const effectFnB = jest.fn()
 
     effect.use(effectFnA)
-    effect(1)
+    await collectThunkData(effect(1))
     expect(effectFnA.mock.calls).toHaveLength(1)
     expect(effectFnA).toBeCalledWith(1)
 
     effect.use(effectFnB)
-    effect(2)
+    await collectThunkData(effect(2))
     expect(effectFnA.mock.calls).toHaveLength(1)
     expect(effectFnB.mock.calls).toHaveLength(1)
     expect(effectFnB).toBeCalledWith(2)
   })
 
-  it('should create stream of events', async () => {
+  it('should create a thunk', async () => {
     const effect = createEffect<P, P>('test', (x) => ({ test: x.test + 1 }))
     const payload = { test: 1 }
 
-    const events = await collectEvents<Event<any, any>>(effect(payload))
+    const events = await collectThunkData(effect(payload))
 
-    expect(events.length).toEqual(3)
     const start = events[0]
     const success = events[1]
     const complete = events[2]
@@ -71,10 +68,10 @@ describe('createEffect', () => {
   it('should return empty stream if condition not met', async () => {
     const effect = createEffect('test', (x) => x, (x) => x === 'ok')
 
-    const eventsA = await collectEvents(effect('not ok'))
-    expect(eventsA).not.toBeDefined()
+    const eventsA = await collectThunkData(effect('not ok'))
+    expect(eventsA.length).toBe(0)
 
-    const eventsB = await collectEvents(effect('ok'))
+    const eventsB = await collectThunkData(effect('ok'))
     expect(eventsB.length).toBe(3)
   })
 
@@ -82,7 +79,7 @@ describe('createEffect', () => {
     const effect = createEffect<P, P>('test', (x) => Promise.resolve({ test: x.test + 1 }))
     const payload = { test: 1 }
 
-    const events = await collectEvents(effect(payload))
+    const events = await collectThunkData(effect(payload))
     expect(events.length).toBe(3)
 
     const start = events[0]
@@ -95,7 +92,7 @@ describe('createEffect', () => {
     const effect = createEffect<P, P>('test', (x) => Promise.reject({ test: x.test - 1 }))
     const payload = { test: 1 }
 
-    const events = await collectEvents(effect(payload))
+    const events = await collectThunkData(effect(payload))
     expect(events.length).toBe(3)
 
     const start = events[0]
@@ -113,7 +110,7 @@ describe('createEffect', () => {
     })
     const payload = { test: 1 }
 
-    const events = await collectEvents(effect(payload))
+    const events = await collectThunkData(effect(payload))
     expect(events.length).toBe(3)
 
     const start = events[0]
