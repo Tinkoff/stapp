@@ -1,10 +1,11 @@
-import { EMPTY } from 'light-observable'
+import { EMPTY, Observable } from 'light-observable'
 import { compose, Middleware } from 'redux'
 import { dangerouslyReplaceState, dangerouslyResetState } from '../../events/dangerous'
 import { createEvent } from '../createEvent/createEvent'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic } from './createApp.h'
+import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 
 describe('createApp', () => {
   const mockReducer = createReducer({})
@@ -303,26 +304,45 @@ describe('createApp', () => {
     expect(mock).toBeDefined()
     expect(mock).toBeCalled()
   })
-})
 
-describe('app root reducer', () => {
-  it('should react to special events', () => {
-    const m1 = {
-      name: 'm1',
-      reducers: { r1: createReducer({}) }
-    }
+  describe('app root reducer', () => {
+    it('should react to special events', () => {
+      const m1 = {
+        name: 'm1',
+        reducers: { r1: mockReducer }
+      }
 
-    const app = createApp({
-      name: 'testApp',
-      modules: [m1]
+      const app = createApp({
+        name: 'testApp',
+        modules: [m1]
+      })
+
+      expect(app.getState()).toEqual({ r1: {} })
+
+      app.dispatch(dangerouslyReplaceState({ r1: { test: 123 } }))
+      expect(app.getState()).toEqual({ r1: { test: 123 } })
+
+      app.dispatch(dangerouslyResetState())
+      expect(app.getState()).toEqual({ r1: {} })
     })
+  })
 
-    expect(app.getState()).toEqual({ r1: {} })
+  describe('app compatibility', () => {
+    it('should be compatible with Observables', () => {
+      const app = createApp({
+        name: 'testApp',
+        modules: [loggerModule]
+      })
 
-    app.dispatch(dangerouslyReplaceState({ r1: { test: 123 } }))
-    expect(app.getState()).toEqual({ r1: { test: 123 } })
+      const stream = Observable.from(app)
+      let state: any
+      stream.subscribe((x) => (state = x))
 
-    app.dispatch(dangerouslyResetState())
-    expect(app.getState()).toEqual({ r1: {} })
+      app.dispatch({ type: '1' })
+      expect(state).toEqual(app.getState())
+
+      app.dispatch({ type: '2' })
+      expect(state).toEqual(app.getState())
+    })
   })
 })

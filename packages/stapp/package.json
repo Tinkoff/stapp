@@ -77,7 +77,8 @@
     "redux": ">=3 <4"
   },
   "dependencies": {
-    "light-observable": "^2.0.0"
+    "light-observable": "^2.0.0",
+    "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",

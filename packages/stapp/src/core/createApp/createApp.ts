@@ -1,5 +1,6 @@
 import { Observable } from 'light-observable'
 import { applyMiddleware, compose, createStore, Middleware } from 'redux'
+import $$observable from 'symbol-observable'
 import { createAsyncMiddleware } from '../../async/createAsyncMiddleware/createAsyncMiddleware'
 import { createStateStreamEnhancer } from '../../epics/createStateStreamEnhancer/createStateStreamEnhancer'
 import { initDone } from '../../events/initDone'
@@ -87,6 +88,9 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     getState() {
       return store.getState()
     },
-    api: bindApi(events, store)
+    api: bindApi(events, store),
+    [$$observable]() {
+      return this
+    }
   }
 }
