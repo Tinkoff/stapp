@@ -1,11 +1,5 @@
-import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
+import { createEvent } from 'stapp'
 import { FORM_BASE } from './constants'
-
-// Models
-/* tslint:disable no-unused-variable // Needed for declarations */
-import { Observable } from 'rxjs/Observable'
-import { EventCreator0, EventCreator1 } from 'stapp/lib/core/createEvent/createEvent.h'
-/* tslint:enable */
 
 /**
  * Used to set values for fields

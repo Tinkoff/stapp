@@ -27,13 +27,10 @@
   "scripts": {
     "build": "npm run build:module && npm run build:bundle",
     "build:module": "tsc",
-    "build:bundle": "# rollup -c rollup.config.js",
     "prebuild": "rimraf lib",
     "test": "npm run test:lint && npm run test:jest && npm run test:type",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
-    "test:jest": "jest --runInBand",
-    "test:type": "# type-coverage --at-least 95",
-    "prepublishOnly": "npm run build && npm run docs"
+    "test:jest": "jest --runInBand"
   },
   "jest": {
     "transform": {

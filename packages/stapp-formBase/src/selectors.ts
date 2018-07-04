@@ -19,8 +19,9 @@ export const isDirtySelector = () =>
     (dirty) => Object.keys(dirty).some((key) => !!dirty[key])
   )
 
-export const isPristineSelector = () => <State extends Pick<FormBaseState, 'pristine'>>(state: State) =>
-  state.pristine
+export const isPristineSelector = () => <State extends Pick<FormBaseState, 'pristine'>>(
+  state: State
+) => state.pristine
 
 export const fieldSelector = (name: string) =>
   createStructuredSelector({
