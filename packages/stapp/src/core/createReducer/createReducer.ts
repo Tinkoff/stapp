@@ -1,6 +1,6 @@
 import { getEventType } from '../../helpers/getEventType/getEventType'
 import { has } from '../../helpers/has/has'
-import { isArray } from '../../helpers/isArray/isArray'
+import { isArray } from '../../helpers/is/isArray/isArray'
 import { createEvent } from '../createEvent/createEvent'
 
 // Models

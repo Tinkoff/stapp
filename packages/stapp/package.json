@@ -25,10 +25,10 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run build:module && npm run build:bundle",
+    "build": "npm run build:module",
     "build:module": "tsc",
     "prebuild": "rimraf lib",
-    "test": "npm run test:lint && npm run test:jest && npm run test:type",
+    "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --runInBand"
   },

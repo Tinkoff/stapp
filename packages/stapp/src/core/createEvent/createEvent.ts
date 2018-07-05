@@ -21,7 +21,6 @@ import {
 
 /**
  * Checks if provided value is an instance of Error
- * @param a Any data
  * @private
  */
 const isError = (a: any): a is Error => a instanceof Error
@@ -137,8 +136,8 @@ export function createEvent(
   eventCreator.getType = () => type
   eventCreator.is = (event: Event<any, any>) => event.type === type
 
-  eventCreator.epic = (fn: Epic<any>): Epic<any> => (events$, state$) =>
-    fn(filter((event: Event<any, any>) => event.type === type)(events$), state$)
+  eventCreator.epic = (fn: Epic<any>): Epic<any> => (events$, state$, staticApi) =>
+    fn(filter((event: Event<any, any>) => event.type === type)(events$), state$, staticApi)
 
   return eventCreator
 }

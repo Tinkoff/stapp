@@ -10,10 +10,6 @@ import {
   setValue
 } from './events'
 
-// Models
-// tslint:disable-next-line no-unused-variable // needed for declarations
-import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
-
 /**
  * @private
  */

@@ -1,10 +1,13 @@
-import { Reducer } from 'redux'
 import { combineEpics } from '../../epics/combineEpics/combineEpics'
+import { APP_KEY } from '../../helpers/constants'
 import { diffSet } from '../../helpers/diffSet/diffSet'
-import { isModule } from '../../helpers/isModule/isModule'
+import { isModule } from '../../helpers/is/isModule/isModule'
+import { getRootReducer } from './getRootReducer'
+
+// Models
+import { Reducer } from 'redux'
 import { AnyEventCreator } from '../createEvent/createEvent.h'
 import { AnyModule, Epic, Module } from './createApp.h'
-import { getRootReducer } from './getRootReducer'
 
 /**
  * @private
@@ -34,7 +37,7 @@ export const prepareModules = <Api, State, Extra>(
     const moduleState: any = module.state || module.reducers
 
     if (!module.name) {
-      throw new Error('Stapp error: Module name is not provided')
+      throw new Error(`${APP_KEY} error: Module name is not provided`)
     }
 
     moduleNames.add(module.name)
@@ -70,7 +73,7 @@ export const prepareModules = <Api, State, Extra>(
 
   if (unmetDependencies.size !== 0) {
     throw new Error(
-      `Stapp error: Please, provide dependencies: ${Array.from(unmetDependencies).join(', ')}`
+      `${APP_KEY} error: Please, provide dependencies: ${Array.from(unmetDependencies).join(', ')}`
     )
   }
 

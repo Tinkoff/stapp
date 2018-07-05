@@ -6,6 +6,7 @@ import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic } from './createApp.h'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
+import { Event } from '../createEvent/createEvent.h'
 
 describe('createApp', () => {
   const mockReducer = createReducer({})
@@ -147,46 +148,13 @@ describe('createApp', () => {
     expect(app.getState().r1).toEqual(1)
   })
 
-  it('should work with provided epics', () => {
-    const events = jest.fn()
-    const state = jest.fn()
-    const m1: { epic: Epic<any>; name: string; state: any } = {
-      name: 'm1',
-      state: { m: mockReducer },
-      epic: (event$, state$) => {
-        event$.subscribe(events)
-        state$.subscribe(state)
-
-        return EMPTY
-      }
-    }
-
-    const app = createApp({
-      modules: [m1]
-    })
-
-    // Ignore initializing events
-    const eventsInitialLength = events.mock.calls.length
-    const stateInitialLength = state.mock.calls.length
-
-    app.dispatch({ type: 'test' })
-    expect(events.mock.calls).toHaveLength(1 + eventsInitialLength)
-    expect(state.mock.calls).toHaveLength(1 + stateInitialLength)
-    expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({ type: 'test' })
-    expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
-
-    app.dispatch({ type: 'test2' })
-    expect(events.mock.calls).toHaveLength(2 + eventsInitialLength)
-    expect(state.mock.calls).toHaveLength(2 + stateInitialLength)
-    expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({ type: 'test2' })
-    expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
-  })
-
   it('should use rootReducer from passed modules', () => {
     const a1 = createEvent()
     const a2 = createEvent()
 
-    const r1 = createReducer<{ called?: boolean }>({}).on(a1, () => ({ called: true }))
+    const r1 = createReducer<{ called?: boolean }>({}).on(a1, () => ({
+      called: true
+    }))
     const r2 = createReducer({}).on(a2, () => ({ called: true }))
 
     const m1 = {
@@ -305,6 +273,65 @@ describe('createApp', () => {
     expect(mock).toBeCalled()
   })
 
+  describe('Epics', () => {
+    it('should work with provided epics', () => {
+      const events = jest.fn()
+      const state = jest.fn()
+      const m1: { epic: Epic<any>; name: string; state: any } = {
+        name: 'm1',
+        state: { m: mockReducer },
+        epic: (event$, state$) => {
+          event$.subscribe(events)
+          state$.subscribe(state)
+
+          return EMPTY
+        }
+      }
+
+      const app = createApp({
+        modules: [m1]
+      })
+
+      // Ignore initializing events
+      const eventsInitialLength = events.mock.calls.length
+      const stateInitialLength = state.mock.calls.length
+
+      app.dispatch({ type: 'test' })
+      expect(events.mock.calls).toHaveLength(1 + eventsInitialLength)
+      expect(state.mock.calls).toHaveLength(1 + stateInitialLength)
+      expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({
+        type: 'test'
+      })
+      expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
+
+      app.dispatch({ type: 'test2' })
+      expect(events.mock.calls).toHaveLength(2 + eventsInitialLength)
+      expect(state.mock.calls).toHaveLength(2 + stateInitialLength)
+      expect(events.mock.calls[events.mock.calls.length - 1][0]).toEqual({
+        type: 'test2'
+      })
+      expect(state.mock.calls[state.mock.calls.length - 1][0]).toEqual(app.getState())
+    })
+
+    it('should provide static api to epics', () => {
+      expect.assertions(2)
+
+      const m1: { epic: Epic<{ eventLog: Array<Event<any, any>> }>; name: string; state: any } = {
+        name: 'm1',
+        state: { m: mockReducer },
+        epic: (_, __, { getState, dispatch }) => {
+          expect(getState().eventLog).toEqual([])
+
+          dispatch({ type: 'test' })
+          expect(getState().eventLog).toEqual([{ type: 'test' }])
+        }
+      }
+
+      createApp({
+        modules: [loggerModule, m1]
+      })
+    })
+  })
   describe('app root reducer', () => {
     it('should react to special events', () => {
       const m1 = {

@@ -36,7 +36,7 @@ describe('createStateStreamEnhancer', () => {
   const cleanUp = createEvent('cleanUp')
 
   it('should provide epics a stream of event$ and stream of state$', (done) => {
-    expect.assertions(3)
+    expect.assertions(5)
 
     const epic = jest.fn()
     epic.mockReturnValue(EMPTY)
@@ -45,6 +45,8 @@ describe('createStateStreamEnhancer', () => {
       expect(epic).toBeCalled()
       expect(epic.mock.calls[0][0]).toBeInstanceOf(Observable)
       expect(epic.mock.calls[0][1]).toBeInstanceOf(Observable)
+      expect(typeof epic.mock.calls[0][2].getState).toBe('function')
+      expect(typeof epic.mock.calls[0][2].dispatch).toBe('function')
       done()
     }
 

@@ -1,13 +1,13 @@
-import { forEach, Subscribable } from 'light-observable'
+import { EMPTY, forEach, Subscribable } from 'light-observable'
 import { Thunk } from '../../../core/createApp/createApp.h'
 
 /**
  * @private
  */
-export const collectData = async <T>(stream: Subscribable<T>): Promise<T[]> => {
+export const collectData = async <T>(stream: Subscribable<T> | void): Promise<T[]> => {
   const result: T[] = []
 
-  return forEach((x: T) => result.push(x))(stream).then(() => result)
+  return forEach((x: T) => result.push(x))(stream || EMPTY).then(() => result)
 }
 
 /**

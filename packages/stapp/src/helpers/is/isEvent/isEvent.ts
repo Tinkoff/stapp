@@ -1,7 +1,7 @@
-import { has } from '../has/has'
+import { has } from '../../has/has'
 
 // Models
-import { Event } from '../../core/createEvent/createEvent.h'
+import { Event } from '../../../core/createEvent/createEvent.h'
 
 /**
  * Checks if provided argument is a valid Redux action / event

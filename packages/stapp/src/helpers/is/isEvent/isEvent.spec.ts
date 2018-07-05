@@ -1,4 +1,4 @@
-import { createEvent } from '../../core/createEvent/createEvent'
+import { createEvent } from '../../../core/createEvent/createEvent'
 import { isEvent } from './isEvent'
 
 describe('isEvent', () => {

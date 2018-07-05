@@ -1,6 +1,6 @@
 import { bindActionCreators, combineReducers, createStore } from 'redux'
 import { identity } from '../../helpers/identity/identity'
-import { isEvent } from '../../helpers/isEvent/isEvent'
+import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { createEvent } from '../createEvent/createEvent'
 import { createReducer } from './createReducer'
 

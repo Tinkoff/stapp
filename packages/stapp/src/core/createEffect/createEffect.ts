@@ -1,6 +1,5 @@
-import { COMPLETE } from '../../helpers/constants'
-import { isPromise } from '../../helpers/isPromise/isPromise'
-import { T } from '../../helpers/t/t'
+import { APP_KEY, COMPLETE } from '../../helpers/constants'
+import { isPromise } from '../../helpers/is/isPromise/isPromise'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { createEvent } from '../createEvent/createEvent'
 
@@ -30,6 +29,11 @@ const run = <Payload, Result>(
 }
 
 /**
+ * @private
+ */
+const T = () => true
+
+/**
  * Creates an effect creator. Effect is a stream, that uses provided function, and emits start, success, error and complete types.
  *
  * @param description
@@ -56,7 +60,7 @@ export const createEffect = <Payload, Result>(
 
   const runEffect: any = (payload: Payload) => {
     if (!_effect) {
-      throw new Error('Stapp error: Effect is not provided!')
+      throw new Error(`${APP_KEY} error: Effect is not provided!`)
     }
 
     return (_: any, dispatch: Dispatch<any>): Promise<void> => {

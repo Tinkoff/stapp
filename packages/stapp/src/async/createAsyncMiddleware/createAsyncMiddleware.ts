@@ -4,7 +4,7 @@ import { COMPLETE } from '../../helpers/constants'
 import { controlledPromise } from '../../helpers/controlledPromise/controlledPromise'
 import { getEventType } from '../../helpers/getEventType/getEventType'
 import { has } from '../../helpers/has/has'
-import { isArray } from '../../helpers/isArray/isArray'
+import { isArray } from '../../helpers/is/isArray/isArray'
 
 // Models
 import { AnyEventCreator, Event } from '../../core/createEvent/createEvent.h'

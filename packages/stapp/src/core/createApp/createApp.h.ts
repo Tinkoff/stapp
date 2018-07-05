@@ -13,8 +13,12 @@ import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
  */
 export type EventEpic<Payload, Meta, State> = (
   event$: Subscribable<Event<Payload, Meta>>,
-  state$: Subscribable<State>
-) => Subscribable<any>
+  state$: Subscribable<State>,
+  staticApi: {
+    dispatch: Dispatch<State>
+    getState(): State
+  }
+) => Subscribable<any> | void
 
 /**
  * Epic is a function, that must return an Observable.
@@ -80,13 +84,14 @@ export type AnyModule<Api, State, Full extends Partial<State>, Extra> =
 /**
  * @private
  */
+// prettier-ignore
 export type Dispatch<State> = <T>(
   event: T
-) => T extends Event<any, any>
-  ? Event<any, any>
-  : T extends Subscribable<any>
-    ? Promise<void>
-    : T extends Promise<infer P> ? P : T extends Thunk<State, infer R> ? R : T
+) =>
+  T extends Event<any, any> ? Event<any, any> :
+  T extends Subscribable<any> ? Promise<void> :
+  T extends Promise<infer P> ? P :
+  T extends Thunk<State, infer R> ? R : T
 
 export type Thunk<State, Result> = (getState: () => State, dispatch: Dispatch<State>) => Result
 /**

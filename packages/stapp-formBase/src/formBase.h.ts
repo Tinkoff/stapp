@@ -6,6 +6,7 @@ export type FormBaseState<Values = any, ReadyKeys extends string = any> = {
   active: keyof Values | null
   ready: { [K in ReadyKeys]: boolean }
   pristine: boolean
+  submitting: boolean
 }
 
 export type FormBaseConfig<FormValues> = {

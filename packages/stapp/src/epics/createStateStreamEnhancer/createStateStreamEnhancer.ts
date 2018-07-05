@@ -1,10 +1,10 @@
-import { createSubject, forEach, Observable, pipe, Subscription } from 'light-observable'
-import { DeepPartial, Reducer, StoreEnhancer, StoreEnhancerStoreCreator } from 'redux'
+import { createSubject, EMPTY, forEach, Observable, pipe, Subscription } from 'light-observable'
+import { DeepPartial, Reducer, StoreEnhancerStoreCreator } from 'redux'
 import { Dispatch, Epic } from '../../core/createApp/createApp.h'
 import { Event } from '../../core/createEvent/createEvent.h'
 import { epicEnd } from '../../events/epicEnd'
-import { isEvent } from '../../helpers/isEvent/isEvent'
-import { isSubscribable } from '../../helpers/isSubscribable/isSubscribable'
+import { isEvent } from '../../helpers/is/isEvent/isEvent'
+import { isSubscribable } from '../../helpers/is/isSubscribable/isSubscribable'
 
 /**
  * Used to pass a stream of state to the middleware. Also, allows to dispatch observables instead of events.
@@ -19,18 +19,17 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
   let dispatch: Dispatch<State>
 
   const stateStreamEnhancer = (createStore: StoreEnhancerStoreCreator) => {
-    return <S>(reducer: Reducer<S, Event<any, any>>, preloadedState: DeepPartial<S>) => {
+    return (reducer: Reducer<State, Event<any, any>>, preloadedState: DeepPartial<State>) => {
       const store = createStore(reducer, preloadedState)
       const state$ = Observable.from(store as any)
-      const callNextEpic = (nextEpic: Epic<State>) => nextEpic(event$, state$)
       let epicSubscription: Subscription
 
       dispatch = (event?: any) => {
         if (!event) {
-          return undefined
+          return event
         }
 
-        if (isEvent<{}, any>(event)) {
+        if (isEvent(event)) {
           const result = store.dispatch(event)
 
           eventInput$.next(event)
@@ -41,10 +40,19 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
           return pipe(forEach(dispatch))(event)
         }
 
+        // tslint:disable-next-line strict-type-predicates
         if (typeof event === 'function') {
           return event(store.getState, dispatch)
         }
+
+        return event
       }
+
+      const callNextEpic = (nextEpic: Epic<State>) =>
+        nextEpic(event$, state$, {
+          dispatch,
+          getState: store.getState
+        }) || EMPTY
 
       epic$.subscribe((epic) => {
         const nextEpic = callNextEpic(epic)

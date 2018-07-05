@@ -3,8 +3,6 @@ import { createEvent, createReducer } from 'stapp'
 import { LOADERS } from './constants'
 
 // Models
-// tslint:disable-next-line no-unused-variable // needed for declarations
-import { Observable } from 'rxjs/Observable'
 import { Module } from 'stapp/lib/core/createApp/createApp.h'
 import { LoadersState } from './loaders.h'
 

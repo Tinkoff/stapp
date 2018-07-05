@@ -1,4 +1,4 @@
-import { AnyModule, Module } from '../../core/createApp/createApp.h'
+import { AnyModule, Module } from '../../../core/createApp/createApp.h'
 
 /**
  * @private

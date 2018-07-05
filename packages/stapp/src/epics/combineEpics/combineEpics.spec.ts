@@ -1,5 +1,4 @@
 import { EMPTY, Observable } from 'light-observable'
-import { Epic } from '../../core/createApp/createApp.h'
 import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { combineEpics } from './combineEpics'
 
@@ -30,6 +29,17 @@ describe('combineEpics', () => {
     expect(result).toEqual([1, 2, 3, 4, 5])
   })
 
+  it('should accept epics, that do not return stream', async () => {
+    const epicA = () => undefined
+    const epicB = () => Observable.of(1)
+
+    const epic: any = combineEpics([epicA, epicB])
+
+    const result = await collectData(epic())
+
+    expect(result).toEqual([1])
+  })
+
   it('should pass arguments to epics', async () => {
     const epicA = (event$: any, state$: any) => {
       event$('epicA: event$')
@@ -44,8 +54,12 @@ describe('combineEpics', () => {
     const combined = combineEpics([epicA, epicB])
     const e = jest.fn()
     const s = jest.fn()
+    const staticApi = {
+      getState: jest.fn(),
+      dispatch: jest.fn()
+    }
 
-    await collectData(combined(e as any, s as any))
+    await collectData(combined(e as any, s as any, staticApi))
 
     expect(e.mock.calls).toEqual([['epicA: event$'], ['epicB: event$']])
     expect(s.mock.calls).toEqual([['epicA: state$'], ['epicB: state$']])
