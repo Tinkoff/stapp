@@ -1,10 +1,15 @@
-import { createSubject, EMPTY, forEach, Observable, pipe, Subscription } from 'light-observable'
-import { DeepPartial, Reducer, StoreEnhancerStoreCreator } from 'redux'
-import { Dispatch, Epic } from '../../core/createApp/createApp.h'
-import { Event } from '../../core/createEvent/createEvent.h'
+import { pipe } from 'light-observable/helpers/pipe'
+import { createSubject, EMPTY } from 'light-observable/observable'
+import { forEach } from 'light-observable/operators'
 import { epicEnd } from '../../events/epicEnd'
 import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { isSubscribable } from '../../helpers/is/isSubscribable/isSubscribable'
+
+// Models
+import { Observable, Subscribable, Subscription } from 'light-observable'
+import { DeepPartial, Reducer, StoreEnhancerStoreCreator } from 'redux'
+import { Dispatch, Epic } from '../../core/createApp/createApp.h'
+import { Event } from '../../core/createEvent/createEvent.h'
 
 /**
  * Used to pass a stream of state to the middleware. Also, allows to dispatch observables instead of events.
@@ -21,7 +26,7 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
   const stateStreamEnhancer = (createStore: StoreEnhancerStoreCreator) => {
     return (reducer: Reducer<State, Event<any, any>>, preloadedState: DeepPartial<State>) => {
       const store = createStore(reducer, preloadedState)
-      const state$ = Observable.from(store as any)
+      const state$ = Observable.from<State>(store as any)
       let epicSubscription: Subscription
 
       dispatch = (event?: any) => {
@@ -48,7 +53,7 @@ export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
         return event
       }
 
-      const callNextEpic = (nextEpic: Epic<State>) =>
+      const callNextEpic = (nextEpic: Epic<State>): Subscribable<any> =>
         nextEpic(event$, state$, {
           dispatch,
           getState: store.getState

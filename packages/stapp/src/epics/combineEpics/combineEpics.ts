@@ -1,5 +1,7 @@
+import { Observable } from 'light-observable'
+import { EMPTY, merge } from 'light-observable/observable'
+
 // Models
-import { EMPTY, merge, Observable } from 'light-observable'
 import { Epic } from '../../core/createApp/createApp.h'
 
 export function combineEpics<S>(epics: [Epic<S>]): Epic<S>
@@ -22,6 +24,6 @@ export function combineEpics(epics: Array<Epic<any>>): Epic<any> {
 
   return (event$, state$, staticApi): Observable<any> => {
     const streams = epics.map((epic) => epic(event$, state$, staticApi) || EMPTY)
-    return (merge as any)(...streams.slice(1))(streams[0])
+    return (merge as any)(...streams)
   }
 }

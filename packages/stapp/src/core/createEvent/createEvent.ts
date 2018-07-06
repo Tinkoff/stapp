@@ -1,4 +1,4 @@
-import { filter } from 'light-observable'
+import { filter } from 'light-observable/operators'
 import { identity } from '../../helpers/identity/identity'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 

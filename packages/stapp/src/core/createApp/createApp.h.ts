@@ -1,4 +1,4 @@
-import { Subscribable } from 'light-observable'
+import { Observable, Subscribable } from 'light-observable'
 import { Middleware } from 'redux'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
 
@@ -12,8 +12,8 @@ import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
  * @param state$ Stream of state
  */
 export type EventEpic<Payload, Meta, State> = (
-  event$: Subscribable<Event<Payload, Meta>>,
-  state$: Subscribable<State>,
+  event$: Observable<Event<Payload, Meta>>,
+  state$: Observable<State>,
   staticApi: {
     dispatch: Dispatch<State>
     getState(): State

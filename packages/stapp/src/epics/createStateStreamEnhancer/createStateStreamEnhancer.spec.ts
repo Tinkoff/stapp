@@ -1,4 +1,6 @@
-import { EMPTY, filter, map, merge, Observable, pipe, Subscribable } from 'light-observable'
+import { Observable, Subscribable } from 'light-observable'
+import { pipe } from 'light-observable/helpers/pipe'
+import { EMPTY, filter, map, merge } from 'light-observable/observable'
 import { Action, applyMiddleware, compose, createStore } from 'redux'
 import { Epic } from '../../core/createApp/createApp.h'
 import { createEvent } from '../../core/createEvent/createEvent'
@@ -10,7 +12,7 @@ const select = (
   ec: AnyEventCreator,
   stream: Subscribable<Event<any, any>>
 ): Subscribable<Event<any, any>> => {
-  return pipe(filter<Event<any, any>>((e) => e.type === ec.getType()))(stream)
+  return filter<Event<any, any>>((e) => e.type === ec.getType(), stream)
 }
 
 describe('createStateStreamEnhancer', () => {
@@ -63,9 +65,7 @@ describe('createStateStreamEnhancer', () => {
 
   it('should accept an epic that wires up event$ input to event$ out', () => {
     const epic: Epic<Action[]> = (event$) =>
-      merge(pipe(map(() => event1()))(select(fire1, event$)))(
-        pipe(map(() => event2()))(select(fire2, event$))
-      )
+      merge(map(() => event1(), select(fire1, event$)), map(() => event2(), select(fire2, event$)))
 
     const { stateStreamEnhancer } = createStateStreamEnhancer<Action[]>(epic)
     const store = createStore(reducer, stateStreamEnhancer)
@@ -79,18 +79,20 @@ describe('createStateStreamEnhancer', () => {
   it('should allow you to replace the root epic with middleware.replaceEpic(epic)', () => {
     const epic1: Epic<Action[]> = (event$) =>
       merge(
-        pipe(map(() => event1()))(select(fire1, event$)),
-        pipe(map(() => event2()))(select(fire2, event$)),
-        pipe(map(() => epicGeneric1()))(select(fireGeneric, event$)),
-        pipe(map(() => cleanUp()))(select(epicEnd, event$))
-      )(Observable.of(epicStart1()))
+        Observable.of(epicStart1()),
+        map(() => event1(), select(fire1, event$)),
+        map(() => event2(), select(fire2, event$)),
+        map(() => epicGeneric1(), select(fireGeneric, event$)),
+        map(() => cleanUp(), select(epicEnd, event$))
+      )
 
     const epic2: Epic<Action[]> = (event$) =>
       merge(
-        pipe(map(() => event3()))(select(fire3, event$)),
-        pipe(map(() => event4()))(select(fire4, event$)),
-        pipe(map(() => epicGeneric2()))(select(fireGeneric, event$))
-      )(Observable.of(epicStart2()))
+        Observable.of(epicStart2()),
+        map(() => event3(), select(fire3, event$)),
+        map(() => event4(), select(fire4, event$)),
+        map(() => epicGeneric2(), select(fireGeneric, event$))
+      )
 
     const { replaceEpic, stateStreamEnhancer } = createStateStreamEnhancer<Action[]>(epic1)
     const store = createStore(reducer, stateStreamEnhancer)
@@ -127,9 +129,7 @@ describe('createStateStreamEnhancer', () => {
 
   it('should accepts streams at dispatch', async () => {
     const epic: Epic<Action[]> = (event$) =>
-      merge(pipe(map(() => event1()))(select(fire1, event$)))(
-        pipe(map(() => event2()))(select(fire2, event$))
-      )
+      merge(map(() => event1(), select(fire1, event$)), map(() => event2(), select(fire2, event$)))
 
     const { stateStreamEnhancer } = createStateStreamEnhancer<Action[]>(epic)
     const store = createStore(reducer, stateStreamEnhancer)
