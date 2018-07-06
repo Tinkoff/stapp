@@ -1,6 +1,6 @@
 {
   "name": "stapp-loaders",
-  "version": "2.0.0-0",
+  "version": "2.0.0-beta.0",
   "description": "Loaders module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -72,7 +72,7 @@
   },
   "peerDependencies": {
     "reselect": ">=3",
-    "stapp": ">=2"
+    "stapp": "2.0.0-beta.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",

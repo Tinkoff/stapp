@@ -35,7 +35,7 @@
     "test:jest": "jest --config ./jest.config.json --runInBand"
   },
   "peerDependencies": {
-    "stapp": ">=2.0.0-0"
+    "stapp": "2.0.0-beta.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",
