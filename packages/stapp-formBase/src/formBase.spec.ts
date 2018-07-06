@@ -1,14 +1,15 @@
 import { getInitialState } from 'stapp/lib/helpers/testHelpers/getInitialState/getInitialState'
 import {
-  submit,
   setActive,
   setError,
   setReady,
   setSubmitting,
   setTouched,
-  setValue
+  setValue,
+  submit
 } from './events'
 import { formBase } from './formBase'
+import { createFormBaseReducers } from './reducers'
 import {
   fieldSelector,
   formSelector,
@@ -17,7 +18,6 @@ import {
   isReadySelector,
   isValidSelector
 } from './selectors'
-import { createFormBaseReducers } from './reducers'
 
 describe('formBase', () => {
   describe('module', () => {

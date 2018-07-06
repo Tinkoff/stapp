@@ -1,5 +1,4 @@
 import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
-import { mapObject } from 'stapp/lib/helpers/mapObject/mapObject'
 import {
   resetForm,
   setActive,
@@ -18,6 +17,22 @@ const commonHandler = <T, K extends keyof T>(o: T, n: Partial<T>) => {
   const changedFields = keys.filter((field) => o[field] !== n[field])
 
   return changedFields.length !== 0 ? Object.assign({}, o, n) : o
+}
+
+/**
+ * @private
+ */
+const mapObject = <T, R, O extends { [K: string]: T }>(
+  fn: (element: T, key: string, index: number) => R,
+  obj: O
+): { [K in keyof O]: R } => {
+  return Object.keys(obj).reduce(
+    (result, key, index) => {
+      result[key] = fn(obj[key], key, index)
+      return result
+    },
+    {} as any
+  )
 }
 
 /**
