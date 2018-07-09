@@ -15,8 +15,8 @@
     "docs:move": "mv .tempdocs/README.md docs/types.md && rimraf .tempdocs && cp docs/README.md README.md && git add README.md docs",
     "docs:book": "gitbook build",
     "docs:publish": "gh-pages -d _book",
+    "pretest": "npm run build",
     "precommit": "lint-staged",
-    "postbuild": "npm run test",
     "cz": "git-cz",
     "prepush": "npm run build",
     "preversion": "npm run build && npm run docs"
