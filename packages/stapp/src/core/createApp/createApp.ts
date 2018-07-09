@@ -10,7 +10,7 @@ import { bindApi } from './bindApi'
 import { prepareModules } from './prepareModules'
 
 // Modules
-import { PartialObserver } from 'light-observable/es/types.h'
+import { PartialObserver } from 'light-observable/core/types.h'
 import { Event } from '../createEvent/createEvent.h'
 import { AnyModule, CreateApp, Stapp } from './createApp.h'
 
