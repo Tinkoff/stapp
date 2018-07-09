@@ -1,5 +1,5 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
-import { formSelector, resetForm, submit } from 'stapp-formBase'
+import { formSelector, resetForm, submit } from 'stapp-formbase'
 import { renderComponent } from '../helpers/renderComponent'
 
 // Models

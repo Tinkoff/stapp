@@ -1,12 +1,12 @@
 import { Observable } from 'light-observable'
 import { concat, fromPromise, of } from 'light-observable/observable'
 import { catchError, switchMap } from 'light-observable/operators'
-import { setError, setReady } from 'stapp-formBase'
+import { setError, setReady } from 'stapp-formbase'
 import { isPromise } from 'stapp/lib/helpers/is/isPromise/isPromise'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
 // Models
-import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
+import { FormBaseState } from 'stapp-formbase/lib/formBase.h'
 import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
 import { ValidationFlags, ValidationRule } from './validate.h'
 

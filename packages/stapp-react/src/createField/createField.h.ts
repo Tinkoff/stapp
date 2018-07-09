@@ -1,5 +1,5 @@
 import { SyntheticEvent } from 'react'
-import { FormBaseState } from 'stapp-formBase'
+import { FormBaseState } from 'stapp-formbase'
 import { RenderProps } from '../createConsumer/createConsumer.h'
 
 export type FieldApi<Extra = undefined> = {

@@ -9,7 +9,7 @@ import { Subscription } from 'light-observable' // don't ask why, we'll try to f
 // tslint:disable-next-line no-unused-variable // declarations
 import React, { ReactElement, StatelessComponent } from 'react'
 import { Stapp } from 'stapp'
-import { FormBaseState } from 'stapp-formBase'
+import { FormBaseState } from 'stapp-formbase'
 import { ConsumerHoc } from '../createConsume/createConsume.h'
 import { ConsumerProps, RenderProps } from '../createConsumer/createConsumer.h'
 import { FieldProps } from '../createField/createField.h'

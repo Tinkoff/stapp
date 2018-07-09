@@ -1,6 +1,6 @@
 import { createApp } from 'stapp'
-import { formBase, setError, setReady, setValue, submit } from 'stapp-formBase'
-import { FormBaseConfig } from 'stapp-formBase/lib/formBase.h'
+import { formBase, setError, setReady, setValue, submit } from 'stapp-formbase'
+import { FormBaseConfig } from 'stapp-formbase/lib/formBase.h'
 import { initDone } from 'stapp/lib/events/initDone'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
 import { wait } from 'stapp/lib/helpers/testHelpers/wait/wait'

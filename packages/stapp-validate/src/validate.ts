@@ -2,7 +2,7 @@ import { EMPTY, merge } from 'light-observable/observable'
 import { filter, map, mapTo } from 'light-observable/operators'
 import { switchMap } from 'light-observable/operators/switchMap'
 import { combineEpics, select } from 'stapp'
-import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formBase'
+import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
 import { initDone } from 'stapp/lib/events/initDone'
 import { VALIDATE } from './constants'
 import { revalidate } from './events'
@@ -11,7 +11,7 @@ import { validateReducer } from './reducers'
 
 // Models
 import { Observable } from 'light-observable'
-import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
+import { FormBaseState } from 'stapp-formbase/lib/formBase.h'
 import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
 import { ValidateConfig, ValidationFlags, ValidationState } from './validate.h'
 

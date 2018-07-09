@@ -1,6 +1,6 @@
 // tslint:disable-next-line no-unused-variable
 import React, { createElement, SyntheticEvent } from 'react'
-import { fieldSelector, FormBaseState, setActive, setTouched, setValue } from 'stapp-formBase'
+import { fieldSelector, FormBaseState, setActive, setTouched, setValue } from 'stapp-formbase'
 
 // Models
 // tslint:disable-next-line no-unused-variable

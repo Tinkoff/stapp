@@ -3,7 +3,7 @@ import React from 'react'
 import { createConsumer } from '../createConsumer/createConsumer'
 import { createApp } from 'stapp/lib/core/createApp/createApp'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
-import { formBase, submit } from 'stapp-formBase'
+import { formBase, submit } from 'stapp-formbase'
 import { createField } from '../createField/createField'
 import { createForm } from './createForm'
 
