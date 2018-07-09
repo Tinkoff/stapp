@@ -32,55 +32,14 @@
     "prebuild": "rimraf lib",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
-    "test:jest": "jest --runInBand"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx|js|jsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test|spec/",
-      "/examples/"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "setupFiles": [
-      "<rootDir>/testSetup.ts"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "globals": {
-      "process.env.NODE_ENV": "test"
-    }
+    "test:jest": "jest --config ./jest.config.json --runInBand"
   },
   "peerDependencies": {
     "fbjs": ">=0.8",
     "prop-types": ">=15.6",
     "react": ">=15",
     "stapp": ">=2",
-    "stapp-formBase": ">=1"
+    "stapp-formBase": ">=2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -90,10 +49,12 @@
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.3.6",
     "@types/react-dom": "^16.0.4",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "fbjs": "^0.8.16",
-    "flux-standard-action": "^2.0.1",
     "jest": "^23.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
@@ -101,11 +62,8 @@
     "redux": "^3.7.2",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
-    "rxjs": "^5.5.8",
-    "rxjs-marbles": "^2.3.3",
-    "size-limit": "^0.18.2",
-    "stapp": "^2.0.0-0",
-    "stapp-formBase": "^2.0.0-0",
+    "stapp": "^2.0.0-beta.0",
+    "stapp-formBase": "^2.0.0-beta.0",
     "ts-jest": "^22.4.2",
     "ts-node": "^6.1.1",
     "tslib": "^1.9.0",
@@ -117,6 +75,6 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-    "light-observable": "^2.3.0"
+    "light-observable": "^2.5.1"
   }
 }

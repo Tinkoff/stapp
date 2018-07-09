@@ -1,23 +1,17 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
-// tslint:disable-next-line no-unused-variable // Needed for declarations
+import { auditTime, map, skipRepeats, startWith } from 'light-observable/operators'
 import { Component, ComponentClass } from 'react'
-import { debounceTime } from 'rxjs/operators/debounceTime'
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
-import { map } from 'rxjs/operators/map'
-import { startWith } from 'rxjs/operators/startWith'
-import { animationFrame } from 'rxjs/scheduler/animationFrame'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { renderPropType, selectorType } from '../helpers/propTypes'
 
 // Models
-import { Subscription } from 'rxjs/Subscription'
+import { Observable, Subscription } from 'light-observable'
 import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { ConsumerProps } from './createConsumer.h'
 
 // tslint:disable-next-line no-unused-variable // Needed for declarations
-// import { Requireable } from 'prop-types'
 
 /**
  * @private
@@ -50,7 +44,7 @@ export const createConsumer = <State, Api>(
   > {
     static propTypes = consumerPropTypes
 
-    subscription!: Subscription
+    subscription!: Subscription | void
     selectedResult!: any
 
     componentWillMount() {
@@ -80,12 +74,12 @@ export const createConsumer = <State, Api>(
 
       const getResult = (state: State) => mergeProps(mapState(state), mapApi(app.api))
 
-      this.subscription = app.state$
+      this.subscription = Observable.from(app)
         .pipe(
-          debounceTime(1000 / 60, animationFrame),
-          startWith(app.getState()),
+          auditTime(1000 / 60),
+          startWith([app.getState()]),
           map(getResult),
-          distinctUntilChanged(shallowEqual)
+          skipRepeats(shallowEqual)
         )
         .subscribe((result) => {
           this.selectedResult = result
@@ -94,7 +88,10 @@ export const createConsumer = <State, Api>(
     }
 
     unsubscribe() {
-      this.subscription && this.subscription.unsubscribe()
+      if (this.subscription) {
+        this.subscription.unsubscribe()
+        this.subscription = undefined
+      }
     }
 
     shouldComponentUpdate() {

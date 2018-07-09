@@ -5,8 +5,3 @@ declare module 'fbjs/lib/invariant' {
 declare module 'fbjs/lib/shallowEqual' {
   export default function shallowEqual(objectA: any, objectB: any): boolean
 }
-
-declare module 'is-observable' {
-  import { Observable } from 'rxjs/Observable'
-  export default function isObservable(value: any): value is Observable<any>
-}

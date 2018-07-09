@@ -6,7 +6,8 @@ import { renderComponent } from '../helpers/renderComponent'
 // Models
 import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
-import { FormProps } from './createForm.h'
+import { RenderProps } from '../createConsumer/createConsumer.h'
+import { FormApi } from './createForm.h'
 
 /**
  * Creates react form helpers
@@ -48,7 +49,9 @@ import { FormProps } from './createForm.h'
  *
  * @param app Stapp application
  */
-export const createForm = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FormProps> => {
+export const createForm = <State, Api>(
+  app: Stapp<State, Api>
+): StatelessComponent<RenderProps<FormApi>> => {
   const Consumer = createConsumer(app)
 
   const formDataSelector = formSelector()

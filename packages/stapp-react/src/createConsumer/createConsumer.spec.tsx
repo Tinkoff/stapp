@@ -1,5 +1,6 @@
 // tslint:disable max-classes-per-file jsx-no-lambda no-shadowed-variable
 import { mount } from 'enzyme'
+import { Subscription } from 'light-observable'
 import React from 'react'
 import { createApp } from 'stapp/lib/core/createApp/createApp'
 import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
@@ -9,6 +10,8 @@ import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { createConsumer } from './createConsumer'
 
+jest.useFakeTimers()
+
 describe('createContext', () => {
   const initialState = {
     test: 0
@@ -16,8 +19,6 @@ describe('createContext', () => {
 
   const e1 = createEvent()
   const r1 = createReducer(initialState).on(e1, (state) => ({ test: state.test + 1 }))
-
-  const wait = (n: number) => new Promise((resolve) => setTimeout(resolve, n))
 
   const getApp = () =>
     createApp({
@@ -73,7 +74,7 @@ describe('createContext', () => {
     expect(app.getState().r1.test).toEqual(3)
     expect(count).toEqual(1)
 
-    await wait(50)
+    jest.runTimersToTime(50)
     expect(count).toEqual(2)
   })
 
@@ -100,27 +101,20 @@ describe('createContext', () => {
 
     expect(count).toEqual(1)
 
-    await wait(50)
+    jest.runTimersToTime(50)
     app.api.e1()
 
-    await wait(50)
+    jest.runTimersToTime(50)
     expect(count).toEqual(1)
   })
 
   it('should unsubscribe on unmount', () => {
     const app = getApp()
-    const mockedUnsubscribe = jest.fn()
+    const subscribe = app.subscribe.bind(app)
+    let subscription: Subscription
 
-    const subscribe = app.state$.subscribe.bind(app.state$)
-
-    app.state$.subscribe = (fn: any) => {
-      const subscription = subscribe(fn)
-      const unsubscribe = subscription.unsubscribe.bind(subscription)
-
-      subscription.unsubscribe = () => {
-        mockedUnsubscribe()
-        return unsubscribe()
-      }
+    app.subscribe = (subscriber: any) => {
+      subscription = subscribe(subscriber)
 
       return subscription
     }
@@ -129,11 +123,10 @@ describe('createContext', () => {
     const wrapper = mount(<Consumer>{() => <div />}</Consumer>)
 
     wrapper.unmount()
-
-    expect(mockedUnsubscribe).toBeCalled()
+    expect(subscription!.closed).toBe(true)
   })
 
-  it('should ignore any other props updates', (done) => {
+  it('should ignore any other props updates', () => {
     const app = getApp()
     const Consumer: any = createConsumer(app)
 
@@ -164,10 +157,9 @@ describe('createContext', () => {
 
     mount(<Mock />)
 
-    setTimeout(() => {
-      expect(count).toBe(1)
-      done()
-    }, 50)
+    jest.runTimersToTime(50)
+
+    expect(count).toBe(1)
   })
 
   it('should resubscribe on props update', async () => {
@@ -183,21 +175,24 @@ describe('createContext', () => {
         mergeProps: undefined
       }
 
-      async componentWillMount() {
-        await wait(50)
-        this.setState({
-          mapState: identity
-        })
+      componentWillMount() {
+        setTimeout(() => {
+          this.setState({
+            mapState: identity
+          })
+        }, 50)
 
-        await wait(50)
-        this.setState({
-          mapApi: identity
-        })
+        setTimeout(() => {
+          this.setState({
+            mapApi: identity
+          })
+        }, 50)
 
-        await wait(50)
-        this.setState({
-          mergeProps: defaultMergeProps
-        })
+        setTimeout(() => {
+          this.setState({
+            mergeProps: defaultMergeProps
+          })
+        }, 50)
       }
 
       render() {
@@ -218,7 +213,7 @@ describe('createContext', () => {
 
     mount(<Mock />)
 
-    await wait(200)
+    jest.runTimersToTime(200)
     expect(count).toBe(4)
   })
 
