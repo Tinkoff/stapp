@@ -55,5 +55,8 @@
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "light-observable": "^2.5.1"
   }
 }
