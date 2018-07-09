@@ -19,7 +19,7 @@
     "precommit": "lint-staged",
     "cz": "git-cz",
     "prepush": "npm run build",
-    "preversion": "npm run build && npm run docs"
+    "preversion": "npm run build"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [
