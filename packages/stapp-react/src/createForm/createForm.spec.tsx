@@ -1,8 +1,9 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { formBase, submit } from 'stapp-formBase'
+import { createConsumer } from '../createConsumer/createConsumer'
 import { createApp } from 'stapp/lib/core/createApp/createApp'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
+import { formBase, submit } from 'stapp-formBase'
 import { createField } from '../createField/createField'
 import { createForm } from './createForm'
 
@@ -13,8 +14,9 @@ describe('createForm', () => {
   })
 
   const last = (a: any[]) => a[a.length - 1]
-  const Form = createForm(app)
-  const Field = createField(app)
+  const Consumer = createConsumer(app)
+  const Form = createForm(Consumer)
+  const Field = createField(Consumer)
 
   const DummyForm = () => {
     return (

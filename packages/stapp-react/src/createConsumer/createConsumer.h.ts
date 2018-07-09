@@ -1,4 +1,5 @@
-import { ReactElement, ReactType } from 'react'
+import { ComponentClass, ReactElement, ReactType } from 'react'
+import { Stapp } from 'stapp'
 
 export type RenderProps<T> = {
   children?: (api: T) => ReactElement<any> | null
@@ -17,3 +18,13 @@ export type ConsumerProps<State, Api, SelectedState, SelectedApi, Result> = {
   mapApi?: (api: Api) => SelectedApi
   mergeProps?: (selectedState: SelectedApi, selectedApi: SelectedApi) => Result
 } & RenderProps<Result>
+
+/**
+ * @typeparam State application store state
+ * @typeparam Api application api interface
+ */
+export type ConsumerClass<State, Api, SelectedState, SelectedApi, Result> = ComponentClass<
+  ConsumerProps<State, Api, SelectedState, SelectedApi, Result>
+> & {
+  app: Stapp<State, Api>
+}

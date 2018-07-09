@@ -1,10 +1,10 @@
-import React, { StatelessComponent, SyntheticEvent } from 'react'
-import { fieldSelector, setActive, setTouched, setValue } from 'stapp-formBase'
-import { createConsumer } from '../createConsumer/createConsumer'
+// tslint:disable-next-line no-unused-variable
+import React, { createElement, SyntheticEvent } from 'react'
+import { setActive, setTouched, setValue, fieldSelector, FormBaseState } from 'stapp-formBase'
+import { renderComponent } from '../helpers/renderComponent'
 
 // Models
-import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
-import { renderComponent } from '../helpers/renderComponent'
+import { ConsumerClass } from 'stapp'
 import { FieldProps } from './createField.h'
 
 /**
@@ -45,12 +45,20 @@ import { FieldProps } from './createField.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
-export const createField = <State, Api>(app: Stapp<State, Api>): StatelessComponent<FieldProps> => {
-  const Consumer = createConsumer(app)
+export const createField = <State extends FormBaseState, Api>(
+  Consumer: ConsumerClass<State, Api, any, any, any>
+) => {
+  const app = Consumer.app
 
-  return ({ name, children, render, component }) => {
+  return <Extra>({
+    name,
+    extraSelector,
+    children,
+    render,
+    component
+  }: FieldProps<State, Extra>) => {
     const handleChange = (event: SyntheticEvent<HTMLInputElement>) =>
       app.dispatch(
         setValue({
@@ -65,34 +73,33 @@ export const createField = <State, Api>(app: Stapp<State, Api>): StatelessCompon
 
     const handleFocus = () => app.dispatch(setActive(name))
 
-    return (
-      <Consumer mapState={fieldSelector(name)}>
-        {({ value, error, dirty, touched, active }) =>
-          renderComponent(
-            {
-              children,
-              render,
-              component
+    return createElement(Consumer, {
+      mapState: fieldSelector(name, extraSelector),
+      render: ({ value, error, dirty, touched, active, extra }: any) =>
+        renderComponent(
+          {
+            children,
+            render,
+            component
+          },
+          {
+            input: {
+              name,
+              value: value || '',
+              onChange: handleChange,
+              onBlur: handleBlur,
+              onFocus: handleFocus
             },
-            {
-              input: {
-                name,
-                value: value || '',
-                onChange: handleChange,
-                onBlur: handleBlur,
-                onFocus: handleFocus
-              },
-              meta: {
-                error,
-                touched,
-                active,
-                dirty
-              }
+            meta: {
+              error,
+              touched,
+              active,
+              dirty
             },
-            'Field'
-          )
-        }
-      </Consumer>
-    )
+            extra
+          },
+          'Field'
+        )
+    })
   }
 }

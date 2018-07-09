@@ -1,20 +1,19 @@
-import { Component, ComponentType, createElement } from 'react'
+import { Component, ComponentClass, ComponentType, createElement } from 'react'
 import { identity } from 'stapp/lib/helpers/identity/identity'
-import { createConsumer } from '../createConsumer/createConsumer'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { getDisplayName } from '../helpers/getDisplayName'
 
 // Models
-import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
+import { ConsumerProps } from '../createConsumer/createConsumer.h'
 import { ConsumerHoc } from './createConsume.h'
 
 /**
  * Creates higher order component, that passes state and api from a Stapp application to
  * a wrapped component
  */
-export const createConsume = <State, Api>(app: Stapp<State, Api>): ConsumerHoc<State, Api> => {
-  const Consumer = createConsumer(app)
-
+export const createConsume = <State, Api>(
+  Consumer: ComponentClass<ConsumerProps<State, Api, any, any, any>>
+): ConsumerHoc<State, Api> => {
   return (<SelectedState, SelectedApi, Result>(
     mapState: (state: State, props: any) => SelectedState = identity as any,
     mapApi: (api: Api, props: any) => SelectedApi = identity as any,

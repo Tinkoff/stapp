@@ -1,6 +1,7 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
 import { auditTime, map, skipRepeats, startWith } from 'light-observable/operators'
-import { Component, ComponentClass } from 'react'
+// tslint:disable-next-line no-unused-variable // declarations
+import React, { Component } from 'react'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { renderPropType, selectorType } from '../helpers/propTypes'
@@ -16,11 +17,6 @@ import { ConsumerProps } from './createConsumer.h'
 /**
  * @private
  */
-const consumers: { [K: string]: ComponentClass<ConsumerProps<any, any, any, any, any>> } = {}
-
-/**
- * @private
- */
 const consumerPropTypes = {
   render: renderPropType,
   children: renderPropType,
@@ -32,16 +28,10 @@ const consumerPropTypes = {
 /**
  * Creates Consumer component
  */
-export const createConsumer = <State, Api>(
-  app: Stapp<State, Api>
-): ComponentClass<ConsumerProps<State, Api, any, any, any>> => {
-  if (consumers[app.name]) {
-    return consumers[app.name]
-  }
+export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
+  return class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
+    static app = app
 
-  return (consumers[app.name] = class Consumer extends Component<
-    ConsumerProps<State, Api, any, any, any>
-  > {
     static propTypes = consumerPropTypes
 
     subscription!: Subscription | void
@@ -109,5 +99,5 @@ export const createConsumer = <State, Api>(
         'Consumer'
       )
     }
-  })
+  }
 }

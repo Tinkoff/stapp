@@ -1,12 +1,10 @@
 import React, { StatelessComponent, SyntheticEvent } from 'react'
 import { formSelector, resetForm, submit } from 'stapp-formBase'
-import { createConsumer } from '../createConsumer/createConsumer'
 import { renderComponent } from '../helpers/renderComponent'
 
 // Models
-import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
-import { RenderProps } from '../createConsumer/createConsumer.h'
+import { ConsumerClass, RenderProps } from '../createConsumer/createConsumer.h'
 import { FormApi } from './createForm.h'
 
 /**
@@ -47,13 +45,12 @@ import { FormApi } from './createForm.h'
  *
  * See more examples in the examples folder.
  *
- * @param app Stapp application
+ * @param Consumer
  */
 export const createForm = <State, Api>(
-  app: Stapp<State, Api>
+  Consumer: ConsumerClass<State, Api, any, any, any>
 ): StatelessComponent<RenderProps<FormApi>> => {
-  const Consumer = createConsumer(app)
-
+  const app = Consumer.app
   const formDataSelector = formSelector()
 
   const handle = (event: Event<any, any>) => (syntheticEvent: SyntheticEvent<any>) => {

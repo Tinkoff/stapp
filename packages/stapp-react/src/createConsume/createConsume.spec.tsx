@@ -1,13 +1,12 @@
 // tslint:disable max-classes-per-file jsx-no-lambda
-import { mount } from 'enzyme'
 import React from 'react'
-import { createApp } from 'stapp/lib/core/createApp/createApp'
-import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
-import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
-import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
+import { createApp, createEvent, createReducer } from 'stapp'
 import { createConsume } from './createConsume'
+import { createConsumer } from '../createConsumer/createConsumer'
+import { mount } from 'enzyme'
+import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
 
-describe('createContext', () => {
+describe('createConsume', () => {
   const initialState = {
     test: 0
   }
@@ -31,11 +30,13 @@ describe('createContext', () => {
       ]
     })
 
+  const getConsumer = () => createConsumer(getApp())
+
   it('should pass state to wrapped component', (done) => {
     expect.assertions(2)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const consume = createConsume(Consumer)
 
     const Dummy = consume()(
       class extends React.Component<any> {
@@ -58,8 +59,8 @@ describe('createContext', () => {
   it('should use mapState', (done) => {
     expect.assertions(4)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const consume = createConsume(Consumer)
 
     const Dummy = consume((state) => ({
       test: state.r1.test + 5,
@@ -91,8 +92,9 @@ describe('createContext', () => {
   it('should use mapApi', (done) => {
     expect.assertions(2)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const app = Consumer.app
+    const consume = createConsume(Consumer)
 
     const Dummy = consume(undefined, (api) => ({
       e2: api.e1
@@ -116,8 +118,9 @@ describe('createContext', () => {
   it('should accept props at mapApi', (done) => {
     expect.assertions(3)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const app = Consumer.app
+    const consume = createConsume(Consumer)
 
     const Dummy = consume(undefined, (api, props) => ({
       e1: {
@@ -147,8 +150,8 @@ describe('createContext', () => {
   it('should accepts props in mapState', (done) => {
     expect.assertions(4)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const consume = createConsume(Consumer)
 
     const Dummy = consume((state, props) => ({
       test: state.r1.test + 5,
@@ -178,8 +181,8 @@ describe('createContext', () => {
   it('should accept mergeprops', (done) => {
     expect.assertions(4)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const consume = createConsume(Consumer)
 
     const Dummy = consume(
       (state, props) => ({
@@ -222,8 +225,8 @@ describe('createContext', () => {
   it('should work with stateless components', (done) => {
     expect.assertions(2)
 
-    const app = getApp()
-    const consume = createConsume(app)
+    const Consumer = getConsumer()
+    const consume = createConsume(Consumer)
 
     const Dummy = consume()((props: any) => {
       expect(typeof props.e1).toBe('function')

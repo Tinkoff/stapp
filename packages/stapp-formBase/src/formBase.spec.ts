@@ -9,6 +9,7 @@ import {
   submit
 } from './events'
 import { formBase } from './formBase'
+import { FormBaseState } from './formBase.h'
 import { createFormBaseReducers } from './reducers'
 import {
   fieldSelector,
@@ -181,6 +182,33 @@ describe('formBase', () => {
         touched: true,
         dirty: true,
         active: true
+      })
+
+      expect(
+        fieldSelector<FormBaseState & { extraValue: string }>(
+          'test',
+          ({ extraValue }) => extraValue
+        )({
+          values: {},
+          errors: {
+            test: 'Some error'
+          },
+          touched: {
+            test: true
+          },
+          dirty: {
+            test: true
+          },
+          active: 'test',
+          extraValue: 'Some value'
+        })
+      ).toEqual({
+        value: undefined,
+        error: 'Some error',
+        touched: true,
+        dirty: true,
+        active: true,
+        extra: 'Some value'
       })
     })
 

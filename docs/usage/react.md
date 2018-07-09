@@ -14,6 +14,7 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
   - [`createConsumer()`](#createconsumer)
   - [`createConsume()`](#createconsume)
   - [`createForm()` and `createField()`](#createform-and-createfield)
+  - [`createComponents()`](#createcomponents)
 - [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -80,8 +81,8 @@ const App = () => <Consumer component={ List } />
 ### `createConsume()`
 
 ```typescript
-type createConsume = (app: Stapp) => Consume
-type createInject = (app: Stapp) => Consume // theese are aliases
+type createConsume = (Consumer: Consumer) => ConsumerHoc
+type createInject = (Consumer: Consumer) => ConsumerHoc // theese are aliases
 
 type ConsumerHoc = (
 	mapState?: (state, props) => any,
@@ -115,8 +116,8 @@ const App = inject(
 ### `createForm()` and `createField()`
 
 ```typescript
-type createForm = (app: Stapp) => Form
-type createFiled = (app: Stapp) => Field
+type createForm = (Consumer: Consumer) => Form
+type createFiled = (Consumer: Consumer) => Field
 
 type Form = React.Component<{
   children?: (props: FormApi) => React.ReactElement | null,
@@ -134,15 +135,16 @@ type FormApi = {
   pristine: boolean // fields were not touched
 }
 
-type Field = React.Component<{
+type Field<State extends FormBaseState, Extra> = React.Component<{
   name: string, // field name
+  extraSelector: (state: State) => Extra,
 
   children?: (props: FieldApi) => React.ReactElement | null,
   render?: (props: FieldApi) => React.ReactElement | null,
-  component?: React.ReactType<FieldApi>
+  component?: React.ReactType<FieldApi<Extra>>
 }>
 
-type FieldApi = {
+type FieldApi<Extra = undefined> = {
   input: {
     name: string
     value: string
@@ -156,6 +158,7 @@ type FieldApi = {
     active: boolean // field is in focus
     dirty: boolean // field value differs from initial value
   }
+  extra: Extra
 }
 ```
 
@@ -194,9 +197,21 @@ const App = () => {
 }
 ```
 
+### `createComponents()`
+
+```typescript
+type createComponents = (app: Stapp) => {
+  Consumer: Consumer,
+  consume: ConsumerHoc,
+  Form: Form,
+  Field: Field
+}
+```
+
 ## Type definitions
 
 * [`createConsumer`](/types.html#createconsumer)
 * [`createConsume`](/types.html#createconsume)
 * [`createForm`](/types.html#createform)
 * [`createField`](/types.html#createfield)
+* [`createComponents`](/types.html#createcomponents)
