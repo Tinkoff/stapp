@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "1.3.1",
+  "version": "2.0.0-beta.0",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -115,5 +115,8 @@
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "light-observable": "^2.3.0"
   }
 }

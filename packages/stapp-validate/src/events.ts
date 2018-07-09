@@ -1,8 +1,8 @@
 import { createEvent } from 'stapp'
 import { VALIDATE } from './constants'
 
-// tslint:disable-next-line no-unused-variable
-import { Observable } from 'rxjs'
+// tslint:disable-next-line
+import { EventCreator1, EmptyEventCreator } from 'stapp/lib/core/createEvent/createEvent.h'
 
 /**
  * @private

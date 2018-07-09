@@ -51,7 +51,7 @@ export const persist = <State>({
   {}
 > => {
   const storageKey = `${PERSIST}:${key}`
-  const serialize = _serialize === false ? identity : defaultSerialize
+  const serialize: (data: any) => string = _serialize === false ? identity : defaultSerialize
   const deserialize = _serialize === false ? identity : defaultDeserialize
   const merge = stateReconciler || defaultMerge
 

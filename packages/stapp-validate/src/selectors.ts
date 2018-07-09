@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect'
 
 // Models
+// tslint:disable-next-line
+import { OutputSelector } from 'reselect'
 import { ValidationState } from './validate.h'
 
 export const isValidatingSelector = () =>

@@ -1,4 +1,8 @@
 import { createSelector, createStructuredSelector } from 'reselect'
+
+// Models
+// tslint:disable-next-line
+import { Selector, OutputSelector } from 'reselect'
 import { FormBaseState } from './formBase.h'
 
 export const isValidSelector = () =>

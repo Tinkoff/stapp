@@ -16,8 +16,9 @@ import { Event } from '../../core/createEvent/createEvent.h'
  * @typeparam State Application state shape
  * @param rootEpic
  * @private
+ * @internal
  */
-export const createStateStreamEnhancer = <State>(rootEpic: Epic<State>) => {
+export function createStateStreamEnhancer<State>(rootEpic: Epic<State>) {
   const [event$, eventInput$] = createSubject<Event<any, any>>()
 
   const [epic$, epicInput$] = createSubject<Epic<State>>()

@@ -1,11 +1,6 @@
-import { empty } from 'rxjs/observable/empty'
-import { merge } from 'rxjs/observable/merge'
-import { filter } from 'rxjs/operators/filter'
-import { map } from 'rxjs/operators/map'
-import { mapTo } from 'rxjs/operators/mapTo'
-import { share } from 'rxjs/operators/share'
-import { switchMap } from 'rxjs/operators/switchMap'
-import { withLatestFrom } from 'rxjs/operators/withLatestFrom'
+import { EMPTY, merge } from 'light-observable/observable'
+import { filter, map, mapTo } from 'light-observable/operators'
+import { switchMap } from 'light-observable/operators/switchMap'
 import { combineEpics, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formBase'
 import { initDone } from 'stapp/lib/events/initDone'
@@ -15,10 +10,10 @@ import { runValidation } from './helpers'
 import { validateReducer } from './reducers'
 
 // Models
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'light-observable'
 import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
 import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
-import { ValidateConfig, ValidationFlags } from './validate.h'
+import { ValidateConfig, ValidationFlags, ValidationState } from './validate.h'
 
 /**
  * @private
@@ -33,7 +28,7 @@ export const validate = <State extends FormBaseState>({
   validateOnInit = true,
   setTouchedOnSubmit = true,
   rules
-}: ValidateConfig<State>): Module<{}, { validating: { [K: string]: boolean } }> => {
+}: ValidateConfig<State>): Module<{}, ValidationState> => {
   const fieldNames = Object.keys(rules).filter(
     // tslint:disable-next-line strict-type-predicates
     (fieldName) => typeof rules[fieldName] === 'function'
@@ -41,21 +36,23 @@ export const validate = <State extends FormBaseState>({
   const allFields = getFieldsObject(fieldNames)
   const setTouchedEvent = setTouched(allFields)
 
-  const validateEpic: Epic<State> = (event$, state$) => {
-    const setValue$: Observable<{ fields: { [K: string]: true }; flags: ValidationFlags }> = select(
-      setValue,
-      event$
-    ).pipe(
+  const validateEpic: Epic<State> = (event$, state$, { getState }) => {
+    const setValue$: Observable<{
+      fields: { [K: string]: true }
+      flags: ValidationFlags
+    }> = event$.pipe(
+      filter(select(setValue)),
       map(({ payload }) => ({
         fields: getFieldsObject(Object.keys(payload)),
         flags: { onChange: true }
       }))
     )
 
-    const initDone$: Observable<{ fields: { [K: string]: true }; flags: ValidationFlags }> = select(
-      initDone,
-      event$
-    ).pipe(
+    const initDone$: Observable<{
+      fields: { [K: string]: true }
+      flags: ValidationFlags
+    }> = event$.pipe(
+      filter(select(initDone)),
       mapTo({
         fields: allFields,
         flags: { onInit: true }
@@ -65,28 +62,24 @@ export const validate = <State extends FormBaseState>({
     const revalidate$: Observable<{
       fields: { [K: string]: true }
       flags: ValidationFlags
-    }> = select(revalidate, event$).pipe(
+    }> = event$.pipe(
+      filter(select(revalidate)),
       mapTo({
         fields: allFields,
         flags: { onRevalidate: true }
       })
     )
 
-    const toValidate$ = merge(
-      setValue$,
-      validateOnInit ? initDone$ : empty<any>(),
-      revalidate$
-    ).pipe(
-      withLatestFrom(state$),
-      map(([{ fields, flags }, state]) => ({
+    const toValidate$ = merge(setValue$, revalidate$, validateOnInit ? initDone$ : EMPTY).pipe(
+      // TODO: add share operator after it becomes available
+      map(({ fields, flags }) => ({
         fields,
-        state,
+        state: getState(),
         flags
-      })),
-      share()
+      }))
     )
 
-    return merge(
+    return (merge as any)(
       ...fieldNames.map((fieldName) => {
         const fieldRule = rules[fieldName]
 
@@ -100,7 +93,7 @@ export const validate = <State extends FormBaseState>({
   // Set all fields that have validation rules as touched
   const setTouchedOnSubmitEpic: Epic<State> = submit.epic((submit$) => {
     if (!setTouchedOnSubmit) {
-      return empty()
+      return EMPTY
     }
 
     return submit$.pipe(mapTo(setTouchedEvent))
@@ -111,7 +104,7 @@ export const validate = <State extends FormBaseState>({
     state: {
       validating: validateReducer
     },
-    epic: combineEpics([validateEpic, setTouchedOnSubmitEpic]),
+    epic: combineEpics([validateEpic, setTouchedOnSubmitEpic]) as any,
     dependencies: [FORM_BASE]
   }
 }

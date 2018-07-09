@@ -9,8 +9,9 @@ const bindFunction = (actionCreator: (...args: any[]) => any, store: Store<any>)
 
 /**
  * @private
+ * @internal
  */
-export const bindApi = <T>(api: T, store: Store<any>): T => {
+export function bindApi<T>(api: T, store: Store<any>): T {
   const keys = Object.keys(api)
   const result: any = {}
 

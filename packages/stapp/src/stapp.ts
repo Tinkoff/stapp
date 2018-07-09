@@ -7,6 +7,7 @@ export { whenReady } from './helpers/awaitStore/awaitStore'
 
 // Epic utils
 export { combineEpics } from './epics/combineEpics/combineEpics'
+export { select, selectArray } from './epics/select/select'
 
 // Events
 export { epicEnd } from './events/epicEnd'

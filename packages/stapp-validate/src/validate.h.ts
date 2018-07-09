@@ -1,3 +1,5 @@
+import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
+
 export type ValidationFlags = {
   onInit?: boolean
   onChange?: boolean
@@ -24,3 +26,5 @@ export type ValidateConfig<State> = {
   validateOnInit?: boolean
   setTouchedOnSubmit?: boolean
 }
+
+export type StateWithValidation = FormBaseState & ValidationState

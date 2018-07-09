@@ -1,4 +1,6 @@
 /**
  * @private
  */
-export const wait = (n: number) => new Promise((resolve) => setTimeout(resolve, n))
+export function wait(n: number) {
+  return new Promise((resolve) => setTimeout(resolve, n))
+}

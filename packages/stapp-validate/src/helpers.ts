@@ -1,14 +1,11 @@
-import { concat } from 'rxjs/observable/concat'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { of } from 'rxjs/observable/of'
-import { catchError } from 'rxjs/operators/catchError'
-import { switchMap } from 'rxjs/operators/switchMap'
+import { Observable } from 'light-observable'
+import { concat, fromPromise, of } from 'light-observable/observable'
+import { catchError, switchMap } from 'light-observable/operators'
 import { setError, setReady } from 'stapp-formBase'
-import { isPromise } from 'stapp/lib/helpers/isPromise/isPromise'
+import { isPromise } from 'stapp/lib/helpers/is/isPromise/isPromise'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
 // Models
-import { Observable } from 'rxjs'
 import { FormBaseState } from 'stapp-formBase/lib/formBase.h'
 import { Event } from 'stapp/lib/core/createEvent/createEvent.h'
 import { ValidationFlags, ValidationRule } from './validate.h'
@@ -16,10 +13,7 @@ import { ValidationFlags, ValidationRule } from './validate.h'
 /**
  * @private
  */
-export const normalizeResult = (
-  fieldName: string,
-  result: any
-): Observable<Event<any, any>> => {
+export const normalizeResult = (fieldName: string, result: any): Observable<Event<any, any>> => {
   // if it's a promise, unwrap
   if (isPromise(result)) {
     return fromPromise(result).pipe(
@@ -64,8 +58,8 @@ export const runValidation = <State extends FormBaseState>(
   return syncMode
     ? result$
     : concat(
-        of<Event<any, any>>(asyncValidationStart(fieldName), setReady({ [fieldName]: false })),
+        of(asyncValidationStart(fieldName), setReady({ [fieldName]: false })),
         result$,
-        of<Event<any, any>>(asyncValidationEnd(fieldName), setReady({ [fieldName]: true }))
+        of(asyncValidationEnd(fieldName), setReady({ [fieldName]: true }))
       )
 }

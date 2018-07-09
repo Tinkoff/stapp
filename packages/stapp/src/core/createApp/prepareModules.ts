@@ -11,8 +11,9 @@ import { AnyModule, Epic, Module } from './createApp.h'
 
 /**
  * @private
+ * @internal
  */
-export const prepareModules = <Api, State, Extra>(
+export function prepareModules<Api, State, Extra>(
   modules: Array<AnyModule<Partial<Api>, Partial<State>, State, Partial<Extra>>>,
   initialState: Partial<State>,
   dependencies: Extra
@@ -21,7 +22,7 @@ export const prepareModules = <Api, State, Extra>(
   rootEpic: Epic<State>
   events: { [K in keyof Api]: Api[K] }
   waitFor: Array<AnyEventCreator | string>
-} => {
+} {
   const moduleNames = new Set()
   const moduleDependencies = new Set()
   const api: any = {}

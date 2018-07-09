@@ -8,7 +8,7 @@ import { Thunk } from '../../../core/createApp/createApp.h'
 /**
  * @private
  */
-export const collectData = async <T>(stream: Subscribable<T> | void): Promise<T[]> => {
+export async function collectData<T>(stream: Subscribable<T> | void): Promise<T[]> {
   const result: T[] = []
 
   return forEach((x: T) => result.push(x))(stream || EMPTY).then(() => result)
@@ -17,7 +17,7 @@ export const collectData = async <T>(stream: Subscribable<T> | void): Promise<T[
 /**
  * @private
  */
-export const collectThunkData = async (thunk: Thunk<any, any>, state?: any) => {
+export async function collectThunkData(thunk: Thunk<any, any>, state?: any) {
   const dispatch = jest.fn()
   await thunk(() => state, dispatch)
 

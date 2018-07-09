@@ -1,6 +1,13 @@
 import { createEvent } from 'stapp'
 import { FORM_BASE } from './constants'
 
+// tslint:disable-next-line
+import {
+  EmptyEventCreator,
+  EventCreator0,
+  EventCreator1
+} from 'stapp/lib/core/createEvent/createEvent.h'
+
 /**
  * Used to set values for fields
  */

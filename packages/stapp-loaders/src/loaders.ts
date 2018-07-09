@@ -5,6 +5,10 @@ import { LOADERS } from './constants'
 // Models
 import { Module } from 'stapp/lib/core/createApp/createApp.h'
 import { LoadersState } from './loaders.h'
+// tslint:disable-next-line
+import { OutputSelector } from 'reselect'
+// tslint:disable-next-line
+import { EventCreator1 } from 'stapp/lib/core/createEvent/createEvent.h'
 
 export const loaderStart = createEvent<string>(`${LOADERS}: Loading start`)
 export const loaderEnd = createEvent<string>(`${LOADERS}: Loading end`)
@@ -38,7 +42,7 @@ export const isLoadingSelector = () =>
   )
 
 export const loaders = (): Module<{}, { loaders: LoadersState }> => ({
-  name: 'loaders',
+  name: LOADERS,
   state: {
     loaders: loadersReducer
   }

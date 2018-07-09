@@ -9,6 +9,9 @@ import {
   setValue
 } from './events'
 
+// tslint:disable-next-line
+import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
+
 /**
  * @private
  */

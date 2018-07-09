@@ -30,45 +30,7 @@
     "prebuild": "rimraf lib",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
-    "test:jest": "jest --runInBand"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx|js|jsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "modulePaths": [
-      "<rootDir>"
-    ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test|spec/",
-      "/examples/"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 100,
-        "functions": 100,
-        "lines": 100,
-        "statements": 100
-      }
-    },
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "lcov"
-    ],
-    "globals": {
-      "process.env.NODE_ENV": "test"
-    }
+    "test:jest": "jest --config ./jest.config.json --runInBand"
   },
   "peerDependencies": {
     "reselect": ">=3",
@@ -77,6 +39,9 @@
   "devDependencies": {
     "@types/jest": "^23.1.0",
     "@types/node": "^10.3.3",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
     "reselect": "^3.0.1",
     "stapp": "^2.0.0-0",
@@ -89,5 +54,4 @@
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.8.1"
   }
-
 }
