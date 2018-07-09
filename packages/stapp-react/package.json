@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -39,7 +39,7 @@
     "prop-types": ">=15.6",
     "react": ">=15",
     "stapp": ">=2",
-    "stapp-formBase": ">=2"
+    "stapp-formbase": ">=2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -62,8 +62,8 @@
     "redux": "^3.7.2",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
-    "stapp": "^2.0.0-beta.0",
-    "stapp-formBase": "^2.0.0-beta.0",
+    "stapp": "^2.0.0-beta.1",
+    "stapp-formbase": "^2.0.0-beta.1",
     "ts-jest": "^22.4.2",
     "ts-node": "^6.1.1",
     "tslib": "^1.9.0",
