@@ -19,7 +19,7 @@
 ```typescript
 type Stapp<State, API> = {
   name: string
-  state$: Observable<State>
+  subscribe: (state: State) => void
   api: API
   
   // Imperative and not recommended to use API
@@ -30,12 +30,11 @@ type Stapp<State, API> = {
 ```
 
 ## Usage
-
-You create a Stapp application by combining one or more modules with `createApp`:
+Create a Stapp application by combining one or more modules with `createApp`:
 
 ```javascript
 import { createApp } from 'stapp'
-import { formBase } from 'stapp/lib/modules/formBase'
+import { formBase } from 'stapp-formbase'
 import { logger, counter, whatever } from '../modules'
 
 export const app = createApp({
@@ -87,7 +86,6 @@ const todoApp = createApp({
 })
 
 todoApp
-	.state$
 	.subscribe(state => console.log(`State: ${JSON.stringify(state)}`))
 // State: { todos: [] }
 
@@ -111,13 +109,12 @@ todoApp.api.removeCompleted()
 ```
 
 ### Todo with undo
-
 Well, you easily can use excellent [`redux-undo`](https://github.com/omnidan/redux-undo) higher order reducer, but where is the fun? This example shows you the real power of epics.
 
 ```javascript
 // undoModule.js
-import { tap, map, mapTo, sample, withLatestFrom, filter } from 'rxjs/operators'
-import { createEvent, combineEpics, dangerouslyReplaceState } from 'stapp'
+import { tap, map, mapTo, filter } from 'light-observable/operators'
+import { createEvent, combineEpics, dangerouslyReplaceState, selectArray } from 'stapp'
 
 const undo = createEvent('Undo')
 const redo = createEvent('Redo')
@@ -129,37 +126,31 @@ export const undoModule = () => {
   // Here we save state changes on every event excepts undo, redo and
   // special Stapp event dangerouslyReplaceState because they
   // will be handled separatly
-  const saveStoreEpic = (event$, state$) => state$.pipe(
-    sample(event$.pipe(
-    filter(({ type }) => {
-      return type !== undo.getType()
-        && type !== redo.getType()
-        && type !== dangerouslyReplaceState.getType()
-      })
+  const saveStoreEpic = (event$, state$, { getState }) => event$.pipe(
+    filter(({ type }) => (
+      type !== undo.getType() &&
+      type !== redo.getType() &&
+      type !== dangerouslyReplaceState.getType()
     )),
-    tap(state => {
-      prev.push(state)
+    tap(() => {
+      prev.push(getState())
       next = []
     }),
     mapTo(null)
   )
-
+ 
   // Undo state changes
-  const undoEpic = undo.epic((undo$, state$) => state$.pipe(
-    sample(undo$),
+  const undoEpic = undo.epic((undo$, state$, { getState }) => undo$.pipe(
     filter(() => prev.length > 0),
-    tap(state => next.push(state)),
-    map(() => prev.pop()), // oh, lovely mutations
-    map(prevState => dangerouslyReplaceState(prevState))
+    tap(() => next.push(getState())),
+    map(() => dangerouslyReplaceState(prev.pop()))
   ))
 
   // Redo state changes
-  const redoEpic = redo.epic((redo$, state$) => state$.pipe(
-    sample(redo$),
+  const redoEpic = redo.epic((redo$, state$) => redo$.pipe(
     filter(() => next.length > 0),
-    tap(state => prev.push(state)),
-    map(() => next.pop()),
-    map(nextState => dangerouslyReplaceState(prevState))
+    tap(() => prev.push(getState())),
+    map(() => dangerouslyReplaceState(next.pop()))
   ))
   
   // undoModule is made as a function to store prev and next

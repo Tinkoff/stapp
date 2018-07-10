@@ -13,7 +13,6 @@ Event creator is a function that accepts any number of arguments, transforms the
 - [Definition](#definition)
 - [Usage](#usage)
   - [Typescript examples](#typescript-examples)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -107,10 +106,11 @@ sum(10, '20').payload // -> 30
 const enfantTerrible = createEvent('Because I can', (x: number, y: string, z: { n: number }) => (x + Number(y) - z.n).toString())
 enfantTerrible(10, '20', { n: 100 }).payload  // -> '-70'
 ```
-
+<!--
 ## Type definitions
 
 * [`createEvent`](/types.html#createevent)
 * [`PayloadTransformer*`](/types.html#payloadtransformer0)
 * [`EventCreator*`](/types.html#eventcreator0)
 * [`Event`](/types.html#event)
+-->

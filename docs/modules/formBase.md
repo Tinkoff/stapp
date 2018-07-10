@@ -1,6 +1,6 @@
 # FormBase
 
-`formBase` module handles almost everything that you may need to build a form application.
+`stapp-formbase` module handles almost everything that you may need to build a form application.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -11,7 +11,6 @@
   - [State fields and events explanation](#state-fields-and-events-explanation)
   - [Events](#events)
   - [Selectors](#selectors)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -38,7 +37,7 @@ type FormBaseState<InitialValues> = {
 
 ```js
 import { createApp } from 'stapp'
-import { formBase } from 'stapp/lib/modules/formBase'
+import { formBase } from 'stapp-formbase'
 
 const app = createForm({
   name: 'My Form',
@@ -86,7 +85,7 @@ const app = createForm({
 
 ### Events
 
-`formBase` doesn't expose any of it's events to the global application API. They should be imported and used in other modules and store-to-view connecting utilities. See [react usage](/usage/react.html) or `createForm` and `createField` source code for an example.
+`stapp-formbase` doesn't expose any of it's events to the global application API. They should be imported and used in other modules and store-to-view connecting utilities. See [react usage](/usage/react.html) or `createForm` and `createField` source code for an example.
 
 ```typescript
 type setValue = (values: { [K: string]: string }) => Event<{ [K: string]: string }>
@@ -101,7 +100,7 @@ type submit = () => Event<void>
 
 ### Selectors
 
-`formBase` is shipped with a bunch of memoized selectors.
+`stapp-formbase` is shipped with a bunch of memoized selectors.
 
 ```typescript
 type fieldSelector = <State, Extra>(name: string, extraSelector: (state: State) => Extra) => 
@@ -128,6 +127,7 @@ type isDirtySelector = () => <State>(state: State) => boolean
 type isPristineSelector = () => <State>(state: State) => boolean
 ```
 
+<!--
 ## Type definitions
 
 - [`formBase`](/types.html#formbase)
@@ -147,3 +147,4 @@ type isPristineSelector = () => <State>(state: State) => boolean
 - [`isPristineSelector`](/types.html#ispristineselector)
 - [`FormBaseState`](/types.html#formbasestate)
 - [`Module`](/types.html#module)
+-->

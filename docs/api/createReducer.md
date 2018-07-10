@@ -8,7 +8,6 @@ Creates a [Reducer](/api/Reducer.html) on steroids.
 
 - [Definition](#definition)
 - [Usage](#usage)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -36,8 +35,9 @@ const nextState = reducer(state, increment) // 1
 
 See [Reducer](/api/Reducer.html) docs section for more examples.
 
+<!--
 ## Type definitions
 
 * [`createReducer`](/types.html#createReducer)
 * [`Reducer`](/types.html#reducer)
-
+-->

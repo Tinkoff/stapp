@@ -9,7 +9,6 @@ Creates a [Stapp](/api/Stapp.html) application.
 - [Definition](#definition)
 - [Usage](#usage)
   - [Config](#config)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -36,9 +35,11 @@ See [Stapp](/api/Stapp.html) section for examples.
 * **`middlewares`**: An array of any custom redux middlewares.
 * **`rehydrate`**: Value, provided here, will be used as an initial state in `redux.createStore` method.
 
+<!--
 ## Type definitions
 
 * [`createApp`](/types.html#createApp)
 * [`Stapp`](/types.html#stapp)
 * [`Module`](/types.html#module)
 * [`ModuleFactory`](/types.html#modulefactory)
+-->

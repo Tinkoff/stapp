@@ -1,6 +1,6 @@
 # Persist
 
-`persist` is a module capable of persisting and rehydrating an application's state. `persist` is as compatible with [redux-persist](https://github.com/rt2zz/redux-persist) library as possible. You can use storages, transformers, and reconcilers compatible with redux-persist.
+`stapp-persist` is a module capable of persisting and rehydrating an application's state. `stapp-persist` is as compatible with [redux-persist](https://github.com/rt2zz/redux-persist) library as possible. You can use storages, transformers, and reconcilers compatible with `redux-persist`.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -13,7 +13,6 @@
   - [`serialize`](#serialize)
   - [`timeout`](#timeout)
   - [Other](#other)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -51,7 +50,7 @@ Primary case: use sessionStorage or localStorage to store and rehydrate an appli
 
 ```js
 import { createApp } from 'stapp'
-import { persist, toAsync } from 'stapp/lib/modules/persist'
+import { persist, toAsync } from 'stapp-persist'
 
 const app = createApp({
   name: 'My App',
@@ -73,7 +72,7 @@ const app = createApp({
 
 ### `throttle`
 
-Debounces state changes before saving them to the storage. The parameter is called `throttle` to keep API compatible with redux-persist.
+Throttles state changes before saving them to the storage.
 
 ### `serialize`
 
@@ -85,8 +84,9 @@ Ignores value, returned from `storage.getItem()` if the execution time exceeds t
 
 ### Other
 
-As stated, `persist` API is made as compatible with redux-persist as possible. See [redux-perist docs](https://github.com/rt2zz/redux-persist) for more information on transformers, storages, and state reconcilers.
+As stated, `stapp-persist` API is made as compatible with redux-persist as possible. See [redux-perist docs](https://github.com/rt2zz/redux-persist) for more information on transformers, storages, and state reconcilers.
 
+<!--
 ## Type definitions
 
 * [`persist`](/types.html#persist)
@@ -94,3 +94,4 @@ As stated, `persist` API is made as compatible with redux-persist as possible. S
 * [`PersistConfig`](/types.html#persistconfig)
 * [`AsyncStorage`](/types.html#asyncstorage)
 * [`Transform`](/types.html#transform)
+-->

@@ -8,10 +8,24 @@ Epics allow harnessing async logic with ease.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Definition](#definition)
 - [Usage](#usage)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Definition
+
+```typescript
+type Epic<State> = (
+  event$: Observable<Event<any, any>>,
+  state$: Observable<State>,
+  staticApi: {
+    dispatch: Dispatch<State>
+    getState(): State
+  }
+) => Subscribable<any> | void
+
+```
 
 ## Usage
 
@@ -63,7 +77,7 @@ const searchModule = {
 
       // debounce and distinct value changes
       debounceTime(500),
-      distinctUntilChanged(),
+      skipRepeats(),
 
       // switch to effect function
       switchMap(({ payload: searchValue }) => searchEffect(searchValue))
@@ -73,9 +87,10 @@ const searchModule = {
 ```
 
 Epics allow *reacting* to events and state changes *reactively*. That's fun!
-
+<!--
 ## Type definitions
 
 * [`Epic`](/types.html#epic)
 * [`EventEpic`](/types.html#eventepic)
 * [`createEffect`](/types.html#createeffect)
+-->

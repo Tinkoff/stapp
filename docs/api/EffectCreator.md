@@ -17,7 +17,6 @@ EffectCreators is created with [createEffect](/api/createEffect.html).
   - [`fail`](#fail)
   - [`getType()`](#gettype)
   - [`use()`](#use)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -117,9 +116,11 @@ test('some test', async () => {
 })
 ```
 
+<!--
 ## Type definitions
 
 - [`createEffect`](/types.html/#createeffect)
 - [`EffectCreator`](/types.html#effectcreator)
 - [`Event`](/types.html#event)
 - [`Epic`](/types.html#epic)
+-->

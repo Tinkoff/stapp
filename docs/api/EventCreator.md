@@ -11,7 +11,6 @@ An EventCreator is a function, which takes provided arguments and returns an FSA
   - [`getType()`](#gettype)
   - [`is()`](#is)
   - [`epic()`](#epic)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -66,8 +65,10 @@ const increment = createEvent()
 const epic = increment.epic(increment$ => /* other stuff */)
 ```
 
+<!--
 ## Type definitions
 
 * [`EventCreator*`](/types.html#eventcreator0)
 * [`Event`](/types.html#event)
 * [`Epic`](/types.html#epic)
+-->

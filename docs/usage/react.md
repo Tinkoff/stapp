@@ -11,29 +11,39 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 
 
 - [Usage](#usage)
+  - [`createComponents()`](#createcomponents)
   - [`createConsumer()`](#createconsumer)
   - [`createConsume()`](#createconsume)
   - [`createForm()` and `createField()`](#createform-and-createfield)
-  - [`createComponents()`](#createcomponents)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Usage
+
+### `createComponents()`
+
+```typescript
+type createComponents = (app: Stapp) => {
+  Consumer: Consumer,
+  consume: ConsumerHoc,
+  Form: Form,
+  Field: Field
+}
+```
+
+See examples using Consumer, consume, Form and Field below.
 
 ### `createConsumer()`
 
 ```typescript
 type createConsumer = (app: Stapp) => Consumer
 
-type Consumer = React.Component<{
-  mapState?: (state) => any,
-  mapApi?: (api) => any,
-  mergeProps?: (state, api) => any,
+type Consumer<State, Api, Result = State> = React.Component<{
+  map?: (state: State, api: Api) => Result,
 
-  children?: (props) => React.ReactElement | null,
-  render?: (props) => React.ReactElement | null,
-  component?: React.ReactType
+  children?: (result: Result, api: Api) => React.ReactElement | null,
+  render?: (result: Result, api: Api) => React.ReactElement | null,
+  component?: React.ReactType<Result & Api>
 }>
 ```
 
@@ -42,7 +52,7 @@ type Consumer = React.Component<{
 Most basic example as possible:
 
 ```jsx
-import { createConsumer } from 'stapp/lib/react'
+import { createConsumer } from 'stapp-react'
 import todoApp from '../myApps/todoApp.js'
 import ListItem from '../components'
 
@@ -50,7 +60,7 @@ const Consumer = createConsumer(todoApp)
 
 const App = () => <Consumer>
   {
-    ({ todos, handleClick }) => todos.map((item) => <ListItem
+    ({ todos }, { handleClick }) => todos.map((item) => <ListItem
       { ...item }
       key={ item.id }
       onClick={ () => handleClick(item.id) }
@@ -62,7 +72,7 @@ const App = () => <Consumer>
 `component` prop usage example:
 
 ```jsx
-import { createConsumer } from 'stapp/lib/react'
+import { createConsumer } from 'stapp-react'
 import todoApp from '../myApps/todoApp.js'
 import ListItem from '../components'
 
@@ -84,24 +94,24 @@ const App = () => <Consumer component={ List } />
 type createConsume = (Consumer: Consumer) => ConsumerHoc
 type createInject = (Consumer: Consumer) => ConsumerHoc // theese are aliases
 
-type ConsumerHoc = (
-	mapState?: (state, props) => any,
-	mapApi?: (api, props) => any,
-  mergeProps?: (state, api, props) => any
-) => (WrappedComponent: React.ComponentType) => React.ComponentClass
+type ConsumerHoc<State, Api, Result> = (
+	map?: (state: State, api: Api, props: any) => Result
+) => (WrappedComponent: React.ComponentType<Result & Api>) => React.ComponentClass
 ```
 
 `createInject` creates a classic, familiar HoC, that works exactly as `react-redux` `@connect`.
 
 ```jsx
-import { createConsume } from 'stapp/lib/react'
+import { createInject } from 'stapp-react'
 import todoApp from '../myApps/todoApp.js'
 
-const inject = createConsume(todoApp)
+const inject = createInject(todoApp)
 
 const ListItem = inject(
-	(state, props) => ({ todo: state.todos.find(todo => todo.id === props.id )}),
-  (api, props) => ({ handleClick: () => api.handleClick(props.id) })
+	(state, api, props) => ({
+	  todo: state.todos.find(todo => todo.id === props.id ),
+	  handleClick: () => api.handleClick(props.id)
+	})
 )(({ todo, handleClick }) => {
   return <div onClick={ handleClick }>{ todo.text }</div>
 })
@@ -120,31 +130,31 @@ type createForm = (Consumer: Consumer) => Form
 type createFiled = (Consumer: Consumer) => Field
 
 type Form = React.Component<{
-  children?: (props: FormApi) => React.ReactElement | null,
-  render?: (props: FormApi) => React.ReactElement | null,
+  children?: (props: FormApi) => React.ReactElement | null
+  render?: (props: FormApi) => React.ReactElement | null
   component?: React.ReactType<FormApi>
 }>
 
 type FormApi = {
-  handleSubmit: () => void,
-  handleReset: () => void,
-  submitting: boolean, // form is in submitting process
-  valid: boolean, // app has no errors
-  dirty: boolean, // app has dirty values (that differ from initial values)
-  ready: boolean, // apps ready state is empty
+  handleSubmit: () => void
+  handleReset: () => void
+  submitting: boolean // form is in submitting process
+  valid: boolean // app has no errors
+  dirty: boolean // app has dirty values (that differ from initial values)
+  ready: boolean // apps ready state is empty
   pristine: boolean // fields were not touched
 }
 
 type Field<State extends FormBaseState, Extra> = React.Component<{
-  name: string, // field name
-  extraSelector: (state: State) => Extra,
+  name: string // field name
+  extraSelector: (state: State) => Extra
 
-  children?: (props: FieldApi) => React.ReactElement | null,
-  render?: (props: FieldApi) => React.ReactElement | null,
+  children?: (props: FieldApi) => React.ReactElement | null
+  render?: (props: FieldApi) => React.ReactElement | null
   component?: React.ReactType<FieldApi<Extra>>
 }>
 
-type FieldApi<Extra = undefined> = {
+type FieldApi<Extra = void> = {
   input: {
     name: string
     value: string
@@ -197,17 +207,7 @@ const App = () => {
 }
 ```
 
-### `createComponents()`
-
-```typescript
-type createComponents = (app: Stapp) => {
-  Consumer: Consumer,
-  consume: ConsumerHoc,
-  Form: Form,
-  Field: Field
-}
-```
-
+<!--
 ## Type definitions
 
 * [`createConsumer`](/types.html#createconsumer)
@@ -215,3 +215,4 @@ type createComponents = (app: Stapp) => {
 * [`createForm`](/types.html#createform)
 * [`createField`](/types.html#createfield)
 * [`createComponents`](/types.html#createcomponents)
+-->

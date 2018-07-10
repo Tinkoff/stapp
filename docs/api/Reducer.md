@@ -13,7 +13,6 @@ Reducer is a function that takes the previous state and an event and returns a n
   - [`reset()`](#reset)
   - [`has()`](#has)
   - [`createEvents()`](#createevents)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -96,6 +95,7 @@ const { add, subtract, double } = reducer.createEvents({
 })
 ```
 
+<!--
 ## Type definitions
 
 - [`createReducer`](/types.html#createreducer)
@@ -104,3 +104,4 @@ const { add, subtract, double } = reducer.createEvents({
 - [`EventHandler`](/types.html#eventhandler)
 - [`EventHandlers`](/types.html#eventhandlers)
 - [`Event`](/types.html#event)
+-->

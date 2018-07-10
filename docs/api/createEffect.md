@@ -12,7 +12,6 @@ See EffectCreator section for more documentation.
 
 - [Definition](#definition)
 - [Usage](#usage)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -42,8 +41,10 @@ const someEffect = createEffect(
 
 The `condition` argument can be used to disable an effect on some conditions.
 
+<!--
 ## Type definitions
 
 * [`createEffect`](/types.html/#createeffect)
 * [`EffectCreator`](/types.html#effectcreator)
 
+-->
