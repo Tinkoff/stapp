@@ -26,5 +26,3 @@ export type ValidateConfig<State> = {
   validateOnInit?: boolean
   setTouchedOnSubmit?: boolean
 }
-
-export type StateWithValidation = FormBaseState & ValidationState

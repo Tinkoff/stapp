@@ -22,6 +22,7 @@ export type ConsumerProps<State, Api, SelectedState, SelectedApi, Result> = {
 /**
  * @typeparam State application store state
  * @typeparam Api application api interface
+ * @private
  */
 export type ConsumerClass<State, Api, SelectedState, SelectedApi, Result> = ComponentClass<
   ConsumerProps<State, Api, SelectedState, SelectedApi, Result>
