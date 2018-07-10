@@ -1,27 +1,27 @@
-import invariant from 'fbjs/lib/invariant'
 import React, { ReactElement } from 'react'
 import { RenderProps } from '../createConsumer/createConsumer.h'
+import { STAPP_REACT } from './constants'
 
 export const renderComponent = (
-  props: RenderProps<any>,
-  passedProps: any,
-  name: string
+  name: string,
+  props: RenderProps<any, any>,
+  ...values: any[]
 ): ReactElement<any> | null => {
   const { render, children, component } = props
 
   if (component) {
-    return React.createElement(component, { ...passedProps, children, render })
+    return React.createElement(component, Object.assign({}, ...values))
   }
 
   if (render) {
-    return render({ ...passedProps, children })
+    return (render as any)(...values)
   }
 
-  invariant(
-    typeof children === 'function',
-    `Stapp error: Must specify either a render prop, a render function as children, or a component prop to ${name}`
-  )
+  if (typeof children === 'function') {
+    return (children as any)(...values)
+  }
 
-  // Typeof 'function' is already assured so any is ok
-  return (children as any)(passedProps)
+  throw new Error(
+    `${STAPP_REACT} error: Must specify either a render prop, a render function as children, or a component prop to ${name}`
+  )
 }

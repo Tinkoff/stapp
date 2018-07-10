@@ -5,7 +5,8 @@ export {
   setReady,
   setSubmitting,
   setTouched,
-  setValue
+  setValue,
+  submit
 } from './events'
 export { formBase } from './formBase'
 export { FORM_BASE } from './constants'

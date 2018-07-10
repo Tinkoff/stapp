@@ -21,7 +21,7 @@ export const createComponents = <State extends FormBaseState, Api>(app: Stapp<St
   let Form: StatelessComponent<RenderProps<FormApi>>
   let Field: <Extra>(
     config: FieldProps<State, Extra>
-  ) => ReactElement<ConsumerProps<State, Api, any, any, any>>
+  ) => ReactElement<ConsumerProps<State, Api, any>>
 
   return {
     Consumer,

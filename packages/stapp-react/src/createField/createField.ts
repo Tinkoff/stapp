@@ -49,7 +49,7 @@ import { FieldProps } from './createField.h'
  * @param Consumer
  */
 export const createField = <State extends FormBaseState, Api>(
-  Consumer: ConsumerClass<State, Api, any, any, any>
+  Consumer: ConsumerClass<State, Api, any>
 ) => {
   const app = Consumer.app
 
@@ -75,9 +75,10 @@ export const createField = <State extends FormBaseState, Api>(
     const handleFocus = () => app.dispatch(setActive(name))
 
     return createElement(Consumer, {
-      mapState: fieldSelector(name, extraSelector),
+      map: fieldSelector(name, extraSelector),
       render: ({ value, error, dirty, touched, active, extra }: any) =>
         renderComponent(
+          'Field',
           {
             children,
             render,
@@ -99,7 +100,7 @@ export const createField = <State extends FormBaseState, Api>(
             },
             extra
           },
-          'Field'
+          app.api
         )
     })
   }

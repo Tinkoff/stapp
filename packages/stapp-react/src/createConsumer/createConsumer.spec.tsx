@@ -7,7 +7,6 @@ import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
 import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
-import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { createConsumer } from './createConsumer'
 
 jest.useFakeTimers()
@@ -41,9 +40,9 @@ describe('createContext', () => {
     const Consumer = createConsumer(app)
 
     mount(
-      <Consumer mapState={(state) => state.r1}>
-        {({ test, e1 }) => {
-          expect(test).toEqual(0)
+      <Consumer map={(state) => state.r1.test}>
+        {(state, { e1 }) => {
+          expect(state).toEqual(0)
           expect(typeof e1).toBe('function')
           return <div />
         }}
@@ -89,7 +88,7 @@ describe('createContext', () => {
     const Consumer = createConsumer(app)
 
     mount(
-      <Consumer mapState={() => value}>
+      <Consumer map={() => value}>
         {({ test }) => {
           count += 1
           expect(test).toEqual(1)
@@ -170,38 +169,32 @@ describe('createContext', () => {
 
     class Mock extends React.Component<{}, any> {
       state = {
-        mapState: undefined,
-        mapApi: undefined,
-        mergeProps: undefined
+        map: undefined
       }
 
       componentWillMount() {
         setTimeout(() => {
           this.setState({
-            mapState: identity
+            map: (x: any) => x
           })
         }, 50)
 
         setTimeout(() => {
           this.setState({
-            mapApi: identity
+            map: (x: any) => x
           })
         }, 50)
 
         setTimeout(() => {
           this.setState({
-            mergeProps: defaultMergeProps
+            map: (x: any) => x
           })
         }, 50)
       }
 
       render() {
         return (
-          <Consumer
-            mapState={this.state.mapState}
-            mapApi={this.state.mapApi}
-            mergeProps={this.state.mergeProps}
-          >
+          <Consumer map={this.state.map}>
             {() => {
               count += 1
               return <div />

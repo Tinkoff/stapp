@@ -19,7 +19,7 @@ describe('createComponents', () => {
   it('should return Consumer, consume, Form and Field as object', () => {
     const app = getApp()
 
-    const { Consumer, consume, Form, Field } = createComponents(app)
+    const { Consumer, consume, Form, Field } = createComponents(app as any)
 
     expect(Consumer).toBeTruthy()
     expect(consume).toBeTruthy()

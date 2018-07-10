@@ -1,10 +1,10 @@
 // tslint:disable max-classes-per-file jsx-no-lambda
+import { mount } from 'enzyme'
 import React from 'react'
 import { createApp, createEvent, createReducer } from 'stapp'
-import { createConsume } from './createConsume'
-import { createConsumer } from '../createConsumer/createConsumer'
-import { mount } from 'enzyme'
 import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
+import { createConsumer } from '../createConsumer/createConsumer'
+import { createConsume } from './createConsume'
 
 describe('createConsume', () => {
   const initialState = {
@@ -89,71 +89,13 @@ describe('createConsume', () => {
     mount(<Dummy test3={true} test4={''} />)
   })
 
-  it('should use mapApi', (done) => {
-    expect.assertions(2)
-
-    const Consumer = getConsumer()
-    const app = Consumer.app
-    const consume = createConsume(Consumer)
-
-    const Dummy = consume(undefined, (api) => ({
-      e2: api.e1
-    }))(
-      class extends React.Component<{ e2: any; test4: string }> {
-        componentDidMount() {
-          expect(this.props.e2).toEqual(app.api.e1)
-          expect(this.props.test4).toEqual('')
-
-          done()
-        }
-
-        render() {
-          return <div />
-        }
-      }
-    )
-    mount(<Dummy test4={''} />)
-  })
-
-  it('should accept props at mapApi', (done) => {
-    expect.assertions(3)
-
-    const Consumer = getConsumer()
-    const app = Consumer.app
-    const consume = createConsume(Consumer)
-
-    const Dummy = consume(undefined, (api, props) => ({
-      e1: {
-        test3: props.test4
-      },
-      e2: api.e1
-    }))(
-      class extends React.Component<{ e2: any; e1: any; test4: string }> {
-        componentDidMount() {
-          expect(this.props.e2).toEqual(app.api.e1)
-          expect(this.props.test4).toEqual('')
-          expect(this.props.e1).toEqual({
-            test3: this.props.test4
-          })
-
-          done()
-        }
-
-        render() {
-          return <div />
-        }
-      }
-    )
-    mount(<Dummy test4={''} />)
-  })
-
   it('should accepts props in mapState', (done) => {
     expect.assertions(4)
 
     const Consumer = getConsumer()
     const consume = createConsume(Consumer)
 
-    const Dummy = consume((state, props) => ({
+    const Dummy = consume((state, api, props) => ({
       test: state.r1.test + 5,
       test2: 'test',
       props: { test3: props.test3 }
@@ -166,50 +108,6 @@ describe('createConsume', () => {
           expect(this.props.props).toEqual({
             test3: this.props.test3
           })
-
-          done()
-        }
-
-        render() {
-          return <div />
-        }
-      }
-    )
-    mount(<Dummy test3={true} />)
-  })
-
-  it('should accept mergeprops', (done) => {
-    expect.assertions(4)
-
-    const Consumer = getConsumer()
-    const consume = createConsume(Consumer)
-
-    const Dummy = consume(
-      (state, props) => ({
-        test: state.r1.test + 5,
-        test2: 'test',
-        props: { test3: props.test3 }
-      }),
-      (api) => ({
-        e2: api.e1
-      }),
-      (state, api) => ({
-        test5: state.test,
-        test6: state.test2,
-        test7: api.e2
-      })
-    )(
-      class extends React.Component<{
-        test5: number
-        test6: string
-        test7: any
-        test3: boolean
-      }> {
-        componentDidMount() {
-          expect(this.props.test3).toEqual(true)
-          expect(this.props.test5).toEqual(5)
-          expect(this.props.test6).toEqual('test')
-          expect(typeof this.props.test7).toEqual('function')
 
           done()
         }

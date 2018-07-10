@@ -1,4 +1,5 @@
-import React, { StatelessComponent, SyntheticEvent } from 'react'
+// tslint:disable-next-line no-unused-variable
+import React, { createElement, StatelessComponent, SyntheticEvent } from 'react'
 import { formSelector, resetForm, submit } from 'stapp-formbase'
 import { renderComponent } from '../helpers/renderComponent'
 
@@ -48,11 +49,10 @@ import { FormApi } from './createForm.h'
  * @param Consumer
  */
 export const createForm = <State, Api>(
-  Consumer: ConsumerClass<State, Api, any, any, any>
+  Consumer: ConsumerClass<State, Api, any>
 ): StatelessComponent<RenderProps<FormApi>> => {
   const app = Consumer.app
   const formDataSelector = formSelector()
-
   const handle = (event: Event<any, any>) => (syntheticEvent: SyntheticEvent<any>) => {
     // preventDefault might not exist in some environments (React Native e.g.)
     /* istanbul ignore next */
@@ -63,33 +63,43 @@ export const createForm = <State, Api>(
 
     app.dispatch(event)
   }
-
   const handleSubmit = handle(submit())
   const handleReset = handle(resetForm())
 
   return ({ children, render, component }) => {
-    return (
-      <Consumer mapState={formDataSelector}>
-        {({ submitting, valid, ready, dirty, pristine }) =>
-          renderComponent(
-            {
-              children,
-              render,
-              component
-            },
-            {
-              handleSubmit,
-              handleReset,
-              submitting,
-              valid,
-              ready,
-              dirty,
-              pristine
-            },
-            'Form'
-          )
-        }
-      </Consumer>
-    )
+    return createElement(Consumer, {
+      map: formDataSelector,
+      render: ({
+        submitting,
+        valid,
+        ready,
+        dirty,
+        pristine
+      }: {
+        submitting: boolean
+        valid: boolean
+        ready: boolean
+        dirty: boolean
+        pristine: boolean
+      }) =>
+        renderComponent(
+          'Form',
+          {
+            children,
+            render,
+            component
+          },
+          {
+            handleSubmit,
+            handleReset,
+            submitting,
+            valid,
+            ready,
+            dirty,
+            pristine
+          },
+          app.api
+        )
+    })
   }
 }

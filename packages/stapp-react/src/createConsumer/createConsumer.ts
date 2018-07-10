@@ -3,7 +3,6 @@ import { auditTime, map, skipRepeats, startWith } from 'light-observable/operato
 // tslint:disable-next-line no-unused-variable // declarations
 import React, { Component } from 'react'
 import { identity } from 'stapp/lib/helpers/identity/identity'
-import { defaultMergeProps } from '../helpers/defaultMergeProps'
 import { renderPropType, selectorType } from '../helpers/propTypes'
 
 // Models
@@ -12,8 +11,6 @@ import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
 import { ConsumerProps } from './createConsumer.h'
 
-// tslint:disable-next-line no-unused-variable // Needed for declarations
-
 /**
  * @private
  */
@@ -21,15 +18,14 @@ const consumerPropTypes = {
   render: renderPropType,
   children: renderPropType,
   component: renderPropType,
-  mapState: selectorType,
-  mapApi: selectorType
+  map: selectorType
 }
 
 /**
  * Creates Consumer component
  */
 export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
-  return class Consumer extends Component<ConsumerProps<State, Api, any, any, any>> {
+  return class Consumer extends Component<ConsumerProps<State, Api, any>> {
     static app = app
 
     static propTypes = consumerPropTypes
@@ -41,12 +37,8 @@ export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
       this.subscribe(this.props)
     }
 
-    componentWillReceiveProps(nextProps: ConsumerProps<State, Api, any, any, any>) {
-      if (
-        this.props.mapApi !== nextProps.mapApi ||
-        this.props.mapState !== nextProps.mapState ||
-        this.props.mergeProps !== nextProps.mergeProps
-      ) {
+    componentWillReceiveProps(nextProps: ConsumerProps<State, Api, any>) {
+      if (this.props.map !== nextProps.map) {
         this.subscribe(nextProps)
       }
     }
@@ -55,20 +47,16 @@ export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
       this.unsubscribe()
     }
 
-    subscribe(props: ConsumerProps<State, Api, any, any, any>) {
+    subscribe(props: ConsumerProps<State, Api, any>) {
       this.unsubscribe()
 
-      const mapState = props.mapState || (identity as any)
-      const mapApi = props.mapApi || (identity as any)
-      const mergeProps = props.mergeProps || defaultMergeProps
-
-      const getResult = (state: State) => mergeProps(mapState(state), mapApi(app.api))
+      const mapState = props.map || (identity as any)
 
       this.subscription = Observable.from(app)
         .pipe(
           auditTime(1000 / 60),
           startWith([app.getState()]),
-          map(getResult),
+          map((state) => mapState(state, app.api)),
           skipRepeats(shallowEqual)
         )
         .subscribe((result) => {
@@ -90,13 +78,14 @@ export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
 
     render() {
       return renderComponent(
+        'Consumer',
         {
           render: this.props.render,
           children: this.props.children,
           component: this.props.component
         },
         this.selectedResult,
-        'Consumer'
+        app.api
       )
     }
   }
