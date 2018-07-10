@@ -1,5 +1,3 @@
-import { FormBaseState } from 'stapp-formbase/lib/formBase.h'
-
 export type ValidationFlags = {
   onInit?: boolean
   onChange?: boolean
