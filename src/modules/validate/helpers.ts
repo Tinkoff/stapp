@@ -16,21 +16,13 @@ import { ValidationFlags, ValidationRule } from './validate.h'
 /**
  * @private
  */
-export const normalizeResult = (
-  fieldName: string,
-  result: any
-): Observable<Event<any, any>> => {
+export const normalizeResult = (fieldName: string, result: any): Observable<Event<any, any>> => {
   // if it's a promise, unwrap
   if (isPromise(result)) {
     return fromPromise(result).pipe(
       switchMap((promiseResult) => normalizeResult(fieldName, promiseResult)),
       catchError((error) => of(setError({ [fieldName]: error })))
     )
-  }
-
-  // if it's a plain object, return
-  if (result != null && typeof result === 'object') {
-    return of(setError(result))
   }
 
   // in all other cases wrap to an object
