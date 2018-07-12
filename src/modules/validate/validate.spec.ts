@@ -188,8 +188,8 @@ describe('validate', () => {
           age(value) {
             if (!value) {
               return {
-                age: 'Hey!',
-                name: 'Heeeey!'
+                error: 'Hey!',
+                flag: true
               }
             }
           }
@@ -197,16 +197,20 @@ describe('validate', () => {
       })
 
       expect(app.getState().errors).toEqual({
-        age: 'Hey!',
-        name: 'Heeeey!'
+        age: {
+          error: 'Hey!',
+          flag: true
+        }
       })
 
       expect(app.getState().eventLog).toEqual([
         expect.objectContaining(initDone()),
         expect.objectContaining(
           setError({
-            age: 'Hey!',
-            name: 'Heeeey!'
+            age: {
+              error: 'Hey!',
+              flag: true
+            }
           })
         )
       ])
