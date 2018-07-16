@@ -26,12 +26,6 @@
       "git add"
     ]
   },
-  "size-limit": [
-    {
-      "name": "core",
-      "path": "packages/stapp/lib/stapp.js"
-    }
-  ],
   "devDependencies": {
     "cash-cp": "^0.2.0",
     "cash-mv": "^0.2.0",

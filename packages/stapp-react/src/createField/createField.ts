@@ -9,42 +9,8 @@ import { renderComponent } from '../helpers/renderComponent'
 import { FieldProps } from './createField.h'
 
 /**
- * Creates react form helpers
- *
- * ## Form example
- * ```typescript
- *  import { createForm } from 'stapp/lib/react'
- *  import someApp from '../myApps/app.js'
- *
- *  const { Form, Field } = createForm(someApp)
- *
- *  <Form>
- *    {
- *      ({
- *        handleSubmit,
- *        isReady,
- *        isValid
- *      }) => <form onSubmit={ handleSubmit }>
- *        <Field name='name'>
- *          {
- *            ({ input, meta }) => <React.Fragment>
- *              <input { ...input} />
- *              { meta.touched && meta.error && <span>{ meta.error }</span> }
- *            </React.Fragment>
- *          }
- *        </Field>
- *        <button
- *          type='submit'
- *          disabled={!isReady || !isValid}
- *         >
- *          Submit
- *         </button>
- *      </form>
- *    }
- *  </Form>
- * ```
- *
- * See more examples in the examples folder.
+ * Creates react form helper.
+ * See examples in the examples folder.
  *
  * @param Consumer
  */
@@ -53,7 +19,7 @@ export const createField = <State extends FormBaseState, Api>(
 ) => {
   const app = Consumer.app
 
-  return <Extra>({
+  const Field = <Extra>({
     name,
     extraSelector,
     children,
@@ -104,4 +70,8 @@ export const createField = <State extends FormBaseState, Api>(
         )
     })
   }
+
+  ;(Field as any).displayName = `${app.name}.Field`
+
+  return Field
 }

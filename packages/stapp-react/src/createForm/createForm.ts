@@ -66,7 +66,7 @@ export const createForm = <State, Api>(
   const handleSubmit = handle(submit())
   const handleReset = handle(resetForm())
 
-  return ({ children, render, component }) => {
+  const Form = ({ children, render, component }: RenderProps<FormApi>) => {
     return createElement(Consumer, {
       map: formDataSelector,
       render: ({
@@ -102,4 +102,8 @@ export const createForm = <State, Api>(
         )
     })
   }
+
+  ;(Form as any).displayName = `${app.name}.Form`
+
+  return Form
 }

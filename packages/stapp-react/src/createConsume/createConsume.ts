@@ -18,7 +18,7 @@ export const createConsume = <State, Api>(
     map: (state: State, api: Api, props: any) => SelectedState = identity as any
   ) => (WrappedComponent: ComponentType<Partial<SelectedState & SelectedApi>>) => {
     return class Consume extends Component<any> {
-      static displayName = `Consume(${getDisplayName(WrappedComponent)})`
+      static displayName = `${Consumer.app.name}.Consume(${getDisplayName(WrappedComponent)})`
 
       mapState = (state: State, api: Api) => map(state, api, this.props)
 
