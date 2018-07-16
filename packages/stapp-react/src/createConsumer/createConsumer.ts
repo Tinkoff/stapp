@@ -9,7 +9,7 @@ import { renderPropType, selectorType } from '../helpers/propTypes'
 import { Observable, Subscription } from 'light-observable'
 import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
 import { renderComponent } from '../helpers/renderComponent'
-import { ConsumerProps } from './createConsumer.h'
+import { ConsumerClass, ConsumerProps } from './createConsumer.h'
 
 /**
  * @private
@@ -24,44 +24,45 @@ const consumerPropTypes = {
 /**
  * Creates Consumer component
  */
-export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
-  return class Consumer extends Component<ConsumerProps<State, Api, any>> {
+export const createConsumer = <State, Api>(
+  app: Stapp<State, Api>
+): ConsumerClass<State, Api, any> => {
+  return class Consumer extends Component<ConsumerProps<State, Api, any>, { appState: any }> {
     static app = app
-
     static propTypes = consumerPropTypes
-
-    subscription!: Subscription | void
-    selectedResult!: any
-
-    componentWillMount() {
-      this.subscribe(this.props)
+    static displayName = `${app.name}.Consumer`
+    static defaultProps = {
+      map: identity
     }
 
-    componentWillReceiveProps(nextProps: ConsumerProps<State, Api, any>) {
-      if (this.props.map !== nextProps.map) {
-        this.subscribe(nextProps)
-      }
+    subscription!: Subscription | void
+
+    state = {
+      appState: null
+    }
+
+    componentWillMount() {
+      this.subscribe()
     }
 
     componentWillUnmount() {
       this.unsubscribe()
     }
 
-    subscribe(props: ConsumerProps<State, Api, any>) {
+    subscribe() {
       this.unsubscribe()
-
-      const mapState = props.map || (identity as any)
 
       this.subscription = Observable.from(app)
         .pipe(
           auditTime(1000 / 60),
           startWith([app.getState()]),
-          map((state) => mapState(state, app.api)),
+          map((state) => this.props.map!(state, app.api)),
           skipRepeats(shallowEqual)
         )
         .subscribe((result) => {
-          this.selectedResult = result
-          this.forceUpdate()
+          this.setState(() => ({
+            appState: result
+          }))
         })
     }
 
@@ -72,8 +73,14 @@ export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
       }
     }
 
-    shouldComponentUpdate() {
-      return false
+    shouldComponentUpdate(nextProps: ConsumerProps<State, Api, any>, nextState: { appState: any }) {
+      return (
+        nextState.appState !== this.state.appState ||
+        nextProps.map !== this.props.map ||
+        nextProps.children !== this.props.children ||
+        nextProps.component !== this.props.component ||
+        nextProps.render !== this.props.render
+      )
     }
 
     render() {
@@ -84,7 +91,7 @@ export const createConsumer = <State, Api>(app: Stapp<State, Api>) => {
           children: this.props.children,
           component: this.props.component
         },
-        this.selectedResult,
+        this.state.appState,
         app.api
       )
     }

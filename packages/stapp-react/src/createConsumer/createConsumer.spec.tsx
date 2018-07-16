@@ -142,15 +142,13 @@ describe('createContext', () => {
         }, 25)
       }
 
+      renderDiv = () => {
+        count += 1
+        return <div />
+      }
+
       render() {
-        return (
-          <Consumer t={this.state.t}>
-            {() => {
-              count += 1
-              return <div />
-            }}
-          </Consumer>
-        )
+        return <Consumer t={this.state.t}>{this.renderDiv}</Consumer>
       }
     }
 
