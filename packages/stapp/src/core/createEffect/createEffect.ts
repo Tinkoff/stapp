@@ -1,10 +1,9 @@
-import { APP_KEY, COMPLETE } from '../../helpers/constants'
+import { concat, EMPTY, fromPromise, of } from 'light-observable/observable'
+import { APP_KEY } from '../../helpers/constants'
 import { isPromise } from '../../helpers/is/isPromise/isPromise'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { createEvent } from '../createEvent/createEvent'
 
 // Models
-import { Dispatch } from '../createApp/createApp.h'
 import { EffectCreator } from './createEffect.h'
 
 /**
@@ -48,13 +47,8 @@ export const createEffect = <Payload, Result>(
 ): EffectCreator<Payload, Result> => {
   const success = createEvent<Result>(`${description}: SUCCESS`)
   const fail = createEvent<any>(`${description}: FAIL`)
-  const start = createEvent<{ id: string; payload: Payload }, Payload, any>(
-    `${description}: START`,
-    ({ payload }) => payload,
-    ({ id }) => ({
-      [COMPLETE]: id
-    })
-  )
+  const start = createEvent<Payload>(`${description}: START`)
+  const complete = createEvent(`${description}: COMPLETE`)
 
   let _effect = effect
 
@@ -63,29 +57,26 @@ export const createEffect = <Payload, Result>(
       throw new Error(`${APP_KEY} error: Effect is not provided!`)
     }
 
-    return (_: any, dispatch: Dispatch<any>): Promise<void> => {
-      if (!condition(payload)) {
-        return Promise.resolve()
-      }
-
-      const id = `${description}: COMPLETE [${uniqueId()}]`
-
-      dispatch(start({ id, payload }))
-
-      return run(payload, _effect!)
-        .then((result) => dispatch(success(result)))
-        .catch((error) => dispatch(fail(error)))
-        .then(() => {
-          // tslint:disable-next-line no-floating-promises
-          dispatch({ type: id })
-        })
+    if (!condition(payload)) {
+      return EMPTY
     }
+
+    return concat(
+      of(start(payload)),
+      fromPromise(
+        run(payload, _effect)
+          .then((result) => success(result))
+          .catch((error) => fail(error))
+      ),
+      of(complete())
+    )
   }
 
   return Object.assign(runEffect, {
     start,
     success,
     fail,
+    complete,
     getType: () => start.getType(),
     use(fn: (payload: Payload) => Promise<Result> | Result) {
       _effect = fn
