@@ -13,6 +13,8 @@ import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic, Thunk } from './createApp.h'
 
+jest.useFakeTimers()
+
 describe('createApp', () => {
   const mockReducer = createReducer({})
   const fire1 = createEvent('fire1')
@@ -498,6 +500,32 @@ describe('createApp', () => {
       expect(resolved).toBe(false)
 
       app.dispatch(fire2())
+      await null
+      expect(resolved).toBe(true)
+    })
+
+    it('should accept timeout', async () => {
+      const module = {
+        name: 'test',
+        waitFor: [
+          {
+            event: fire1,
+            timeout: 50
+          }
+        ]
+      }
+
+      const app = createApp({
+        modules: [loggerModule, module]
+      })
+
+      let resolved = false
+      app.ready.then(() => (resolved = true))
+
+      await null
+      expect(resolved).toBe(false)
+
+      jest.runAllTimers()
       await null
       expect(resolved).toBe(true)
     })

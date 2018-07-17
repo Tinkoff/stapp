@@ -7,7 +7,7 @@ import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { AnyEventCreator } from '../createEvent/createEvent.h'
 import { bindApi } from './bindApi'
-import { AnyModule, CreateApp, Module, Stapp } from './createApp.h'
+import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
 
@@ -48,7 +48,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const moduleDependencies = new Set<string>()
   const reducers: any = {}
   const api: any = {}
-  let waitFor: Array<AnyEventCreator | string> = []
+  let waitFor: WaitFor = []
 
   for (const anyModule of anyModules) {
     const module = isModule(anyModule) ? anyModule : anyModule(dependencies)

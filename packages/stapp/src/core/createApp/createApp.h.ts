@@ -31,6 +31,15 @@ export type EventEpic<Payload, Meta, State> = (
  */
 export type Epic<State> = EventEpic<any, any, State>
 
+export type WaitFor = Array<
+  | AnyEventCreator
+  | string
+  | {
+      event: AnyEventCreator | string
+      timeout: number
+    }
+>
+
 /**
  * A module is a plain object that consists of several fields. The only required field
  * is `name`. It will be used in development mode for debugging.
@@ -47,7 +56,7 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
   // Api
   events?: Api
   api?: Api
-  waitFor?: Array<AnyEventCreator | string>
+  waitFor?: WaitFor
 
   // State
   reducers?: { [K in keyof State]: (state: State[K], event: any) => State[K] }
