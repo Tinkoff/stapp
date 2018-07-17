@@ -177,7 +177,7 @@ These methods create form helpers, who handle every common operation with forms.
 Basic example:
 
 ```jsx
-import { createForm, createField } from 'stapp/lib/react'
+import { createForm, createField } from 'stapp-react'
 import formApp from '../myApps/formApp.js'
 
 const Form = createForm(formApp)

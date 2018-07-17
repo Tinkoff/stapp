@@ -161,7 +161,7 @@ Stapp comes shipped with a few modules covering most common problems (see Module
 
 ## Peer dependencies
 
-Stapp core package is dependent on redux. Other `stapp-*` packages have their own dependencies.
+Stapp core package is peer dependent on redux. Other `stapp-*` packages have their own peer dependencies.
 
 ## License
 

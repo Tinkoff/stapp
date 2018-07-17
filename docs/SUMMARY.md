@@ -6,23 +6,19 @@
   * [Modules](README.md#modules)
   * [Peer dependencies](README.md#peer-dependencies)
   * [License](README.md#license)
-* Guides
+* Core
+  * [createApp](/core/createApp.md)
+  * [createEvent](/core/createEvent.md)
+  * [createEffect](/core/createEffect.md)
+  * [createReducer](/core/createReducer.md)
   * [Modules](/usage/Modules.md)
   * [Epics](/usage/epics.md)
+* Guides
   * [React](/usage/react.md)
   * [SSR](/usage/ssr.md)
-* API
-  * [createApp](/api/createApp.md)
-  * [Stapp](/api/Stapp.md)
-  * [createEvent](/api/createEvent.md)
-  * [EventCreator](/api/EventCreator.md)
-  * [createEffect](/api/createEffect.md)
-  * [EffectCreator](/api/EffectCreator.md)
-  * [createReducer](/api/createReducer.md)
-  * [Reducer](/api/Reducer.md)
 * Modules
   * [persist](/modules/persist.md)
   * [loaders](/modules/loaders.md)
-  * [formBase](/modules/formBase.md)
+  * [formBase](/modules/formbase.md)
   * [validate](/modules/validate.md)
-* [Types definitions](types.md)
+

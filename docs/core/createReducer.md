@@ -1,6 +1,6 @@
-# Reducer
+# `createReducer()`
 
-Reducer is a function that takes the previous state and an event and returns a new state. Reducers are created by [`createReducer`](/api/createReducer.html).
+Creates a reducer on steroids. Reducer is a function that takes the previous state and an event and returns a new state.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -8,17 +8,19 @@ Reducer is a function that takes the previous state and an event and returns a n
 
 - [Definition](#definition)
 - [Usage](#usage)
-  - [`on()`](#on)
-  - [`off()`](#off)
-  - [`reset()`](#reset)
-  - [`has()`](#has)
-  - [`createEvents()`](#createevents)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Definition
+## Definitions
 
 ```typescript
+type EventHandler<State, Payload, Meta> = (state: State, payload: Payload, meta: Meta) => State
+
+type createReducer = <S>(
+  initialState: Partial<S>,
+  handlers: { [K: string]: EventHandler }
+) => Reducer
+
 type AnyEvent = EventCreator | string | Array<EventCreator | string>
 
 type Reducer<State> = {
@@ -27,11 +29,22 @@ type Reducer<State> = {
   off(event: AnyEvent): Reducer<State>
   reset(event: AnyEvent): Reducer<State>
   has(event: EventCreator | string): boolean
-  createEvents(model: EventHandlers): EventCreators
+  createEvents(model: { [K: string]: EventHandler }): { [K: string]: EventCreator }
 }
 ```
 
 ## Usage
+
+```JS
+import { createEvent, createReducer } from 'stapp'
+
+const increment = createEvent()
+const reducer = createReducer(0)
+  .on(increment, state => state + 1)
+
+const state = reducer() // 0
+const nextState = reducer(state, increment) // 1
+```
 
 ### `on()`
 
@@ -98,10 +111,6 @@ const { add, subtract, double } = reducer.createEvents({
 <!--
 ## Type definitions
 
-- [`createReducer`](/types.html#createreducer)
-- [`EventCreator*`](/types.html#eventcreator0)
-- [`EventCreators`](/types.html#eventcreators)
-- [`EventHandler`](/types.html#eventhandler)
-- [`EventHandlers`](/types.html#eventhandlers)
-- [`Event`](/types.html#event)
+* [`createReducer`](/types.html#createReducer)
+* [`Reducer`](/types.html#reducer)
 -->

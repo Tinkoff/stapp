@@ -21,8 +21,8 @@ type formBase<Values> = (config: {
   initialValues: Partial<Values>
 }) => Module<{}, FormBaseState<Values>>
 
-type FormBaseState<InitialValues> = {
-  values: Values extends InitialValues,
+type FormBaseState<Values> = {
+  values: Values,
   errors: { [K in keyof Values]: any },
   touched: { [K in keyof Values]: boolean },
   dirty: { [K in keyof Values]: boolean },
@@ -39,7 +39,7 @@ type FormBaseState<InitialValues> = {
 import { createApp } from 'stapp'
 import { formBase } from 'stapp-formbase'
 
-const app = createForm({
+const app = createApp({
   name: 'My Form',
   modules: [
     formBase({
@@ -88,14 +88,14 @@ const app = createForm({
 `stapp-formbase` doesn't expose any of it's events to the global application API. They should be imported and used in other modules and store-to-view connecting utilities. See [react usage](/usage/react.html) or `createForm` and `createField` source code for an example.
 
 ```typescript
-type setValue = (values: { [K: string]: string }) => Event<{ [K: string]: string }>
-type setError = (errors: { [K: string]: any }) => Event<{ [K: string]: any }>
-type setTouched = (touched: { [K: string]: boolean }) => Event<{ [K: string]: boolean }>
-type setActive = (active: string) => Event<string>
-type setSubmitting = (isSubmitting: boolean) => Event<boolean>
-type setReady = (ready: { [K: string]: boolean }) => Event<{ [K: string]: boolean }>
-type resetForm = () => Event<void>
-type submit = () => Event<void>
+type setValue = EventCreator<{ [K: string]: string }>
+type setError = EventCreator<{ [K: string]: any }>
+type setTouched = EventCreator<{ [K: string]: boolean }> 
+type setActive = EventCreator<string>
+type setSubmitting = EventCreator<boolean>
+type setReady = EventCreator<{ [K: string]: boolean }> 
+type resetForm = EventCreator<void>
+type submit = EventCreator<void>
 ```
 
 ### Selectors

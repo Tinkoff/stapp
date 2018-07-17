@@ -2,8 +2,8 @@
  Major update has tho main goals:
  1. Significantly reduce bundle size
  2. Make stapp much less opinionated
- 
-- [ ] Split project into several modules
+
+- [x] Split project into several modules
   * developing:
     * monorepo
     * OR a github organization
@@ -28,3 +28,4 @@
 - [ ] Add an alias for the `epic` field (`process`)
 - [ ] Remove combineEpics. Instead, `process` field should accept an array of processors.
 - [ ] Add support for generators in the dispatch method. Dispatch should be as universal as possible.
+
