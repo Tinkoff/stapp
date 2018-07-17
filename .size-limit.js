@@ -1,8 +1,7 @@
 module.exports = [
   {
     name: 'stapp core',
-    path: './packages/stapp/lib/stapp.js',
-    webpack: false
+    path: './packages/stapp/lib/stapp.js'
   },
   {
     name: 'stapp-formbase',

@@ -1,3 +1,4 @@
+// tslint:disable no-use-before-declare
 import { Observable, Subscription } from 'light-observable'
 import { initDone } from '../../events/initDone'
 import { controlledPromise } from '../../helpers/controlledPromise/controlledPromise'

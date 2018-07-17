@@ -10,7 +10,10 @@ import { validate } from './validate'
 import { ValidateConfig } from './validate.h'
 
 describe('validate', () => {
-  const getApp = (validateConfig: ValidateConfig<any>, formConfig?: FormBaseConfig<any>) =>
+  const getApp = (
+    validateConfig: ValidateConfig<any>,
+    formConfig?: FormBaseConfig<any>
+  ) =>
     createApp({
       modules: [formBase(formConfig), validate(validateConfig)]
     })
@@ -20,7 +23,11 @@ describe('validate', () => {
     formConfig?: FormBaseConfig<any>
   ) =>
     createApp({
-      modules: [loggerModule, formBase(formConfig), validate(validateConfig)]
+      modules: [
+        loggerModule({ pattern: null }),
+        formBase(formConfig),
+        validate(validateConfig)
+      ]
     })
 
   describe('validation calls', () => {
@@ -49,10 +56,14 @@ describe('validate', () => {
       expect(age).toBeCalledWith('18', 'age', app.getState(), { onInit: true })
 
       expect(name.mock.calls).toHaveLength(1)
-      expect(name).toBeCalledWith('John', 'name', app.getState(), { onInit: true })
+      expect(name).toBeCalledWith('John', 'name', app.getState(), {
+        onInit: true
+      })
 
       expect(username.mock.calls).toHaveLength(1)
-      expect(username).toBeCalledWith(undefined, 'username', app.getState(), { onInit: true })
+      expect(username).toBeCalledWith(undefined, 'username', app.getState(), {
+        onInit: true
+      })
     })
 
     it('should not validate fields if validateOnInit is set to false', () => {
@@ -96,10 +107,14 @@ describe('validate', () => {
       )
 
       expect(age.mock.calls).toHaveLength(1)
-      expect(age).toBeCalledWith('20', 'age', app.getState(), { onChange: true })
+      expect(age).toBeCalledWith('20', 'age', app.getState(), {
+        onChange: true
+      })
 
       expect(name.mock.calls).toHaveLength(1)
-      expect(name).toBeCalledWith('Ivan', 'name', app.getState(), { onChange: true })
+      expect(name).toBeCalledWith('Ivan', 'name', app.getState(), {
+        onChange: true
+      })
 
       expect(username.mock.calls).toHaveLength(0)
 
@@ -110,7 +125,9 @@ describe('validate', () => {
       )
 
       expect(age.mock.calls).toHaveLength(2)
-      expect(age).toBeCalledWith('25', 'age', app.getState(), { onChange: true })
+      expect(age).toBeCalledWith('25', 'age', app.getState(), {
+        onChange: true
+      })
 
       expect(name.mock.calls).toHaveLength(1)
       expect(username.mock.calls).toHaveLength(0)
@@ -145,13 +162,19 @@ describe('validate', () => {
       app.dispatch(revalidate())
 
       expect(age.mock.calls).toHaveLength(1)
-      expect(age).toBeCalledWith('18', 'age', app.getState(), { onRevalidate: true })
+      expect(age).toBeCalledWith('18', 'age', app.getState(), {
+        onRevalidate: true
+      })
 
       expect(name.mock.calls).toHaveLength(1)
-      expect(name).toBeCalledWith('John', 'name', app.getState(), { onRevalidate: true })
+      expect(name).toBeCalledWith('John', 'name', app.getState(), {
+        onRevalidate: true
+      })
 
       expect(username.mock.calls).toHaveLength(1)
-      expect(username).toBeCalledWith(undefined, 'username', app.getState(), { onRevalidate: true })
+      expect(username).toBeCalledWith(undefined, 'username', app.getState(), {
+        onRevalidate: true
+      })
     })
   })
 

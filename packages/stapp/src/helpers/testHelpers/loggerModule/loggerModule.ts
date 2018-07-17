@@ -5,7 +5,11 @@ import { APP_KEY } from '../../constants'
 /**
  * @private
  */
-export const loggerModule: Module<{}, { eventLog: Array<Event<any, any>> }> = {
+export const loggerModule = ({
+  pattern = new RegExp(`^${APP_KEY}`)
+}: {
+  pattern: RegExp | void
+}): Module<{}, { eventLog: Array<Event<any, any>> }> => ({
   name: 'logger',
   reducers: {
     eventLog: (state: Array<Event<any, any>> = [], event: Event<any, any>) => {
@@ -13,11 +17,11 @@ export const loggerModule: Module<{}, { eventLog: Array<Event<any, any>> }> = {
         return state
       }
 
-      if (event.type.startsWith(APP_KEY)) {
+      if (pattern && pattern.test(event.type)) {
         return state
       }
 
       return state.concat(event)
     }
   }
-}
+})

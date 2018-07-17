@@ -369,7 +369,7 @@ describe('createApp', () => {
       expect(app.getState().eventLog).toEqual([])
     })
 
-    it('should accepts streams', async () => {
+    it('should accept streams', async () => {
       const app = createApp({
         modules: [loggerModule]
       })

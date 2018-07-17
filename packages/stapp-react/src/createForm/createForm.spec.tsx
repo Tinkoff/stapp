@@ -10,7 +10,7 @@ import { createForm } from './createForm'
 describe('createForm', () => {
   const app = createApp({
     name: 'test',
-    modules: [loggerModule, formBase<{ test1: string }>()]
+    modules: [loggerModule({ pattern: null }), formBase<{ test1: string }>()]
   })
 
   const last = (a: any[]) => a[a.length - 1]
@@ -53,6 +53,8 @@ describe('createForm', () => {
     expect(app.getState().values.test1).toEqual('test')
 
     form.simulate('submit')
-    expect(last(app.getState().eventLog)).toEqual(submit())
+    expect(last(app.getState().eventLog)).toEqual(
+      expect.objectContaining(submit())
+    )
   })
 })
