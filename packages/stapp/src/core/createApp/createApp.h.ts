@@ -66,9 +66,12 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
  * @typeparam State Module state
  * @typeparam Full Full application state
  */
-export type ModuleFactory<Api, State, Full extends Partial<State> = {}, Extra = {}> = (
-  extraArgument: Extra
-) => Module<Api, State, Full>
+export type ModuleFactory<
+  Api,
+  State,
+  Full extends Partial<State> = {},
+  Extra = {}
+> = (extraArgument: Extra) => Module<Api, State, Full>
 
 /**
  * @typeparam Extra Dependencies needed by module factory
@@ -93,7 +96,10 @@ export type Dispatch<State> = <T>(
   T extends Promise<infer P> ? P :
   T extends Thunk<State, infer R> ? R : T
 
-export type Thunk<State, Result> = (getState: () => State, dispatch: Dispatch<State>) => Result
+export type Thunk<State, Result> = (
+  getState: () => State,
+  dispatch: Dispatch<State>
+) => Result
 /**
  * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
  * @typeparam State Application state shape
@@ -104,6 +110,7 @@ export type Stapp<State, Api> = Subscribable<State> & {
   api: Api
   dispatch: Dispatch<State>
   getState: () => State
+  ready: Promise<Partial<State>>
 }
 
 /**

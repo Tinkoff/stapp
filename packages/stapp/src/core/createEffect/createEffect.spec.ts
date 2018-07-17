@@ -1,4 +1,3 @@
-import { COMPLETE } from '../../helpers/constants'
 import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { createEffect } from './createEffect'
 
@@ -39,9 +38,12 @@ describe('createEffect', () => {
   })
 
   it('should create a stream of events', async () => {
-    const effect = createEffect<{ test: number }, { test: number }>('test', (x) => ({
-      test: x.test + 1
-    }))
+    const effect = createEffect<{ test: number }, { test: number }>(
+      'test',
+      (x) => ({
+        test: x.test + 1
+      })
+    )
     const payload = { test: 1 }
 
     const events = await collectData(effect(payload))
@@ -50,7 +52,11 @@ describe('createEffect', () => {
     const success = events[1]
 
     // Check order
-    expect(events).toEqual([effect.start(payload), effect.success({ test: 2 }), effect.complete()])
+    expect(events).toEqual([
+      effect.start(payload),
+      effect.success({ test: 2 }),
+      effect.complete()
+    ])
 
     // Check payload
     expect(start.payload).toBe(payload)
@@ -68,7 +74,9 @@ describe('createEffect', () => {
   })
 
   it('should work with promise-resolving effect function', async () => {
-    const effect = createEffect<P, P>('test', (x) => Promise.resolve({ test: x.test + 1 }))
+    const effect = createEffect<P, P>('test', (x) =>
+      Promise.resolve({ test: x.test + 1 })
+    )
     const payload = { test: 1 }
 
     const events = await collectData(effect(payload))
@@ -81,7 +89,9 @@ describe('createEffect', () => {
   })
 
   it('should work with promise-rejecting effect function', async () => {
-    const effect = createEffect<P, P>('test', (x) => Promise.reject({ test: x.test - 1 }))
+    const effect = createEffect<P, P>('test', (x) =>
+      Promise.reject({ test: x.test - 1 })
+    )
     const payload = { test: 1 }
 
     const events = await collectData(effect(payload))

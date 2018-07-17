@@ -1,5 +1,6 @@
-import { EMPTY, Observable } from 'light-observable'
-import { collectData } from '../../helpers/testHelpers/collectData/collectData'
+import { Observable } from 'light-observable'
+import { EMPTY } from 'light-observable/observable'
+import { collectData } from '../testHelpers/collectData/collectData'
 import { combineEpics } from './combineEpics'
 
 // Models

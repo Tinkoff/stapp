@@ -1,6 +1,6 @@
 import { ComponentClass, ComponentType } from 'react'
-import { Omit } from 'stapp/lib/models/helpers.h'
 
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /**
  * @hidden
  */
@@ -14,7 +14,9 @@ export type ConsumerHoc<State, Api> = {
   ) => ComponentClass<ResultProps>
 
   // MapState using only state
-  <SelectedState>(map: (state: State, api: Api, props?: any) => SelectedState): <
+  <SelectedState>(
+    map: (state: State, api: Api, props?: any) => SelectedState
+  ): <
     ConsumerProps extends Partial<SelectedState & Api>,
     ResultProps = Omit<ConsumerProps, keyof (SelectedState & Api)>
   >(

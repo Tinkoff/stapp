@@ -1,5 +1,5 @@
 import { AnyEventCreator, Event } from '../../core/createEvent/createEvent.h'
-import { getEventType } from '../../helpers/getEventType/getEventType'
+import { getEventType } from '../getEventType/getEventType'
 
 export function select(eventCreator: AnyEventCreator | string) {
   const type = getEventType(eventCreator)

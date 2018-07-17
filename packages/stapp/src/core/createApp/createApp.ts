@@ -1,30 +1,29 @@
-import { Observable } from 'light-observable'
-import { applyMiddleware, compose, createStore, Middleware } from 'redux'
-import $$observable from 'symbol-observable'
-import { createAsyncMiddleware } from '../../async/createAsyncMiddleware/createAsyncMiddleware'
-import { createStateStreamEnhancer } from '../../epics/createStateStreamEnhancer/createStateStreamEnhancer'
-import { initDone } from '../../events/initDone'
-import { awaitStore } from '../../helpers/awaitStore/awaitStore'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
-import { bindApi } from './bindApi'
-import { prepareModules } from './prepareModules'
-
-// Modules
 import { PartialObserver } from 'light-observable/core/types.h'
-import { Event } from '../createEvent/createEvent.h'
-import { AnyModule, CreateApp, Stapp } from './createApp.h'
-
-/**
- * @private
- * @returns {boolean}
- */
-const useReduxEnhancer = () =>
-  process.env.NODE_ENV !== 'production' &&
-  typeof window === 'object' && // tslint:disable-line strict-type-predicates
-  !!(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+import { Middleware } from 'redux'
+import $$observable from 'symbol-observable'
+import { initDone } from '../../events/initDone'
+import { APP_KEY } from '../../helpers/constants'
+import { isModule } from '../../helpers/is/isModule/isModule'
+import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { AnyEventCreator } from '../createEvent/createEvent.h'
+import { bindApi } from './bindApi'
+import { AnyModule, CreateApp, Module, Stapp } from './createApp.h'
+import { getReadyPromise } from './getReadyPromise'
+import { getStore } from './getStore'
 
 /**
  * Creates an application and returns a [[Stapp]].
+ * Stage I
+ *  1) Get module (call ModuleFactory if needed)
+ *  2) Collect dependencies
+ *  3) Combine reducers
+ *  4) Collect waitFor
+ * Stage II
+ *  1) Check dependencies
+ *  2) Create store
+ * Stage II
+ *  1) Connect epics
+ *  2) Connect api
  * @param config createApp config
  * @param config.name Application name
  * @param config.modules Array of modules or module factories
@@ -38,57 +37,98 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
 }): Stapp<State, Api> => {
-  const name = config.name || `Stapp [${uniqueId()}]`
-  const dependencies: Extra = Object.assign({}, config.dependencies)
+  const appName = config.name || `Stapp [${uniqueId()}]`
+  const anyModules = config.modules
+  const dependencies = config.dependencies || {}
+  const initialState = config.rehydrate || {}
   const middlewares = config.middlewares || []
 
-  // Modules
-  const { rootReducer, rootEpic, events, waitFor } = prepareModules(
-    config.modules,
-    config.rehydrate || {},
-    dependencies
-  )
+  const modules: Array<Module<Partial<Api>, Partial<State>, State>> = []
+  const moduleNames = new Set<string>()
+  const moduleDependencies = new Set<string>()
+  const reducers: any = {}
+  const api: any = {}
+  let waitFor: Array<AnyEventCreator | string> = []
 
-  // Epics
-  const { stateStreamEnhancer } = createStateStreamEnhancer(rootEpic)
+  for (const anyModule of anyModules) {
+    const module = isModule(anyModule) ? anyModule : anyModule(dependencies)
+    modules.push(module)
 
-  // Async
-  const { ready, asyncMiddleware } = createAsyncMiddleware<State>(waitFor)
+    if (!module.name) {
+      throw new Error(`${APP_KEY} error: Module name is not provided`)
+    }
 
-  // Store
-  const composeEnhancers = useReduxEnhancer()
-    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        name
+    moduleNames.add(module.name)
+
+    if (module.dependencies) {
+      module.dependencies.forEach((dependency) =>
+        moduleDependencies.add(dependency)
+      )
+    }
+
+    const moduleState: any = module.state || module.reducers
+    if (moduleState) {
+      Object.keys(moduleState).forEach((stateKey) => {
+        reducers[stateKey] = moduleState[stateKey]
       })
-    : compose
+    }
 
-  const store = createStore<State, Event<any, any>, void, void>(
-    rootReducer,
-    config.rehydrate || ({} as any),
-    composeEnhancers(applyMiddleware(...middlewares, asyncMiddleware), stateStreamEnhancer)
+    if (module.waitFor) {
+      waitFor = waitFor.concat(module.waitFor)
+    }
+  }
+
+  moduleNames.forEach((moduleName) => moduleDependencies.delete(moduleName))
+  if (moduleDependencies.size !== 0) {
+    throw new Error(
+      `${APP_KEY} error: Please, provide dependencies: ${Array.from(
+        moduleDependencies
+      ).join(', ')}`
+    )
+  }
+
+  const { state$, event$, createDispatch, getState } = getStore<State>(
+    appName,
+    reducers,
+    initialState,
+    middlewares
   )
 
-  awaitStore(name, ready)
+  for (const module of modules) {
+    if (!module.epic && !module.api && !module.events) {
+      continue
+    }
 
-  store.dispatch(initDone())
-  const observableStore = Observable.from(store as any)
+    const dispatch = createDispatch(module.name)
+
+    const epic = module.epic
+    if (epic) {
+      const epicStream = epic(event$, state$, { dispatch, getState })
+
+      if (epicStream) {
+        epicStream.subscribe(dispatch)
+      }
+    }
+
+    const moduleApi: any = bindApi(module.api || module.events || {}, dispatch)
+    Object.keys(moduleApi).forEach((apiKey) => {
+      api[apiKey] = moduleApi[apiKey]
+    })
+  }
+
+  const readyPromise = getReadyPromise(event$, getState, waitFor)
+  const rootDispatch = createDispatch(appName)
+  rootDispatch(initDone())
 
   return {
-    name,
-    subscribe(
-      next?: PartialObserver<State> | ((value: State) => void),
-      error?: (reason: any) => void,
-      complete?: () => void
-    ) {
-      return observableStore.subscribe(next, error, complete)
+    name: appName,
+    subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
+      return state$.subscribe(next)
     },
-    dispatch(event: any) {
-      return store.dispatch(event)
-    },
-    getState() {
-      return store.getState()
-    },
-    api: bindApi(events, store),
+    dispatch: rootDispatch,
+    getState,
+    ready: readyPromise,
+    api,
     [$$observable]() {
       return this
     }
