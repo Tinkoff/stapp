@@ -1,6 +1,6 @@
-import { createApp } from 'packages/core/src/stapp'
-import { createConsumer, createConsume } from 'stapp/lib/react/index'
-import { persist, toAsync } from 'stapp/lib/modules/persist'
+import { createApp } from 'stapp'
+import { createComponents } from 'stapp-react'
+import { persist, toAsync } from 'stapp-persist'
 import { handlers } from '../modules/handlers'
 import { todoModule } from '../modules/todo'
 
@@ -16,5 +16,4 @@ const todoApp = createApp({
   ]
 })
 
-export const Consumer = createConsumer(todoApp)
-export const consume = createConsume(todoApp)
+export const { Consumer, consume } = createComponents(todoApp)

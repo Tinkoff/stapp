@@ -1,17 +1,16 @@
 import React from 'react'
-import { createStructuredSelector } from 'reselect'
-import { Styles } from './Styles'
 import { Consumer, Field, Form } from '../apps/asyncForm'
+import { createStructuredSelector } from 'reselect'
+import { isLoadingSelector } from 'stapp-loaders'
+import { isValidatingSelector } from 'stapp-validate'
 import { RenderCount } from './RenderCount'
 import { Spinner } from './Spinner'
-import { isValidatingSelector } from 'stapp/lib/modules/validate'
-import { isLoadingSelector } from 'stapp/lib/modules/loaders'
+import { Styles } from './Styles'
 
 const isValidating = createStructuredSelector({
   isValidating: isValidatingSelector(),
   isLoading: isLoadingSelector()
 })
-
 
 export const App = () => {
   return <Styles>
@@ -28,7 +27,7 @@ export const App = () => {
     <Form>
       {
         ({ handleSubmit, handleReset, submitting }) => <form onSubmit={ handleSubmit }>
-          <Consumer mapState={ isValidating }>
+          <Consumer map={ isValidating }>
             {
               ({ isValidating, isLoading }) => (isValidating || isLoading) ? <Spinner /> : null
             }

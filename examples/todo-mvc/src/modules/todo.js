@@ -1,4 +1,4 @@
-import { createReducer } from 'packages/core/src/stapp'
+import { createReducer } from 'stapp'
 import { everythingToggled } from '../apps/todoSelectors'
 
 const todosReducer = createReducer([])
@@ -19,6 +19,8 @@ export const events = todosReducer.createEvents({
   },
   clearCompleted: (todos) => todos.filter(todo => !todo.completed)
 })
+
+events.addTodo()
 
 export const todoModule = ({
   name: 'todos',

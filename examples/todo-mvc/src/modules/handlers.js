@@ -1,5 +1,5 @@
-import { map } from 'rxjs/operators/map'
-import { createEvent, combineEpics } from 'packages/core/src/stapp'
+import { createEvent, combineEpics } from 'stapp'
+import { map } from 'light-observable/operators'
 import { events } from './todo'
 
 const handleSubmit = createEvent('Handle todo submit', event => event.target.value.trim())

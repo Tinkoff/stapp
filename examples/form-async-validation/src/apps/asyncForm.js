@@ -1,10 +1,10 @@
-import { createApp } from 'packages/core/src/stapp'
-import { createConsumer, createField, createForm } from 'stapp/lib/react'
-import { loaders } from 'stapp/lib/modules/loaders'
-import { formBase } from 'stapp/lib/modules/formBase'
-import { validate } from 'stapp/lib/modules/validate'
-import { persist, toAsync } from 'stapp/lib/modules/persist'
+import { createApp } from 'stapp'
+import { createComponents } from 'stapp-react'
+import { formBase } from 'stapp-formbase'
 import { formSubmit } from '../modules/formSubmit'
+import { loaders } from 'stapp-loaders'
+import { persist, toAsync } from 'stapp-persist'
+import { validate } from 'stapp-validate'
 import { wait } from '../utils/wait'
 
 const required = (value, fieldName) => {
@@ -52,6 +52,4 @@ const asyncForm = createApp({
   ]
 })
 
-export const Consumer = createConsumer(asyncForm)
-export const Form = createForm(asyncForm)
-export const Field = createField(asyncForm)
+export const { Consumer, Form, Field } = createComponents(asyncForm)

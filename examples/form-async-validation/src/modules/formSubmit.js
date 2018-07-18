@@ -1,23 +1,12 @@
-import { createEffect, selectArray, combineEpics } from 'packages/core/src/stapp'
-import { setSubmitting, submit } from 'stapp/lib/modules/formBase'
-import { createSelector } from 'reselect'
-import { of } from 'rxjs/observable/of'
-import { switchMap } from 'rxjs/operators/switchMap'
-import { filter } from 'rxjs/operators/filter'
-import { mergeMapTo } from 'rxjs/operators/mergeMapTo'
-import { map } from 'rxjs/operators/map'
-import { sample } from 'rxjs/operators/sample'
-import { loaderStart, loaderEnd } from 'stapp/lib/modules/loaders'
+import { createEffect, combineEpics } from 'stapp'
+import { loaderStart, loaderEnd } from 'stapp-loaders'
+import { setSubmitting, submit, isValidSelector, isReadySelector } from 'stapp-formbase'
+import { map, filter, switchMap, switchMapTo } from 'light-observable/operators'
+import { of } from 'light-observable/observable'
 import { wait } from '../utils/wait'
 
-const hasNoErrors = createSelector(
-  state => state.errors,
-  errors => Object.keys(errors).every(key => !errors[key])
-)
-const allReady = createSelector(
-  state => state.ready,
-  ready => Object.keys(ready).every(key => !!ready[key])
-)
+const isValid = isValidSelector()
+const isReady = isReadySelector()
 
 const asyncSubmit = createEffect('Submit', async values => {
   await wait(400)
@@ -25,26 +14,26 @@ const asyncSubmit = createEffect('Submit', async values => {
   window.alert(JSON.stringify(values, 0, 2));
 })
 
-const submitEpic = submit.epic((submit$, state$) => state$.pipe(
-  sample(submit$),
-  filter(state => allReady(state) & hasNoErrors(state)),
+const submitEpic = submit.epic((submit$, state$, { getState }) => submit$.pipe(
+  map(() => getState()),
+  filter(state => isReady(state) & isValid(state)),
   map(state => state.values),
-  switchMap(values => asyncSubmit(values))
+  switchMap(asyncSubmit)
 ))
 
 const onSubmitStartEpic = asyncSubmit.start.epic(start$ => start$.pipe(
-  mergeMapTo(of(
+  switchMapTo(of(
     loaderStart('submit'),
     setSubmitting(true)
   ))
 ))
 
-const onSubmitEndEpic = (event$) => selectArray([asyncSubmit.fail, asyncSubmit.success], event$).pipe(
-  mergeMapTo(of(
+const onSubmitEndEpic = asyncSubmit.complete.epic(complete$ => complete$.pipe(
+  switchMapTo(of(
     loaderEnd('submit'),
     setSubmitting(false)
   ))
-)
+))
 
 export const formSubmit = {
   name: 'formSubmit',

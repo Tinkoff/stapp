@@ -1,6 +1,6 @@
 import React from 'react/index'
 
-export const OverallFooter = (props) => {
+export const OverallFooter = () => {
   return <footer className="info">
     <p>Double-click to edit a todo</p>
     {/* <!-- Change this out with your name and url ↓ --> */}
