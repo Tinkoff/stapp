@@ -1,4 +1,9 @@
-import { AnyEventCreator, Event, EventCreator1 } from '../createEvent/createEvent.h'
+import {
+  AnyEventCreator,
+  EmptyEventCreator,
+  Event,
+  EventCreator1
+} from '../createEvent/createEvent.h'
 
 /**
  * Event handler. Accepts current state, event payload and event meta. Should return new state.
@@ -37,7 +42,10 @@ export type Reducer<State> = {
    * @returns same reducer
    */
   on<Payload, Meta>(
-    event: AnyEventCreator<Payload, Meta> | string | Array<AnyEventCreator | string>,
+    event:
+      | AnyEventCreator<Payload, Meta>
+      | string
+      | Array<AnyEventCreator | string>,
     handler: EventHandler<State, Payload, Meta>
   ): Reducer<State>
 
@@ -47,7 +55,9 @@ export type Reducer<State> = {
    * @param event Event creator, a string representing event type or an array of event creators or types
    * @returns {Reducer} Same reducer
    */
-  off(event: AnyEventCreator | string | Array<AnyEventCreator | string>): Reducer<State>
+  off(
+    event: AnyEventCreator | string | Array<AnyEventCreator | string>
+  ): Reducer<State>
 
   /**
    * Assigns reset handler to provided event types. Reset handler always returns initialState.
@@ -55,7 +65,9 @@ export type Reducer<State> = {
    * @param event Event creator, a string representing event type or an array of event creators or types
    * @returns Same reducer
    */
-  reset(event: AnyEventCreator | string | Array<AnyEventCreator | string>): Reducer<State>
+  reset(
+    event: AnyEventCreator | string | Array<AnyEventCreator | string>
+  ): Reducer<State>
 
   /**
    * Checks if the reducer has a handler for provided event creator or event type.
@@ -70,9 +82,15 @@ export type Reducer<State> = {
    * @typeparam T List of eventCreators names
    * @param model Object of event handlers
    */
-  createEvents<T extends string>(
-    model: { [K in T]: EventHandler<State, any> }
-  ): { [K in T]: EventCreator1<any> }
+  createEvents<Model extends { [K: string]: EventHandler<State, any> }>(
+    model: Model
+  ): {
+    [K in keyof Model]: Model[K] extends EventHandler<State, void>
+      ? EmptyEventCreator
+      : Model[K] extends EventHandler<State, infer Payload>
+        ? EventCreator1<Payload, Payload>
+        : null
+  }
 }
 
 /**
