@@ -86,23 +86,21 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     )
   }
 
-  const { state$, event$, createDispatch, getState } = getStore<State>(
-    appName,
-    reducers,
-    initialState,
-    middlewares
-  )
+  const store = getStore<State>(appName, reducers, initialState, middlewares)
 
   for (const module of modules) {
     if (!module.epic && !module.api && !module.events) {
       continue
     }
 
-    const dispatch = createDispatch(module.name)
+    const dispatch = store.createDispatch(module.name)
 
     const epic = module.epic
     if (epic) {
-      const epicStream = epic(event$, state$, { dispatch, getState })
+      const epicStream = epic(store.event$, store.state$, {
+        dispatch,
+        getState: store.getState
+      })
 
       if (epicStream) {
         epicStream.subscribe(dispatch)
@@ -115,17 +113,19 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     })
   }
 
-  const readyPromise = getReadyPromise(event$, getState, waitFor)
-  const rootDispatch = createDispatch(appName)
+  const readyPromise = getReadyPromise(store.event$, store.getState, waitFor)
+  const rootDispatch = store.createDispatch(appName)
+
+  store.flushQueue()
   rootDispatch(initDone())
 
   return {
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
-      return state$.subscribe(next)
+      return store.state$.subscribe(next)
     },
     dispatch: rootDispatch,
-    getState,
+    getState: store.getState,
     ready: readyPromise,
     api,
     [$$observable]() {

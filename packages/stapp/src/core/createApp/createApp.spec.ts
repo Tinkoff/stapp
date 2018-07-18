@@ -464,6 +464,30 @@ describe('createApp', () => {
       app.api.a2()
       check(4, 5, m2.name)
     })
+
+    it.only('should queue events during initialization', () => {
+      const mock = jest.fn()
+      const m1 = {
+        name: 'test1',
+        state: { r1: mockReducer },
+        epic: () => of(fire1())
+      }
+
+      const m2 = {
+        name: 'test2',
+        state: { r2: mockReducer },
+        epic: fire1.epic((fire$) => {
+          fire$.subscribe(mock)
+        })
+      }
+
+      const app = createApp({
+        name: 'testApp',
+        modules: [m1, m2]
+      })
+
+      expect(mock).toBeCalledWith(expect.objectContaining(fire1()))
+    })
   })
 
   describe('ready promise', () => {

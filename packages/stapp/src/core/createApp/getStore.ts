@@ -46,8 +46,11 @@ export const getStore = <State>(
   state$: Observable<State>
   event$: Observable<Event<any, any>>
   createDispatch: (moduleName: string) => Dispatch<State>
+  flushQueue: () => void
   getState: () => State
 } => {
+  let initializing = true
+  let queue: Array<Event<any, any>> | null = []
   const store: Store<State> = createStore(
     getRootReducer(reducers, initialState),
     initialState as any,
@@ -65,8 +68,12 @@ export const getStore = <State>(
 
       if (isEvent(event)) {
         addMeta(moduleName, event)
-        const result = store.dispatch(event)
+        if (initializing) {
+          queue!.push(event)
+          return event
+        }
 
+        const result = store.dispatch(event)
         eventInput$.next(event)
         return result
       }
@@ -86,10 +93,25 @@ export const getStore = <State>(
     return dispatch
   }
 
+  const flushQueue = () => {
+    if (!initializing) {
+      return
+    }
+
+    initializing = false
+    for (const event of queue!) {
+      store.dispatch(event)
+      eventInput$.next(event)
+    }
+
+    queue = null
+  }
+
   return {
     state$,
     event$,
     createDispatch,
+    flushQueue,
     getState: store.getState
   }
 }
