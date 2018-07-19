@@ -179,7 +179,7 @@ const form = {
 
 Each module can provide only one epic, but you can create as many as you like - and combine them into one with `combineEpics` function.
 
-See more about Epics in the [Epics section](/usage/ epics.html).
+See more about Epics in the [Epics section](/usage/epics.html).
 
 ## Modules: module factories
 
