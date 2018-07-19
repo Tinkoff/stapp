@@ -20,6 +20,7 @@ Take the following as an example: search field with autosuggest.
 ```js
 import { createEffect, selectArray, combineEpics, createEvent, createReducer } from 'stapp'
 import { loaderStart, loaderEnd } from 'stapp/lib/modules/loaders'
+import {mapTo, map, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators'
 
 const saveResults = createEvent('Save search results')
 const searchReducer = createReducer([])
@@ -47,19 +48,19 @@ const searchModule = {
     )),
 
     // End loader on effect complete
-    selectArray([searchEffect.success, searchEffect.fail], event$).pipe(
+    (event$) => selectArray([searchEffect.success, searchEffect.fail], event$).pipe(
       mapTo(loaderEnd('search'))
     ),
 
     // Save results on success
-    success.epic(success$ => success$.pipe(
+    searchEffect.success.epic(success$ => success$.pipe(
       map(({ payload }) => saveResults(payload))
     )),
 
     // Search epic
     (_, state$) => state$.pipe(
       // track only one field changes
-      map(state => state.values.search),
+      map(state => state.search),
 
       // debounce and distinct value changes
       debounceTime(500),
