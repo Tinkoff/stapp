@@ -93,9 +93,6 @@ export type AnyModule<Api, State, Full extends Partial<State>, Extra> =
   | ModuleFactory<Api, State, Full, Extra>
   | Module<Api, State, Full>
 
-/**
- * @private
- */
 // prettier-ignore
 export type Dispatch<State> = <T>(
   event: T
@@ -109,6 +106,7 @@ export type Thunk<State, Result> = (
   getState: () => State,
   dispatch: Dispatch<State>
 ) => Result
+
 /**
  * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
  * @typeparam State Application state shape
