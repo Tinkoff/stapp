@@ -331,7 +331,7 @@ describe('createApp', () => {
       )
     })
 
-    it('should provide static api to epics', () => {
+    it('should provide static api to epics', (done) => {
       expect.assertions(2)
 
       const m1: {
@@ -344,16 +344,20 @@ describe('createApp', () => {
         epic: (_, __, { getState, dispatch }) => {
           expect(getState().eventLog).toEqual([])
 
-          dispatch(fire1())
-          expect(getState().eventLog[0]).toEqual(
-            expect.objectContaining(fire1())
-          )
+          setTimeout(() => {
+            dispatch(fire1())
+            expect(getState().eventLog[0]).toEqual(
+              expect.objectContaining(fire1())
+            )
+            done()
+          }, 100)
         }
       }
 
       createApp({
         modules: [loggerModule, m1]
       })
+      jest.runTimersToTime(100)
     })
   })
 
@@ -465,7 +469,7 @@ describe('createApp', () => {
       check(4, 5, m2.name)
     })
 
-    it.only('should queue events during initialization', () => {
+    it('should queue events during initialization', () => {
       const mock = jest.fn()
       const m1 = {
         name: 'test1',

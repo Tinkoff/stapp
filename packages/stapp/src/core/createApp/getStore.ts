@@ -94,10 +94,6 @@ export const getStore = <State>(
   }
 
   const flushQueue = () => {
-    if (!initializing) {
-      return
-    }
-
     initializing = false
     for (const event of queue!) {
       store.dispatch(event)
