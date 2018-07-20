@@ -50,7 +50,10 @@ export const createFormBaseReducers = (initialState: any) => {
     .on(setValue, (dirty, values) =>
       commonHandler(
         dirty,
-        mapObject((element, key) => element !== (initialState[key] || ''), values)
+        mapObject(
+          (element, key) => element !== (initialState[key] || ''),
+          values
+        )
       )
     )
     .reset(resetForm)

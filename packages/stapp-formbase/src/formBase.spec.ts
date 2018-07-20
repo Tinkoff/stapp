@@ -287,7 +287,14 @@ describe('formBase', () => {
   })
 
   describe('reducers', () => {
-    const { values, errors, touched, ready, active, submitting } = createFormBaseReducers({})
+    const {
+      values,
+      errors,
+      touched,
+      ready,
+      active,
+      submitting
+    } = createFormBaseReducers({})
     const cases = [
       {
         name: 'values',
