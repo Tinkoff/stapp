@@ -16,6 +16,7 @@
 * Guides
   * [React](/usage/react.md)
   * [SSR](/usage/ssr.md)
+  * [RxJS and other reactive libs](/usage/interop.md)
 * Modules
   * [persist](/modules/persist.md)
   * [loaders](/modules/loaders.md)
