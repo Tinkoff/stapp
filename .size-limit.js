@@ -5,7 +5,7 @@ module.exports = [
   },
   {
     name: 'stapp-formbase',
-    path: './packages/stapp-formBase/lib/index.js'
+    path: './packages/stapp-formbase/lib/index.js'
   },
   {
     name: 'stapp-loaders',
@@ -31,7 +31,7 @@ module.exports = [
     name: 'Total',
     path: [
       './packages/stapp/lib/stapp.js',
-      './packages/stapp-formBase/lib/index.js',
+      './packages/stapp-formbase/lib/index.js',
       './packages/stapp-loaders/lib/index.js',
       './packages/stapp-validate/lib/index.js',
       './packages/stapp-persist/lib/index.js',

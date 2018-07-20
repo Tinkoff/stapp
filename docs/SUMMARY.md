@@ -20,6 +20,6 @@
 * Modules
   * [persist](/modules/persist.md)
   * [loaders](/modules/loaders.md)
-  * [formBase](/modules/formbase.md)
+  * [formbase](/modules/formbase.md)
   * [validate](/modules/validate.md)
 
