@@ -20,7 +20,7 @@ npm install
 
 Please, commit changes with `npm run cz`. This will run commitizen, which will protect you against commit message pain. You may also install comittizen globall and commit with `git cz`.
 
-You'll be asked about the changes skope. Please, select among the following:
+You'll be asked about the changes scope. Please, select among the following:
 
 * `core` - any feature and tests changes related to the core `stapp` package
 * `validate` - any feature and tests changes related to the `stapp-validate` package
