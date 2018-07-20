@@ -155,7 +155,7 @@ So, what are the modules? A module is a place where all your magic should happen
 3. react to state changes;
 4. react to api calls.
 
-A basic module is an object or a function, returning an object. You've already seen the basic example of a module. You may find other examples [in the docs](usage/Modules.md).
+A basic module is an object or a function, returning an object. You've already seen the basic example of a module. You may find other examples [in the docs](usage/modules.md).
 
 Stapp comes shipped with a few modules covering most common problems (see Modules section in the docs).
 

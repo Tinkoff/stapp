@@ -11,12 +11,12 @@
   * [createEvent](/core/createEvent.md)
   * [createEffect](/core/createEffect.md)
   * [createReducer](/core/createReducer.md)
-  * [Modules](/usage/Modules.md)
-  * [Epics](/usage/epics.md)
+  * [Modules](/core/modules.md)
+  * [Epics](/core/epics.md)
 * Guides
-  * [React](/usage/react.md)
-  * [SSR](/usage/ssr.md)
-  * [RxJS and other reactive libs](/usage/interop.md)
+  * [React](/quides/react.md)
+  * [SSR](/guides/ssr.md)
+  * [RxJS and other reactive libs](/guides/interop.md)
 * Modules
   * [persist](/modules/persist.md)
   * [loaders](/modules/loaders.md)
