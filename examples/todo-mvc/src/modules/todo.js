@@ -20,6 +20,8 @@ export const events = todosReducer.createEvents({
   clearCompleted: (todos) => todos.filter(todo => !todo.completed)
 })
 
+events.addTodo()
+
 export const todoModule = ({
   name: 'todos',
   reducers: {

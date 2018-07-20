@@ -1,19 +1,20 @@
 import React from 'react/index'
-import { consume } from '../apps/todoApp'
+import { Consumer } from '../apps/todoApp'
 
-export const Header = consume(
-  undefined,
-  (api) => ({
-    handleSubmit: (event) => {
-      if (event.which === 13) {
-        api.handleSubmit(event)
-        event.target.value = ''
-      }
+const mapper = (_, api) => ({
+  handleSubmit: (event) => {
+    if (event.which === 13) {
+      api.handleSubmit(event)
+      event.target.value = ''
     }
-  })
-)(({
-  handleSubmit
-}) => <header className="header">
+  }
+})
+
+export const Header = () => <header className="header">
   <h1>todos</h1>
-  <input className="new-todo" onKeyPress={handleSubmit} placeholder="What needs to be done?" autoFocus />
-</header>)
+  <Consumer map={mapper}>
+    {
+      ({ handleSubmit }) => <input className="new-todo" onKeyPress={handleSubmit} placeholder="What needs to be done?" autoFocus />
+    }
+  </Consumer>
+</header>

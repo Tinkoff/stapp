@@ -2,7 +2,7 @@ import { createSelector } from "reselect"
 
 export const idsSelector = createSelector(
   state => state.todos,
-  (todos) => ({ ids: todos.map(todo => todo.id) })
+  (todos) => todos.map(todo => todo.id)
 )
 export const showToggleSelector = (state) => state.todos.length > 0
 export const everythingToggled = (state) => state.todos.every(todo => todo.completed)

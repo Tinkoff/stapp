@@ -1,0 +1,61 @@
+{
+  "name": "stapp",
+  "version": "2.0.0-beta.4",
+  "description": "Modular state manager for microapps",
+  "keywords": [
+    "state-management",
+    "state",
+    "reactive",
+    "microservice",
+    "epics",
+    "redux"
+  ],
+  "main": "lib/stapp.js",
+  "typings": "lib/stapp.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run build:module",
+    "build:module": "tsc",
+    "prebuild": "rimraf lib",
+    "test": "npm run test:lint && npm run test:jest",
+    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
+    "test:jest": "jest --config ./jest.config.json --runInBand"
+  },
+  "peerDependencies": {
+    "redux": ">=3 <4"
+  },
+  "dependencies": {
+    "light-observable": "^2.5.1",
+    "symbol-observable": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.1.0",
+    "@types/node": "^10.3.3",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "flux-standard-action": "^2.0.1",
+    "jest": "^23.1.0",
+    "redux": "^4.0.0",
+    "ts-jest": "^22.4.2",
+    "ts-node": "^6.1.1",
+    "tslib": "^1.9.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "tslint-react": "^3.5.1",
+    "typescript": "^2.9.2"
+  }
+}

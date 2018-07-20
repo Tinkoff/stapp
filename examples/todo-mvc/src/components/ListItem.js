@@ -1,11 +1,12 @@
-import React from 'react/index'
-import { consume } from '../apps/todoApp'
+import React from 'react'
+import { Consumer } from '../apps/todoApp'
 
-export const ListItem = consume(
-  (state, { todoId }) => state.todos.find(todo => todo.id === todoId),
-  (api, { todoId }) => ({
-    ...api,
-    handleDblClick: () => api.handleDblClick(todoId),
+export const ListItem = ({ todoId }) => {
+  const mapper = (state, api) => ({
+    todo: state.todos.find(todo => todo.id === todoId),
+    handleDblClick: () => {
+      return api.handleDblClick(todoId)
+    },
     handleDelete: () => api.handleDeleteClick(todoId),
     handleCheckboxClick: () => api.handleCheckboxClick(todoId),
     handleEdit: (event) => {
@@ -14,26 +15,29 @@ export const ListItem = consume(
       }
     }
   })
-)(({
-  id,
-  text,
-  completed,
-  isEditing,
-  handleDblClick,
-  handleEdit,
-  handleDelete,
-  handleCheckboxClick
-}) => {
-  const classNames = []
-  completed && classNames.push('completed')
-  isEditing && classNames.push('editing')
 
-  return <li className={ classNames.join('') }>
-    <div className="view">
-      <input className="toggle" type="checkbox" checked={ completed } onChange={ handleCheckboxClick } />
-      <label onDoubleClick={ handleDblClick }>{ text }</label>
-      <button className="destroy" onClick={ handleDelete } />
-    </div>
-    <input onKeyDown={ handleEdit } className="edit" />
-  </li>
-})
+  return <Consumer map={mapper}>
+    {
+      ({
+         todo,
+         handleDblClick,
+         handleEdit,
+         handleDelete,
+         handleCheckboxClick
+       }) => {
+        const classNames = []
+        todo.completed && classNames.push('completed')
+        todo.isEditing && classNames.push('editing')
+
+        return <li className={classNames.join('')}>
+          <div className="view">
+            <input className="toggle" type="checkbox" checked={todo.completed} onChange={handleCheckboxClick}/>
+            <label onDoubleClick={handleDblClick}>{todo.text}</label>
+            <button className="destroy" onClick={handleDelete}/>
+          </div>
+          <input onKeyDown={handleEdit} className="edit"/>
+        </li>
+      }
+    }
+  </Consumer>
+}

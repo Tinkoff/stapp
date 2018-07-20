@@ -1,8 +1,8 @@
 # Stapp
 
-[![Build Status](https://travis-ci.org/TinkoffCreditSystems/stapp.svg?branch=master)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg)](https://www.typescriptlang.org/) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![npm](https://img.shields.io/npm/v/stapp.svg)](https://www.npmjs.com/package/stapp)
+[![Build Status](https://travis-ci.org/TinkoffCreditSystems/stapp.svg?branch=master)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg)](https://www.typescriptlang.org/) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/) [![npm](https://img.shields.io/npm/v/stapp.svg)](https://www.npmjs.com/package/stapp)
 
-Stapp is the highly opinionated application state-management tool based on redux and RxJS with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
+Stapp is the highly opinionated application state-management tool based on redux with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
 Stapp comprises all the best practices and provides instruments to write understandable and predictable code.
 
@@ -12,12 +12,12 @@ Stapp includes:
 * full compatibility with redux tooling
 * SSR support
 * bunch of drop-in modules which handle common scenarios:
-  * `formBase`
-  * `validate`
-  * `persist`
-  * `loaders`
-  * `routing` (in progress)
-* React utilities:
+  * `stapp-formbase`
+  * `stapp-validate`
+  * `stapp-persist`
+  * `stapp-loaders`
+  * `stapp-routing` (in progress)
+* React utilities (`stapp-react`):
   * a higher order component and a render-prop component to connect to the state
   * form and field components
 
@@ -125,8 +125,7 @@ const app = createApp({
   modules: [counter]
 })
 
-app
-  .state$ // state$ is an RxJS Observable of an application state
+app // app itself is compatible with standard observables
   .subscribe(state => console.log(`State: ${state}`))
 // State: { counter: 0 }
 
@@ -156,29 +155,13 @@ So, what are the modules? A module is a place where all your magic should happen
 3. react to state changes;
 4. react to api calls.
 
-A basic module is an object or a function, returning an object. You've already seen the basic example of a module. You may find other examples [in the docs](usage/Modules.md).
+A basic module is an object or a function, returning an object. You've already seen the basic example of a module. You may find other examples [in the docs](guides/Modules.md).
 
-Stapp comes shipped with a few modules covering most common problems:
-
-* Persist: the module that handles state persistence.
-* FormBase: the module that controls basic form needs: storing values and errors, determining if a form is intact and so on.
+Stapp comes shipped with a few modules covering most common problems (see Modules section in the docs).
 
 ## Peer dependencies
 
-Stapp is dependent on redux, fbjs and RxJS. React-bindings are dependent on react, reselect and prop-types.
-
-The full peer-dependencies list looks like this:
-
-```json
-{
-  "fbjs": ">=0.8",
-  "prop-types": ">=15.6",
-  "react": ">=15",
-  "redux": ">=3 <4",
-  "rxjs": ">=5",
-  "reselect": ">=3"
-}
-```
+Stapp core package is dependent on redux. Other `stapp-*` packages have their own dependencies.
 
 ## License
 

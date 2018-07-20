@@ -1,6 +1,6 @@
 # Validate
 
-Validation itself is up to you, `validate` module provides a way to connect your favorite validation library to the application and store validation results in the applications state. `validate` module is intended to be used with `formBase` module.
+Validation itself is up to you, `stapp-validate` module provides a way to connect your favorite validation library to the application and store validation results in the applications state. `stapp-validate` module is intended to be used with `stapp-formbase` module.
 
 Debouncing, throttling and other time-controlling mechanisms are up to you.
 
@@ -11,7 +11,6 @@ Debouncing, throttling and other time-controlling mechanisms are up to you.
 - [Definition](#definition)
 - [Usage](#usage)
   - [`isValidatingSelector()`](#isvalidatingselector)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -38,12 +37,12 @@ type ValidationRule<State extends FormBaseState> = (
 
 ## Usage
 
-Import `validate` module and provide some rules. Don't forget `formBase` module.
+Import `stapp-validate` module and provide some rules. Don't forget `stapp-formbase` module.
 
 ```js
 import { createApp } from 'stapp'
-import { formBase } from 'stapp/lib/modules/formBase'
-import { validate } from 'stapp/lib/modules/validate'
+import { formBase } from 'stapp-formbase'
+import { validate } from 'stapp-validate'
 
 const app = createApp({
   modules: [formBase(), validate({
@@ -64,7 +63,7 @@ Validation rule can return anything. Here are some rules:
 * `false`, `undefined` and `null` means that everything is ok
 
   ```js
-  const app - createApp({
+  const app = createApp({
     modules: [
       validate({
         rules: {
@@ -74,7 +73,7 @@ Validation rule can return anything. Here are some rules:
     ]
   })
 
-  app.state$.subscribe(state => console.log(state.errors))
+  app.subscribe(state => console.log(state.errors))
   app.dispatch(setValue({ age: 10 }))  // { age: 'Too young!' }
   app.dispatch(setValue({ age: 50 }))  // {}
   ```
@@ -83,7 +82,7 @@ Validation rule can return anything. Here are some rules:
 * objects will be passed to `setError` as is
 
   ```js
-  const app - createApp({
+  const app = createApp({
     modules: [
       validate({
         rules: {
@@ -102,7 +101,7 @@ Validation rule can return anything. Here are some rules:
     ]
   })
 
-  app.state$.subscribe(state => console.log(state.errors))
+  app.subscribe(state => console.log(state.errors))
   app.dispatch(setValue({
     name: 'john',
     username: 'john'
@@ -116,7 +115,7 @@ Validation rule can return anything. Here are some rules:
 * promises will be awaited, and these rules will be applied to their result
 
   ```js
-  const app - createApp({
+  const app = createApp({
     modules: [
       validate({
         rules: {
@@ -130,7 +129,7 @@ Validation rule can return anything. Here are some rules:
     ]
   })
 
-  app.state$.subscribe(console.log)
+  app.subscribe(console.log)
   app.dispatch(setValue({ age: 10 }))
 
   // {
@@ -154,8 +153,8 @@ Validation rule can return anything. Here are some rules:
 
 ### `isValidatingSelector()`
 
-`validate` module comes with `isValidatingSelector` selector creator. Use it to create memoized selector, that will return `true` or `false` depending on validation state.
-
+`stapp-validate` module comes with `isValidatingSelector` selector creator. Use it to create memoized selector, that will return `true` or `false` depending on validation state.
+<!--
 ## Type definitions
 
 - [`validate`](/types.html#validate)
@@ -166,3 +165,4 @@ Validation rule can return anything. Here are some rules:
 - [`ValidateConfig`](/types.html#validateconfig)
 - [`ValidationRule`](/types.html#validationrule)
 - [`Module`](/types.html#module)
+-->

@@ -5,9 +5,9 @@ import { idsSelector, toggleSelector } from '../apps/todoSelectors'
 
 export const List = () => {
   return <section className="main">
-    <Consumer mapState={toggleSelector}>
+    <Consumer map={toggleSelector}>
       {
-        ({ showToggle, isToggled, handleToggleClick }) => showToggle ?
+        ({ showToggle, isToggled }, { handleToggleClick }) => showToggle ?
           <React.Fragment>
             <input id="toggleAll" className="toggle-all" type="checkbox" checked={ isToggled } onChange={ handleToggleClick } />
             <label htmlFor="toggleAll">Mark all as complete</label>
@@ -17,9 +17,9 @@ export const List = () => {
     </Consumer>
 
     <ul className="todo-list">
-      <Consumer mapState={idsSelector}>
+      <Consumer map={idsSelector}>
         {
-          ({ ids }) => ids.map(id => <ListItem
+          (ids) => ids.map(id => <ListItem
             todoId={ id }
             key={ id }
           />)

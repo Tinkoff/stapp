@@ -1,0 +1,80 @@
+{
+  "name": "stapp-react",
+  "version": "2.0.0-beta.4",
+  "description": "React bindings for stapp - modular state manager",
+  "keywords": [
+    "state-management",
+    "stapp",
+    "state",
+    "reactive",
+    "microservice",
+    "epics",
+    "redux",
+    "react"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run build:module",
+    "build:module": "tsc",
+    "prebuild": "rimraf lib",
+    "test": "npm run test:lint && npm run test:jest",
+    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
+    "test:jest": "jest --config ./jest.config.json --runInBand"
+  },
+  "peerDependencies": {
+    "fbjs": ">=0.8",
+    "prop-types": ">=15.6",
+    "react": ">=15",
+    "stapp": ">=2",
+    "stapp-formbase": ">=2"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.1.9",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
+    "@types/jest": "^23.1.0",
+    "@types/node": "^10.3.3",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.3.6",
+    "@types/react-dom": "^16.0.4",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "fbjs": "^0.8.16",
+    "jest": "^23.1.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "redux": "^3.7.2",
+    "request": "^2.85.0",
+    "reselect": "^3.0.1",
+    "stapp": "^2.0.0-beta.4",
+    "stapp-formbase": "^2.0.0-beta.4",
+    "ts-jest": "^22.4.2",
+    "ts-node": "^6.1.1",
+    "tslib": "^1.9.0",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "tslint-react": "^3.5.1",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "light-observable": "^2.5.1"
+  }
+}

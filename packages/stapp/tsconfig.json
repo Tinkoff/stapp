@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "strict": true,
+    "strictFunctionTypes": false,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./lib",
+    "stripInternal": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "outDir": "./lib",
+    "skipLibCheck": true,
+    "importHelpers": false,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/models/global.d.ts"
+    ]
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+  "include": [
+    "./src"
+  ]
+}

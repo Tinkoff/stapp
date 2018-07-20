@@ -1,6 +1,6 @@
 # Loaders
 
-`loaders` module offers an opinionated approach to "isLoading" problem. It exposes a "loaders" state, a couple of event creators, and an `isLoadingSelector` creator.
+`stapp-loaders` module offers an opinionated approach to "isLoading" problem. It exposes a "loaders" state, a couple of event creators, and an `isLoadingSelector` creator.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -8,7 +8,6 @@
 
 - [Definition](#definition)
 - [Usage](#usage)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -24,9 +23,9 @@ type loaders = () => Module<{}, { loaders: { [K: string]: boolean } }>
 
 ```js
 // myModule.js
-import { mapTo } from 'rxjs/operators'
+import { mapTo } from 'light-observable/operators'
 import { createEffect, combineEpics } from 'stapp'
-import { loaderStart, loaderEnd, LOADERS } from 'stapp/lib/modules/loaders'
+import { loaderStart, loaderEnd, LOADERS } from 'stapp-loaders'
 
 const loadData = createEffect('Load data', () => /* some async process */)
 
@@ -34,7 +33,7 @@ export const myModule = {
   name: 'my module',
   api: {
     loadData
-  }
+  },
   epic: combineEpics([
     loadData.start.epic(start$ => start$.pipe(mapTo(loaderStart('loadData')))),
    	loadData.success.epic(start$ => start$.pipe(mapTo(loaderEnd('loadData')))),
@@ -44,7 +43,7 @@ export const myModule = {
 }
 
 // app.js
-import { loaders, isLoadingSelector } from 'stapp/lib/modules/loaders'
+import { loaders, isLoadingSelector } from 'stapp-loaders'
 import { myModule } from './myModule.js'
 
 const app = createApp({
@@ -57,7 +56,7 @@ const app = createApp({
 
 const isLoading = isLoadingSelector() // selectors should be created individually for every app
 
-app.state$.subscribe(console.loog)
+app.subscribe(console.loog)
 // { loaders: {} }
 
 app.api.loadData()
@@ -68,7 +67,7 @@ isLoading(app.getState()) // true
 // { loaders: { loadData: false }}
 isLoading(app.getState()) // false
 ```
-
+<!--
 ## Type definitions
 
 * [`loaders`](/types.html#loaders)
@@ -76,3 +75,4 @@ isLoading(app.getState()) // false
 * [`loaderEnd`](/types.html#loaderend)
 * [`isLoadingSelector`](/types.html#isloadingselector)
 * [`Module`](/types.html#module)
+-->
