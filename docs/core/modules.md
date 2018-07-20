@@ -38,7 +38,13 @@ type Module<Api, State, FullState = State> = {
   // Api
   api?: Api
   events?: Api // Alias for api
-  waitFor?: Array<AnyEventCreator | string>
+  waitFor?: Array<
+    | AnyEventCreator
+    | string
+    | {
+      event: AnyEventCreator | string
+      timeout: number
+    }>
 
   // State
   state?: { [K: string]: Reducer<State[K]> }
