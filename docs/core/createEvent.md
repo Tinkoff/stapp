@@ -9,8 +9,12 @@ Event creator is a function that accepts any number of arguments, transforms the
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Definition](#definition)
+
+- [Definitions](#definitions)
 - [Usage](#usage)
+  - [`getType()`](#gettype)
+  - [`is()`](#is)
+  - [`epic()`](#epic)
   - [Typescript examples](#typescript-examples)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

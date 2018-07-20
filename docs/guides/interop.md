@@ -1,4 +1,14 @@
 # Interoperability
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [RxJS](#rxjs)
+    - [Notice on interoperability with RxJS 6](#notice-on-interoperability-with-rxjs-6)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Stapp uses a reactive approach to business logic handling. Observables, streams, and epics are the core parts of Stapp.
 
 Since version 2.0.0 we decided to move from RxJS to our own incredibly light observable implementation. We believe that using RxJS imposes too many restrictions on Stapp end-users. RxJS is standard de-facto but is far not the only reactive library out the wild.

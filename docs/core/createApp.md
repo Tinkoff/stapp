@@ -6,9 +6,12 @@ Creates a Stapp application.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Definition](#definition)
+- [Definitions](#definitions)
 - [Usage](#usage)
   - [Config](#config)
+- [Examples](#examples)
+  - [Todos](#todos)
+  - [Todo with undo](#todo-with-undo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

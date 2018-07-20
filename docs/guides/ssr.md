@@ -5,7 +5,9 @@ There is not that much what can be asked from a state-management library to supp
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Server side render](#server-side-render)
+
+- [Usage](#usage)
+  - [Timeouts](#timeouts)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

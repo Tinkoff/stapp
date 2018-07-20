@@ -14,6 +14,12 @@ Effect creator does that automatically. When called, it returns an observable st
 
 - [Definition](#definition)
 - [Usage](#usage)
+  - [`use()`](#use)
+  - [`start`](#start)
+  - [`success`](#success)
+  - [`fail`](#fail)
+  - [`complete`](#complete)
+  - [`getType()`](#gettype)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

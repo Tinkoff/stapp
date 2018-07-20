@@ -6,8 +6,13 @@ Creates a reducer on steroids. Reducer is a function that takes the previous sta
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Definition](#definition)
+- [Definitions](#definitions)
 - [Usage](#usage)
+  - [`on()`](#on)
+  - [`off()`](#off)
+  - [`reset()`](#reset)
+  - [`has()`](#has)
+  - [`createEvents()`](#createevents)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

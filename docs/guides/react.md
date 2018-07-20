@@ -172,7 +172,7 @@ type FieldApi<Extra = void> = {
 }
 ```
 
-These methods create form helpers, who handle every common operation with forms. You can find a comprehensive example in the `examples/form-async-validation` folder. Note that form helpers are intended to be used with `formBase` module (see [formBase documentation](/modules/formBase.html)).
+These methods create form helpers, who handle every common operation with forms. You can find a comprehensive example in the `examples/form-async-validation` folder. Note that form helpers are intended to be used with `stapp-formbase` module (see [formBase documentation](/modules/formBase.html)).
 
 Basic example:
 

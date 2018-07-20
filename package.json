@@ -10,7 +10,7 @@
     "test": "lerna run test && npm run test:size",
     "test:size": "size-limit",
     "docs": "rimraf _book npm run docs:toc && npm run docs:move && npm run docs:book && npm run docs:publish",
-    "docs:toc": "doctoc docs/README.md docs/usage/. docs/api/. docs/modules/. --notitle --github",
+    "docs:toc": "doctoc docs/README.md docs/guides/. docs/core/. docs/modules/. --notitle --github",
     "docs:move": "cp docs/README.md README.md && git add README.md docs",
     "docs:book": "gitbook build",
     "docs:publish": "gh-pages -d _book",
