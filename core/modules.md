@@ -23,7 +23,6 @@ A basic module is an object or a function, returning an object.
   - [Testing](#testing)
 - [Modules: epics](#modules-epics)
 - [Modules: module factories](#modules-module-factories)
-- [Type definitions](#type-definitions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -39,7 +38,13 @@ type Module<Api, State, FullState = State> = {
   // Api
   api?: Api
   events?: Api // Alias for api
-  waitFor?: Array<AnyEventCreator | string>
+  waitFor?: Array<
+    | AnyEventCreator
+    | string
+    | {
+      event: AnyEventCreator | string
+      timeout: number
+    }>
 
   // State
   state?: { [K: string]: Reducer<State[K]> }
@@ -158,15 +163,16 @@ The only difference between redux-observable epics and Stapp epics is that the l
 Here is an example of an epic:
 
 ```typescript
-import { map } from 'rxjs/operators/map'
+import { map, filter } from 'light-observable/operators'
 import { select, combineEpics, createEvent } from 'stapp'
-import { setValue } from 'stapp/lib/modules/formBase'
+import { setValue } from 'stapp-formbase'
 
 const handleChange = createEvent('handle input change', event => ({
   [event.target.name]: event.target.value
 }))
 
-const handleChangeEpic = (event$) => select(handleChange, event$).pipe(
+const handleChangeEpic = (event$) => event$.pipe(
+  filter(select(handleChange)),
   map(({ payload }) => setValue(payload))
 )
 
@@ -192,12 +198,13 @@ Every function passed to the `modules` field will be called with a value provide
 ```typescript
 // moduleA.js
 import { select } from 'stapp'
-import { switchMap, map } from 'rxjs/operators'
+import { switchMap, map, filter } from 'light-observable/operators'
 
 import { request } from 'my-services'
 
 const moduleA = ({ request }) => ({
-  epic: (event$) => select(someEvent, event$).pipe(
+  epic: (event$) => event$.pipe(
+    filter(select(someEvent)),
     switchMap(({ payload }) => request('/my-cool-api', payload)),
     map(result => someOtherEvent(result))
   )
@@ -214,9 +221,10 @@ const app = createApp({
   }
 })
 ```
-
+<!--
 ## Type definitions
 
 - [`createApp`](/types.html#createApp)
 - [`Module`](/types.html#module)
 - [`ModuleFactory`](/types.html#modulefactory)
+-->
