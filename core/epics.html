@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>createEffect · GitBook</title>
+        <title>Epics · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="createReducer.html" />
     
-    
-    <link rel="prev" href="createEvent.html" />
+    <link rel="prev" href="modules.html" />
     
 
     </head>
@@ -239,7 +237,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2.3" data-path="createEffect.html">
+        <li class="chapter " data-level="1.2.3" data-path="createEffect.html">
             
                 <a href="createEffect.html">
             
@@ -278,7 +276,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.6" data-path="epics.html">
+        <li class="chapter active" data-level="1.2.6" data-path="epics.html">
             
                 <a href="epics.html">
             
@@ -455,7 +453,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >createEffect</a>
+        <a href=".." >Epics</a>
     </h1>
 </div>
 
@@ -470,118 +468,90 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="createeffect"><code>createEffect()</code></h1>
-<p>Creates an EffectCreator.</p>
-<p>One of the most common patterns when performing side effects inside the epics is dispatching some &quot;start&quot; event before the side effect and &quot;error&quot; or &quot;success&quot; event when the side effect has finished its work. </p>
-<p>Effect creator does that automatically. When called, it returns an observable stream of a start event, then it calls the provided effect function and after that it emits the &quot;success&quot; or &quot;error&quot; event.</p>
+                                <h1 id="epics">Epics</h1>
+<p>Epic is a function that receives a stream of events and returns a stream of events. Although Stapp uses its mechanism to support epics, it has much in common with <a href="https://redux-observable.js.org/docs/basics/Epics.html" target="_blank">redux-observable</a> and <a href="https://github.com/joshburgess/redux-most/" target="_blank">redux-most</a>. We sincerely recommend following these links, if you are not familiar with the epics concept.</p>
+<p>Epics allow harnessing async logic with ease.</p>
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
 <li><a href="#definition">Definition</a></li>
-<li><a href="#usage">Usage</a><ul>
-<li><a href="#use"><code>use()</code></a></li>
-<li><a href="#start"><code>start</code></a></li>
-<li><a href="#success"><code>success</code></a></li>
-<li><a href="#fail"><code>fail</code></a></li>
-<li><a href="#complete"><code>complete</code></a></li>
-<li><a href="#gettype"><code>getType()</code></a></li>
-</ul>
-</li>
+<li><a href="#usage">Usage</a></li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <h2 id="definition">Definition</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createEffect&lt;Payload, Result&gt; = (
-  description: <span class="hljs-built_in">string</span>,
-  effect?: (payload: Payload) =&gt; Promise&lt;Result&gt; | Result,
-  condition?: (payload: Payload) =&gt; <span class="hljs-built_in">boolean</span>
-) =&gt; EffectCreator&lt;Payload, Result&gt;
-
-<span class="hljs-keyword">type</span> EffectCreator&lt;Payload, Result&gt; = {
-  (payload: Payload): Result  
-  start: EventCreator&lt;Payload&gt;
-  success: EventCreator&lt;Result&gt;
-  fail: EventCreator&lt;<span class="hljs-built_in">any</span>&gt;
-  complete: EventCreator&lt;<span class="hljs-built_in">void</span>&gt;
-  getType(): <span class="hljs-built_in">string</span>
-  use(effectFn: (payload) =&gt; Promise&lt;Result&gt; | Result): EffectCreator&lt;Payload, Result&gt;
-}
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> Epic&lt;State&gt; = (
+  event$: Observable&lt;Event&lt;<span class="hljs-built_in">any</span>, <span class="hljs-built_in">any</span>&gt;&gt;,
+  state$: Observable&lt;State&gt;,
+  staticApi: {
+    dispatch: Dispatch&lt;State&gt;
+    getState(): State
+  }
+) =&gt; Subscribable&lt;<span class="hljs-built_in">any</span>&gt; | <span class="hljs-built_in">void</span>
 </code></pre>
 <h2 id="usage">Usage</h2>
-<p>Creates an EffectCreator. Accepts a description, a side effect function (optional) and a condition function (defaults to <code>() =&gt; true</code>).</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEffect } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+<p>Take the following as an example: search field with autosuggest.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEffect, selectArray, combineEpics, createEvent, createReducer } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+<span class="hljs-keyword">import</span> { loaderStart, loaderEnd } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp/lib/modules/loaders&apos;</span>
 
-<span class="hljs-keyword">const</span> payEffect = createEffect(
-  <span class="hljs-comment">// Effect descriptioo=n</span>
-  <span class="hljs-string">&apos;Perform payment&apos;</span>,
+<span class="hljs-keyword">const</span> saveResults = createEvent(<span class="hljs-string">&apos;Save search results&apos;</span>)
+<span class="hljs-keyword">const</span> searchReducer = createReducer([])
+  .on(saveResults, (_, results) =&gt; results)
 
-  <span class="hljs-comment">// Effect function, optional</span>
-  params =&gt; fetch(<span class="hljs-string">`pay<span class="hljs-subst">${toQuery(params)}</span>`</span>),
+<span class="hljs-comment">// EffectCreator returns an observable of three types of events:</span>
+<span class="hljs-comment">// `start`, `success` or `fail` and `complete`.</span>
+<span class="hljs-keyword">const</span> searchEffect = createEffect(
+  <span class="hljs-comment">// Effect description</span>
+  <span class="hljs-string">&apos;Load suggestions&apos;</span>,
 
-  <span class="hljs-comment">// Condition can be used to disable an effect. Also optional</span>
-  () =&gt; process.env.ENV === <span class="hljs-string">&apos;browser&apos;</span>
+  <span class="hljs-comment">// Effect function, must return a value or a promise</span>
+  searchValue =&gt; fetch(<span class="hljs-string">`api?search=<span class="hljs-subst">${searchValue}</span>`</span>).then(r =&gt; r.json())
 )
 
-<span class="hljs-comment">// Usage in an epic:</span>
-<span class="hljs-keyword">const</span> payEpic = (event$, state$) =&gt; state$.pipe(
-  sample(select(submit, event$)),
-  switchMap(state =&gt; payEffect(state.values))
-)
-</code></pre>
-<p>When called effect creator returns a stream of three events: <code>start</code>, then <code>success</code> or <code>fail</code> after completing side effect and finally, the <code>complete</code> event.</p>
-<p>The <code>condition</code> argument can be used to disable an effect on some conditions.</p>
-<h3 id="use"><code>use()</code></h3>
-<p>Replaces an effect function used by EffectCreator in situ. Might be useful while testing.</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
+<span class="hljs-keyword">const</span> searchModule = {
+  name: <span class="hljs-string">&apos;search&apos;</span>,
+  state: {
+    search: searchReducer
+  },
+  epic: combineEpics([
+    <span class="hljs-comment">// Start loader on effect run</span>
+    searchEffect.start.epic(start$ =&gt; start$.pipe(
+      mapTo(loaderStart(<span class="hljs-string">&apos;search&apos;</span>))
+    )),
 
-test(<span class="hljs-string">&apos;some test&apos;</span>, <span class="hljs-keyword">async</span> () =&gt; {
-  <span class="hljs-keyword">const</span> mock = jest.fn(x =&gt; x * <span class="hljs-number">2</span>)
-  effect.use(mock)
-  <span class="hljs-keyword">const</span> events = []
+    <span class="hljs-comment">// End loader on effect complete</span>
+    selectArray([searchEffect.success, searchEffect.fail], event$).pipe(
+      mapTo(loaderEnd(<span class="hljs-string">&apos;search&apos;</span>))
+    ),
 
-  <span class="hljs-keyword">await</span> effect(<span class="hljs-number">1</span>).forEach(ev =&gt; events.push(ev))
+    <span class="hljs-comment">// Save results on success</span>
+    success.epic(success$ =&gt; success$.pipe(
+      map(({ payload }) =&gt; saveResults(payload))
+    )),
 
-  expect(mock).toBeCalledWith(<span class="hljs-number">1</span>)
+    <span class="hljs-comment">// Search epic</span>
+    (_, state$) =&gt; state$.pipe(
+      <span class="hljs-comment">// track only one field changes</span>
+      map(state =&gt; state.values.search),
 
-  expect(events).toEqual([
-    effect.start(<span class="hljs-number">1</span>),
-    effect.success(<span class="hljs-number">2</span>),
-    effect.complete()
+      <span class="hljs-comment">// debounce and distinct value changes</span>
+      debounceTime(<span class="hljs-number">500</span>),
+      skipRepeats(),
+
+      <span class="hljs-comment">// switch to effect function</span>
+      switchMap(({ payload: searchValue }) =&gt; searchEffect(searchValue))
+    )
   ])
-})
+}
 </code></pre>
-<h3 id="start"><code>start</code></h3>
-<p>Event emitted by effect creator before performing a side effect.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
-<span class="hljs-keyword">const</span> startEffectEpic = effect.start.epic(start$ =&gt; start$.pipe(...))
-</code></pre>
-<h3 id="success"><code>success</code></h3>
-<p>Event emitted by effect creator after resolving the Promise, returned by the side effect function.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
-<span class="hljs-keyword">const</span> successEffectEpic = effect.success.epic(success$ =&gt; success$.pipe(...))
-</code></pre>
-<h3 id="fail"><code>fail</code></h3>
-<p>Event emitted by effect creator if the side effect function failed in some way.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
-<span class="hljs-keyword">const</span> failEffectEpic = effect.fail.epic(fail$ =&gt; fail$.pipe(...))
-</code></pre>
-<h3 id="complete"><code>complete</code></h3>
-<p>Event emitted by effect creator after completion of a side effect. Emitted right after <code>success</code> or <code>fail</code> event.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
-<span class="hljs-keyword">const</span> finallyEpic = effect.complete.epic(complete$ =&gt; complete$.pipe(...))
-</code></pre>
-<h3 id="gettype"><code>getType()</code></h3>
-<p>Returns the type of a start event.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> effect = createEffect(<span class="hljs-string">&apos;Some side request&apos;</span>, sideRequest)
-
-effect.getType() === effect.start.getType() <span class="hljs-comment">// true</span>
-</code></pre>
-<!--
-## Type definitions
-
-* [`createEffect`](/types.html/#createeffect)
-* [`EffectCreator`](/types.html#effectcreator)
-
--->
+<p>Epics allow <em>reacting</em> to events and state changes <em>reactively</em>. That&apos;s fun!
+&lt;!--</p>
+<h2 id="type-definitions">Type definitions</h2>
+<ul>
+<li><a href="../types.html#epic"><code>Epic</code></a></li>
+<li><a href="../types.html#eventepic"><code>EventEpic</code></a></li>
+<li><a href="../types.html#createeffect"><code>createEffect</code></a>
+--&gt;</li>
+</ul>
 
                                 
                                 </section>
@@ -609,14 +579,10 @@ effect.getType() === effect.start.getType() <span class="hljs-comment">// true</
 
             
                 
-                <a href="createEvent.html" class="navigation navigation-prev " aria-label="Previous page: createEvent">
+                <a href="modules.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Modules">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="createReducer.html" class="navigation navigation-next " aria-label="Next page: createReducer">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -625,7 +591,7 @@ effect.getType() === effect.start.getType() <span class="hljs-comment">// true</
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"createEffect","level":"1.2.3","depth":2,"next":{"title":"createReducer","level":"1.2.4","depth":2,"path":"core/createReducer.md","ref":"core/createReducer.md","articles":[]},"previous":{"title":"createEvent","level":"1.2.2","depth":2,"path":"core/createEvent.md","ref":"core/createEvent.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/createEffect.md","mtime":"2018-07-20T15:26:26.577Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-20T15:38:39.645Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Epics","level":"1.2.6","depth":2,"next":{"title":"Guides","level":"1.3","depth":1,"ref":"","articles":[{"title":"React","level":"1.3.1","depth":2,"path":"quides/react.md","ref":"quides/react.md","articles":[]},{"title":"SSR","level":"1.3.2","depth":2,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},{"title":"RxJS and other reactive libs","level":"1.3.3","depth":2,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]}]},"previous":{"title":"Modules","level":"1.2.5","depth":2,"path":"core/modules.md","ref":"core/modules.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/epics.md","mtime":"2018-07-20T15:26:26.578Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-20T15:38:39.645Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

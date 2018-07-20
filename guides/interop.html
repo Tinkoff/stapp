@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>validate · GitBook</title>
+        <title>RxJS and other reactive libs · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -58,7 +58,7 @@
 
     
     
-    <link rel="prev" href="formbase.html" />
+    <link rel="prev" href="ssr.html" />
     
 
     </head>
@@ -321,9 +321,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2" data-path="../guides/ssr.html">
+        <li class="chapter " data-level="1.3.2" data-path="ssr.html">
             
-                <a href="../guides/ssr.html">
+                <a href="ssr.html">
             
                     
                     SSR
@@ -334,9 +334,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.3" data-path="../guides/interop.html">
+        <li class="chapter active" data-level="1.3.3" data-path="interop.html">
             
-                <a href="../guides/interop.html">
+                <a href="interop.html">
             
                     
                     RxJS and other reactive libs
@@ -366,9 +366,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="persist.html">
+        <li class="chapter " data-level="1.4.1" data-path="../modules/persist.html">
             
-                <a href="persist.html">
+                <a href="../modules/persist.html">
             
                     
                     persist
@@ -379,9 +379,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="loaders.html">
+        <li class="chapter " data-level="1.4.2" data-path="../modules/loaders.html">
             
-                <a href="loaders.html">
+                <a href="../modules/loaders.html">
             
                     
                     loaders
@@ -392,9 +392,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="formbase.html">
+        <li class="chapter " data-level="1.4.3" data-path="../modules/formbase.html">
             
-                <a href="formbase.html">
+                <a href="../modules/formbase.html">
             
                     
                     formbase
@@ -405,9 +405,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.4" data-path="validate.html">
+        <li class="chapter " data-level="1.4.4" data-path="../modules/validate.html">
             
-                <a href="validate.html">
+                <a href="../modules/validate.html">
             
                     
                     validate
@@ -453,7 +453,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >validate</a>
+        <a href=".." >RxJS and other reactive libs</a>
     </h1>
 </div>
 
@@ -468,160 +468,56 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="validate">Validate</h1>
-<p>Validation itself is up to you, <code>stapp-validate</code> module provides a way to connect your favorite validation library to the application and store validation results in the applications state. <code>stapp-validate</code> module is intended to be used with <code>stapp-formbase</code> module.</p>
-<p>Debouncing, throttling and other time-controlling mechanisms are up to you.</p>
+                                <h1 id="interoperability">Interoperability</h1>
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
-<li><a href="#definition">Definition</a></li>
-<li><a href="#usage">Usage</a><ul>
-<li><a href="#isvalidatingselector"><code>isValidatingSelector()</code></a></li>
+<li><a href="#rxjs">RxJS</a><ul>
+<li><a href="#notice-on-interoperability-with-rxjs-6">Notice on interoperability with RxJS 6</a></li>
 </ul>
 </li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<h2 id="definition">Definition</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> validate = (config: {
-  rules: { [K: <span class="hljs-built_in">string</span>]: ValidationRule },
-  validateOnInit: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// defaults to `true`</span>
-  setTouchedOnSubmit?: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// defaults to `true`</span>
-}) =&gt; Module&lt;{}, { validating: { [K: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">boolean</span> } }&gt;
+<p>Stapp uses a reactive approach to business logic handling. Observables, streams, and epics are the core parts of Stapp.</p>
+<p>Since version 2.0.0 we decided to move from RxJS to our own incredibly light observable implementation. We believe that using RxJS imposes too many restrictions on Stapp end-users. RxJS is standard de-facto but is far not the only reactive library out the wild.</p>
+<p>Since version 2.0.0 epics receive a stream of events and a stream of state changes based on <code>light-observable</code>, the standard implementation of the <a href="https://github.com/tc39/proposal-observable" target="_blank">Observable proposal</a>.</p>
+<p>This means that those streams are fully compatible with any ECMAScript compatible reactive library, including <strong>RxJS</strong>, <strong>most</strong>, <strong>kefir</strong>, <strong>bacon</strong> and so on.</p>
+<h2 id="rxjs">RxJS</h2>
+<p><code>light-observable</code> stream can be used with RxJS easily. Just wrap it with <code>from</code>:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-keyword">from</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs&apos;</span>
+<span class="hljs-keyword">import</span> { switchMap, filter } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs/operators&apos;</span>
 
-<span class="hljs-keyword">type</span> ValidationRule&lt;State extends FormBaseState&gt; = (
-  value: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">void</span>,
-  fieldName: <span class="hljs-built_in">string</span>,
-  state: State,
-  flags: {
-    onChange?: <span class="hljs-built_in">boolean</span>,
-    onInit?: <span class="hljs-built_in">boolean</span>,
-    onRevalidate?: <span class="hljs-built_in">boolean</span>
-  }
-) =&gt; <span class="hljs-built_in">any</span>
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = {
+  name: <span class="hljs-string">&apos;my module&apos;</span>,
+  epic: (event$) =&gt; event$.pipe( <span class="hljs-comment">// `pipe` is the only non-standard method in `light-observable`</span>
+    <span class="hljs-keyword">from</span>, <span class="hljs-comment">// here we transform es observable to Rx observable</span>
+    filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>),
+    switchMap(({ payload }) =&gt; myEffect(payload))
+  )
+}
 </code></pre>
-<h2 id="usage">Usage</h2>
-<p>Import <code>stapp-validate</code> module and provide some rules. Don&apos;t forget <code>stapp-formbase</code> module.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
-<span class="hljs-keyword">import</span> { formBase } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-formbase&apos;</span>
-<span class="hljs-keyword">import</span> { validate } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-validate&apos;</span>
+<p>This is fine, but doing this many times may be too verbose, especially when there are many epics in a module. Since you have to pass only one epic, and you&apos;ll have use <code>combineEpics</code> anyway, why not to put all transforming logic there? Just import <code>combineEpics</code> from <code>stapp-rxjs</code> and you are ready to go. We plan to create same package for <code>most</code>.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { combineEpics } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-rxjs&apos;</span>
+<span class="hljs-keyword">import</span> { switchMap, filter } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs/operators&apos;</span>
 
-<span class="hljs-keyword">const</span> app = createApp({
-  modules: [formBase(), validate({
-    rules: [...rules]
-  })]
-})
+<span class="hljs-keyword">const</span> epicA = (event$) =&gt; event$.pipe(
+  filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>),
+  switchMap(({ payload }) =&gt; myEffect(payload))
+)
+<span class="hljs-keyword">const</span> epicB = (event$) =&gt; event$.pipe(
+  filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some other event&apos;</span>),
+  switchMap(({ payload }) =&gt; myOtherEffect(payload))
+) 
+
+<span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = {
+  name: <span class="hljs-string">&apos;my module&apos;</span>,
+  epic: combineEpics([
+    epicA, epicB
+  ])
+}
 </code></pre>
-<p>Validation rules are called each on its field change, right after initialization (can be disabled) and on <code>revalidate</code> event (exported, but not mixed into application api). Each rule receives these arguments:</p>
-<ul>
-<li><code>value</code>: new value of the field</li>
-<li><code>fieldName</code>: name of the changed field</li>
-<li><code>state</code>: the whole applications state</li>
-<li><code>flags</code>: flags indicate the reason why the rule was called</li>
-</ul>
-<p>Validation rule can return anything. Here are some rules:</p>
-<ul>
-<li><p><code>false</code>, <code>undefined</code> and <code>null</code> means that everything is ok</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> app = createApp({
-  modules: [
-    validate({
-      rules: {
-        age: value =&gt; value &lt; <span class="hljs-number">18</span> ? <span class="hljs-string">&apos;Too young!&apos;</span> : <span class="hljs-literal">null</span>
-      }
-    })
-  ]
-})
-
-app.subscribe(state =&gt; <span class="hljs-built_in">console</span>.log(state.errors))
-app.dispatch(setValue({ age: <span class="hljs-number">10</span> }))  <span class="hljs-comment">// { age: &apos;Too young!&apos; }</span>
-app.dispatch(setValue({ age: <span class="hljs-number">50</span> }))  <span class="hljs-comment">// {}</span>
-</code></pre>
-</li>
-</ul>
-<ul>
-<li><p>objects will be passed to <code>setError</code> as is</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> app = createApp({
-  modules: [
-    validate({
-      rules: {
-        name (name, fieldName, state) {
-          <span class="hljs-keyword">if</span> (name !== state.values.username) {
-            <span class="hljs-keyword">return</span>
-          }
-
-          <span class="hljs-keyword">return</span> {
-            name: <span class="hljs-string">&apos;Username and name cannot be equal!&apos;</span>,
-            username: <span class="hljs-string">&apos;Username and name cannot be equal!&apos;</span>
-          }
-          }
-      }
-    })
-  ]
-})
-
-app.subscribe(state =&gt; <span class="hljs-built_in">console</span>.log(state.errors))
-app.dispatch(setValue({
-  name: <span class="hljs-string">&apos;john&apos;</span>,
-  username: <span class="hljs-string">&apos;john&apos;</span>
-}))
-<span class="hljs-comment">// {</span>
-<span class="hljs-comment">//   name: &apos;Username and name cannot be equal!&apos;</span>
-<span class="hljs-comment">//   username: &apos;Username and name cannot be equal!&apos;</span>
-<span class="hljs-comment">// }</span>
-</code></pre>
-</li>
-<li><p>promises will be awaited, and these rules will be applied to their result</p>
-<pre><code class="lang-js"><span class="hljs-keyword">const</span> app = createApp({
-  modules: [
-    validate({
-      rules: {
-        <span class="hljs-keyword">async</span> age (value, fieldName, state) {
-          <span class="hljs-keyword">await</span> wait(<span class="hljs-number">500</span>)
-
-          <span class="hljs-keyword">return</span> value &lt; <span class="hljs-number">18</span> ? <span class="hljs-string">&apos;Too young!&apos;</span> : <span class="hljs-literal">null</span>
-          }
-      }
-    })
-  ]
-})
-
-app.subscribe(<span class="hljs-built_in">console</span>.log)
-app.dispatch(setValue({ age: <span class="hljs-number">10</span> }))
-
-<span class="hljs-comment">// {</span>
-<span class="hljs-comment">//   values: { age: 10 },</span>
-<span class="hljs-comment">//   ready: { age: false },</span>
-<span class="hljs-comment">//   validating: { age: true }</span>
-<span class="hljs-comment">//   errors: {}</span>
-<span class="hljs-comment">// }</span>
-
-<span class="hljs-comment">// some time later</span>
-
-<span class="hljs-comment">// {</span>
-<span class="hljs-comment">//   values: { age: 10 },</span>
-<span class="hljs-comment">//   ready: { age: true },</span>
-<span class="hljs-comment">//   validating: { age: false },</span>
-<span class="hljs-comment">//   errors: { age: &apos;Too young!&apos; }</span>
-<span class="hljs-comment">// }</span>
-</code></pre>
-</li>
-<li><p>any other value returned from a validation function will be regarded as an error value (Error instances, arrays, strings, numbers, etc.)</p>
-</li>
-</ul>
-<h3 id="isvalidatingselector"><code>isValidatingSelector()</code></h3>
-<p><code>stapp-validate</code> module comes with <code>isValidatingSelector</code> selector creator. Use it to create memoized selector, that will return <code>true</code> or <code>false</code> depending on validation state.
-&lt;!--</p>
-<h2 id="type-definitions">Type definitions</h2>
-<ul>
-<li><a href="../types.html#validate"><code>validate</code></a></li>
-<li><a href="../types.html#revalidate"><code>revalidate</code></a></li>
-<li><a href="../types.html#isvalidatingselector"><code>isValidatingSelector</code></a></li>
-<li><a href="../types.html#validationflags"><code>ValidationFlags</code></a></li>
-<li><a href="../types.html#validationstate"><code>ValidationState</code></a></li>
-<li><a href="../types.html#validateconfig"><code>ValidateConfig</code></a></li>
-<li><a href="../types.html#validationrule"><code>ValidationRule</code></a></li>
-<li><a href="../types.html#module"><code>Module</code></a>
---&gt;</li>
-</ul>
+<h4 id="notice-on-interoperability-with-rxjs-6">Notice on interoperability with RxJS 6</h4>
+<p>RxJS 6 doesn&apos;t use &apos;symbol-observable&apos; polyfill. This may cause some weird issues with interop depending on the import order. It is recommended to install and import symbol-observable polyfill somewhere at the top of your JS bundle.</p>
 
                                 
                                 </section>
@@ -649,7 +545,7 @@ app.dispatch(setValue({ age: <span class="hljs-number">10</span> }))
 
             
                 
-                <a href="formbase.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: formbase">
+                <a href="ssr.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: SSR">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -661,7 +557,7 @@ app.dispatch(setValue({ age: <span class="hljs-number">10</span> }))
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"validate","level":"1.4.4","depth":2,"previous":{"title":"formbase","level":"1.4.3","depth":2,"path":"modules/formbase.md","ref":"modules/formbase.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"modules/validate.md","mtime":"2018-07-20T15:26:26.584Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-20T15:38:39.645Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"RxJS and other reactive libs","level":"1.3.3","depth":2,"next":{"title":"Modules","level":"1.4","depth":1,"ref":"","articles":[{"title":"persist","level":"1.4.1","depth":2,"path":"modules/persist.md","ref":"modules/persist.md","articles":[]},{"title":"loaders","level":"1.4.2","depth":2,"path":"modules/loaders.md","ref":"modules/loaders.md","articles":[]},{"title":"formbase","level":"1.4.3","depth":2,"path":"modules/formbase.md","ref":"modules/formbase.md","articles":[]},{"title":"validate","level":"1.4.4","depth":2,"path":"modules/validate.md","ref":"modules/validate.md","articles":[]}]},"previous":{"title":"SSR","level":"1.3.2","depth":2,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/interop.md","mtime":"2018-07-20T15:26:26.580Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-20T15:38:39.645Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
