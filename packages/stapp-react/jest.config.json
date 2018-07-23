@@ -16,9 +16,6 @@
     "/node_modules/",
     "/test|spec/"
   ],
-  "transformIgnorePatterns": [
-    "node_modules/?!(light-observable)"
-  ],
   "coverageThreshold": {
     "global": {
       "branches": 100,

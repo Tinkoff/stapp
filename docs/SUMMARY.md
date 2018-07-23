@@ -14,7 +14,7 @@
   * [Modules](/core/modules.md)
   * [Epics](/core/epics.md)
 * Guides
-  * [React](/quides/react.md)
+  * [React](/guides/react.md)
   * [SSR](/guides/ssr.md)
   * [RxJS and other reactive libs](/guides/interop.md)
 * Modules
