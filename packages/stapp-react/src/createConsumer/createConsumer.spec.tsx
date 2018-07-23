@@ -5,19 +5,20 @@ import React from 'react'
 import { createApp } from 'stapp/lib/core/createApp/createApp'
 import { createEvent } from 'stapp/lib/core/createEvent/createEvent'
 import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
-import { identity } from 'stapp/lib/helpers/identity/identity'
 import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
 import { createConsumer } from './createConsumer'
 
 jest.useFakeTimers()
 
-describe('createContext', () => {
+describe('createConsumer', () => {
   const initialState = {
     test: 0
   }
 
   const e1 = createEvent()
-  const r1 = createReducer(initialState).on(e1, (state) => ({ test: state.test + 1 }))
+  const r1 = createReducer(initialState).on(e1, (state) => ({
+    test: state.test + 1
+  }))
 
   const getApp = (appName = 'test' + uniqueId()) =>
     createApp({

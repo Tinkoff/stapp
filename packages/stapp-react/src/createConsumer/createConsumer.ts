@@ -1,5 +1,5 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { auditTime, map, skipRepeats, startWith } from 'light-observable/operators'
+import { auditTime, map, skipRepeats } from 'light-observable/operators'
 // tslint:disable-next-line no-unused-variable // declarations
 import React, { Component } from 'react'
 import { identity } from 'stapp/lib/helpers/identity/identity'
@@ -27,7 +27,10 @@ const consumerPropTypes = {
 export const createConsumer = <State, Api>(
   app: Stapp<State, Api>
 ): ConsumerClass<State, Api, any> => {
-  return class Consumer extends Component<ConsumerProps<State, Api, any>, { appState: any }> {
+  return class Consumer extends Component<
+    ConsumerProps<State, Api, any>,
+    { appState: any }
+  > {
     static app = app
     static propTypes = consumerPropTypes
     static displayName = `${app.name}.Consumer`
@@ -38,10 +41,10 @@ export const createConsumer = <State, Api>(
     subscription!: Subscription | void
 
     state = {
-      appState: null
+      appState: this.props.map!(app.getState(), app.api)
     }
 
-    componentWillMount() {
+    componentDidMount() {
       this.subscribe()
     }
 
@@ -55,7 +58,6 @@ export const createConsumer = <State, Api>(
       this.subscription = Observable.from(app)
         .pipe(
           auditTime(1000 / 60),
-          startWith([app.getState()]),
           map((state) => this.props.map!(state, app.api)),
           skipRepeats(shallowEqual)
         )
@@ -73,7 +75,10 @@ export const createConsumer = <State, Api>(
       }
     }
 
-    shouldComponentUpdate(nextProps: ConsumerProps<State, Api, any>, nextState: { appState: any }) {
+    shouldComponentUpdate(
+      nextProps: ConsumerProps<State, Api, any>,
+      nextState: { appState: any }
+    ) {
       return (
         nextState.appState !== this.state.appState ||
         nextProps.map !== this.props.map ||

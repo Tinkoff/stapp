@@ -36,8 +36,8 @@
   },
   "peerDependencies": {
     "reselect": ">=3",
-    "stapp": "2.0.0-beta.0",
-    "stapp-formbase": "2.0.0-beta.0"
+    "stapp": ">=2.0.0",
+    "stapp-formbase": ">=2.0.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",
@@ -61,6 +61,6 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-    "light-observable": "^2.5.1"
+    "light-observable": "^2.7.0"
   }
 }

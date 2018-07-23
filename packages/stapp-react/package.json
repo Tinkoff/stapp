@@ -38,8 +38,8 @@
     "fbjs": ">=0.8",
     "prop-types": ">=15.6",
     "react": ">=15",
-    "stapp": ">=2",
-    "stapp-formbase": ">=2"
+    "stapp": ">=2.0.0",
+    "stapp-formbase": ">=2.0.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -75,6 +75,6 @@
     "typescript": "^2.8.1"
   },
   "dependencies": {
-    "light-observable": "^2.5.1"
+    "light-observable": "^2.7.0"
   }
 }
