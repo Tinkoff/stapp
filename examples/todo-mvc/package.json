@@ -1,6 +1,6 @@
 {
   "name": "todo-mvc",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "private": true,
   "dependencies": {
     "light-observable": "^2.6.0",
@@ -9,9 +9,9 @@
     "react-scripts": "1.1.4",
     "redux": "^3.7.2",
     "reselect": "^3.0.1",
-    "stapp": "^2.0.0",
-    "stapp-persist": "^2.0.0",
-    "stapp-react": "^2.0.0",
+    "stapp": "^2.0.1",
+    "stapp-persist": "^2.0.1",
+    "stapp-react": "^2.0.1",
     "todomvc-app-css": "^2.0.0",
     "todomvc-common": "^1.0.0"
   },
