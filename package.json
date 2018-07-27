@@ -9,6 +9,7 @@
     "build": "lerna run build",
     "test": "lerna run test && npm run test:size",
     "test:size": "size-limit",
+    "test:ci": "lerna run test:ci && npm run test:size",
     "docs": "rimraf _book npm run docs:toc && npm run docs:move && npm run docs:book && npm run docs:publish",
     "docs:toc": "doctoc docs/README.md docs/guides/. docs/core/. docs/modules/. --notitle --github",
     "docs:move": "cp README.md ./docs",
@@ -34,6 +35,7 @@
     "cash-cp": "^0.2.0",
     "cash-mv": "^0.2.0",
     "commitizen": "^2.10.1",
+    "coveralls": "^3.0.2",
     "doctoc": "^1.3.1",
     "gh-pages": "^1.2.0",
     "gitbook-cli": "^2.3.2",
@@ -50,5 +52,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "gitbook-plugin-edit-link": "^2.0.2"
   }
 }

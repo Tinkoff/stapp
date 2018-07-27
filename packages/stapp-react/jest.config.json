@@ -1,4 +1,5 @@
 {
+  "testURL": "http://localhost",
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
     "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest"

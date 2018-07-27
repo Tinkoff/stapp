@@ -39,3 +39,4 @@ compiled
 
 # Private data
 .npmrc
+.coveralls.yml

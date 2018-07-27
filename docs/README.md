@@ -1,7 +1,6 @@
 # Stapp
 
-[![Buuld status](https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![Standard Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg?style=flat-square)](https://lernajs.io/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) 
-![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)
+[![Buuld status](https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) ![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)
 
 Stapp is the highly opinionated application state-management tool based on redux with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
