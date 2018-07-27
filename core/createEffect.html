@@ -509,6 +509,7 @@
 <h2 id="usage">Usage</h2>
 <p>Creates an EffectCreator. Accepts a description, a side effect function (optional) and a condition function (defaults to <code>() =&gt; true</code>).</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEffect } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+<span class="hljs-keyword">import</span> { switchMap } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;light-observable&apos;</span>
 
 <span class="hljs-keyword">const</span> payEffect = createEffect(
   <span class="hljs-comment">// Effect descriptioo=n</span>
@@ -522,10 +523,9 @@
 )
 
 <span class="hljs-comment">// Usage in an epic:</span>
-<span class="hljs-keyword">const</span> payEpic = (event$, state$) =&gt; state$.pipe(
-  sample(select(submit, event$)),
-  switchMap(state =&gt; payEffect(state.values))
-)
+<span class="hljs-keyword">const</span> payEpic = submit.epic((event$, _, { getState }) =&gt; event$.pipe(
+  switchMap(() =&gt; payEffect(getState()))
+))
 </code></pre>
 <p>When called effect creator returns a stream of three events: <code>start</code>, then <code>success</code> or <code>fail</code> after completing side effect and finally, the <code>complete</code> event.</p>
 <p>The <code>condition</code> argument can be used to disable an effect on some conditions.</p>
@@ -625,7 +625,7 @@ effect.getType() === effect.start.getType() <span class="hljs-comment">// true</
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"createEffect","level":"1.2.3","depth":2,"next":{"title":"createReducer","level":"1.2.4","depth":2,"path":"core/createReducer.md","ref":"core/createReducer.md","articles":[]},"previous":{"title":"createEvent","level":"1.2.2","depth":2,"path":"core/createEvent.md","ref":"core/createEvent.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit This Page","base":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/createEffect.md","mtime":"2018-07-23T11:42:49.087Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-27T16:10:13.681Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"createEffect","level":"1.2.3","depth":2,"next":{"title":"createReducer","level":"1.2.4","depth":2,"path":"core/createReducer.md","ref":"core/createReducer.md","articles":[]},"previous":{"title":"createEvent","level":"1.2.2","depth":2,"path":"core/createEvent.md","ref":"core/createEvent.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/createEffect.md","mtime":"2018-07-27T16:16:03.044Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-27T16:16:13.045Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -633,10 +633,6 @@ effect.getType() === effect.start.getType() <span class="hljs-comment">// true</
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

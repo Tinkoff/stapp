@@ -490,12 +490,11 @@
 </code></pre>
 <h2 id="usage">Usage</h2>
 <p>Take the following as an example: search field with autosuggest.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEffect, selectArray, combineEpics, createEvent, createReducer } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
-<span class="hljs-keyword">import</span> { loaderStart, loaderEnd } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp/lib/modules/loaders&apos;</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createEffect, combineEpics, createEvent, createReducer } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
+<span class="hljs-keyword">import</span> { loaderStart, loaderEnd } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-loaders&apos;</span>
+<span class="hljs-keyword">import</span> { debounceTime, mapTo, map, skipRepeats, switchMap } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;light-observable/operators&apos;</span>
 
 <span class="hljs-keyword">const</span> saveResults = createEvent(<span class="hljs-string">&apos;Save search results&apos;</span>)
-<span class="hljs-keyword">const</span> searchReducer = createReducer([])
-  .on(saveResults, (_, results) =&gt; results)
 
 <span class="hljs-comment">// EffectCreator returns an observable of three types of events:</span>
 <span class="hljs-comment">// `start`, `success` or `fail` and `complete`.</span>
@@ -510,7 +509,8 @@
 <span class="hljs-keyword">const</span> searchModule = {
   name: <span class="hljs-string">&apos;search&apos;</span>,
   state: {
-    search: searchReducer
+    search: createReducer([])
+      .on(saveResults, (_, results) =&gt; results)
   },
   epic: combineEpics([
     <span class="hljs-comment">// Start loader on effect run</span>
@@ -519,12 +519,12 @@
     )),
 
     <span class="hljs-comment">// End loader on effect complete</span>
-    selectArray([searchEffect.success, searchEffect.fail], event$).pipe(
+    searchEffect.complete.epic(complete$ =&gt; complete$.pipe(
       mapTo(loaderEnd(<span class="hljs-string">&apos;search&apos;</span>))
-    ),
+    )),
 
     <span class="hljs-comment">// Save results on success</span>
-    success.epic(success$ =&gt; success$.pipe(
+    searchEffect.success.epic(success$ =&gt; success$.pipe(
       map(({ payload }) =&gt; saveResults(payload))
     )),
 
@@ -591,7 +591,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Epics","level":"1.2.6","depth":2,"next":{"title":"Guides","level":"1.3","depth":1,"ref":"","articles":[{"title":"React","level":"1.3.1","depth":2,"path":"guides/react.md","ref":"guides/react.md","articles":[]},{"title":"SSR","level":"1.3.2","depth":2,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},{"title":"RxJS and other reactive libs","level":"1.3.3","depth":2,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]}]},"previous":{"title":"Modules","level":"1.2.5","depth":2,"path":"core/modules.md","ref":"core/modules.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit This Page","base":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/epics.md","mtime":"2018-07-23T11:42:49.088Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-27T16:10:13.681Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Epics","level":"1.2.6","depth":2,"next":{"title":"Guides","level":"1.3","depth":1,"ref":"","articles":[{"title":"React","level":"1.3.1","depth":2,"path":"guides/react.md","ref":"guides/react.md","articles":[]},{"title":"SSR","level":"1.3.2","depth":2,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},{"title":"RxJS and other reactive libs","level":"1.3.3","depth":2,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]}]},"previous":{"title":"Modules","level":"1.2.5","depth":2,"path":"core/modules.md","ref":"core/modules.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/epics.md","mtime":"2018-07-27T16:16:03.045Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-27T16:16:13.045Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -599,10 +599,6 @@
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
