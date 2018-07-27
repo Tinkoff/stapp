@@ -11,8 +11,8 @@
     "test:size": "size-limit",
     "docs": "rimraf _book npm run docs:toc && npm run docs:move && npm run docs:book && npm run docs:publish",
     "docs:toc": "doctoc docs/README.md docs/guides/. docs/core/. docs/modules/. --notitle --github",
-    "docs:move": "cp docs/README.md README.md && git add README.md docs",
-    "docs:book": "gitbook build",
+    "docs:move": "cp README.md ./docs",
+    "docs:book": "gitbook install && gitbook build",
     "docs:publish": "gh-pages -d _book",
     "pretest": "npm run build",
     "precommit": "lint-staged",
@@ -23,6 +23,10 @@
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [
       "prettier --write --config .prettierrc",
+      "git add"
+    ],
+    "./README.md": [
+      "doctoc --notitle --github --maxlevel 3",
       "git add"
     ]
   },
