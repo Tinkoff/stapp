@@ -99,13 +99,13 @@ type ConsumerHoc<State, Api, Result> = (
 ) => (WrappedComponent: React.ComponentType<Result & Api>) => React.ComponentClass
 ```
 
-`createInject` creates a classic, familiar HoC, that works exactly as `react-redux` `@connect`.
+`createConsume` creates a classic, familiar HoC, that works exactly as `react-redux` `@connect`.
 
 ```jsx
-import { createInject } from 'stapp-react'
+import { createConsume } from 'stapp-react'
 import todoApp from '../myApps/todoApp.js'
 
-const inject = createInject(todoApp)
+const inject = createConsume(todoApp)
 
 const ListItem = inject(
 	(state, api, props) => ({

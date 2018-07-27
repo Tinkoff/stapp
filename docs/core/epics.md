@@ -32,12 +32,11 @@ type Epic<State> = (
 Take the following as an example: search field with autosuggest.
 
 ```js
-import { createEffect, selectArray, combineEpics, createEvent, createReducer } from 'stapp'
-import { loaderStart, loaderEnd } from 'stapp/lib/modules/loaders'
+import { createEffect, combineEpics, createEvent, createReducer } from 'stapp'
+import { loaderStart, loaderEnd } from 'stapp-loaders'
+import { debounceTime, mapTo, map, skipRepeats, switchMap } from 'light-observable/operators'
 
 const saveResults = createEvent('Save search results')
-const searchReducer = createReducer([])
-  .on(saveResults, (_, results) => results)
 
 // EffectCreator returns an observable of three types of events:
 // `start`, `success` or `fail` and `complete`.
@@ -52,7 +51,8 @@ const searchEffect = createEffect(
 const searchModule = {
   name: 'search',
   state: {
-    search: searchReducer
+    search: createReducer([])
+      .on(saveResults, (_, results) => results)
   },
   epic: combineEpics([
     // Start loader on effect run
@@ -61,12 +61,12 @@ const searchModule = {
     )),
 
     // End loader on effect complete
-    selectArray([searchEffect.success, searchEffect.fail], event$).pipe(
+    searchEffect.complete.epic(complete$ => complete$.pipe(
       mapTo(loaderEnd('search'))
-    ),
+    )),
 
     // Save results on success
-    success.epic(success$ => success$.pipe(
+    searchEffect.success.epic(success$ => success$.pipe(
       map(({ payload }) => saveResults(payload))
     )),
 

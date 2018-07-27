@@ -49,6 +49,7 @@ Creates an EffectCreator. Accepts a description, a side effect function (optiona
 
 ```js
 import { createEffect } from 'stapp'
+import { switchMap } from 'light-observable'
 
 const payEffect = createEffect(
   // Effect descriptioo=n
@@ -62,10 +63,9 @@ const payEffect = createEffect(
 )
 
 // Usage in an epic:
-const payEpic = (event$, state$) => state$.pipe(
-  sample(select(submit, event$)),
-  switchMap(state => payEffect(state.values))
-)
+const payEpic = submit.epic((event$, _, { getState }) => event$.pipe(
+  switchMap(() => payEffect(getState()))
+))
 
 ```
 When called effect creator returns a stream of three events: `start`, then `success` or `fail` after completing side effect and finally, the `complete` event.
