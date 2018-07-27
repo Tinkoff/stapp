@@ -1,0 +1,18 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "examples/form-async-validation/package.json",
+        "examples/todo-mvc/package.json",
+        "package.json",
+        "packages/stapp-formbase/package.json",
+        "packages/stapp-loaders/package.json",
+        "packages/stapp-persist/package.json",
+        "packages/stapp-react/package.json",
+        "packages/stapp-rxjs/package.json",
+        "packages/stapp-validate/package.json",
+        "packages/stapp/package.json"
+      ]
+    }
+  }
+}

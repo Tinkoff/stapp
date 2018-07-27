@@ -7,7 +7,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.4",
-    "redux": "^3.7.2",
+    "redux": "^4.0.0",
     "reselect": "^3.0.1",
     "stapp": "^2.0.1",
     "stapp-persist": "^2.0.1",
