@@ -1,3 +1,12 @@
 {
-  "root": "./docs"
+  "root": "./docs",
+  "plugins": [
+    "edit-link"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/TinkoffCreditSystems/stapp/blob/master/docs",
+      "label": "Edit This Page"
+    }
+  }
 }
