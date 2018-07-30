@@ -23,11 +23,13 @@ Please, commit changes with `npm run cz`. This will run commitizen, which will p
 You'll be asked about the changes scope. Please, select among the following:
 
 * `core` - any feature and tests changes related to the core `stapp` package
-* `validate` - any feature and tests changes related to the `stapp-validate` package
-* `loaders` - any feature and tests changes related to the `stapp-loaders` package
-* `formbase`- any feature and tests changes related to the `stapp-formbase` package
-* `persist` - any feature and tests changes related to the `stapp-persist` package
-* `react` - any feature and tests changes related to the `stapp-react` package
-* `all` - when your changes a related to every single package
+* `validate` - same for `stapp-validate` package
+* `loaders` - same for `stapp-loaders` package
+* `formbase`- same for `stapp-formbase` package
+* `persist` - same for `stapp-persist` package
+* `react` - same for `stapp-react` package
+* `rxjs` - same for `stapp-rxjs` package
+* `root` - changes related to the root of this project
+* leave empty when your changes a related to every single package
 
 Finally send a GitHub Pull Request with a clear list of what you've done (read more [about pull requests](https://help.github.com/articles/about-pull-requests/)). Make sure all of your commits are atomic (one feature per commit).

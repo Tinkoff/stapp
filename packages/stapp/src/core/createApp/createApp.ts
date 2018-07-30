@@ -114,7 +114,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   }
 
   const readyPromise = getReadyPromise(store.event$, store.getState, waitFor)
-  const rootDispatch = store.createDispatch(appName)
+  const rootDispatch = store.createDispatch('root')
 
   store.flushQueue()
   rootDispatch(initDone())

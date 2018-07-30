@@ -1,11 +1,12 @@
 import { Observable } from 'light-observable'
 import { EMPTY, of } from 'light-observable/observable'
+import { filter, map } from 'light-observable/operators'
 import { compose, Middleware } from 'redux'
 import {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from '../../events/dangerous'
-import { SOURCE_MODULE } from '../../helpers/constants'
+import { SOURCE } from '../../helpers/constants'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
@@ -19,6 +20,13 @@ describe('createApp', () => {
   const mockReducer = createReducer({})
   const fire1 = createEvent('fire1')
   const fire2 = createEvent('fire2')
+  const withSource = createEvent(
+    'meta',
+    () => undefined,
+    (x: string[]) => ({
+      [SOURCE]: x
+    })
+  )
 
   describe('creation', () => {
     it('should create an app', () => {
@@ -455,9 +463,9 @@ describe('createApp', () => {
 
       const check = (o1: number, o2: number, name: string) => {
         expect(app.getState().eventLog[o1].type).toEqual(fire1.getType())
-        expect(app.getState().eventLog[o1].meta[SOURCE_MODULE]).toEqual(name)
+        expect(app.getState().eventLog[o1].meta[SOURCE]).toEqual([name])
         expect(app.getState().eventLog[o2].type).toEqual(fire2.getType())
-        expect(app.getState().eventLog[o2].meta[SOURCE_MODULE]).toEqual(name)
+        expect(app.getState().eventLog[o2].meta[SOURCE]).toEqual([name])
       }
 
       check(0, 1, m3.name)
@@ -467,6 +475,34 @@ describe('createApp', () => {
 
       app.api.a2()
       check(4, 5, m2.name)
+    })
+
+    it('should update meta', () => {
+      let sent = false
+      const m1 = {
+        name: 'm1',
+        state: { r1: mockReducer },
+        epic: withSource.epic((withSource$) => {
+          return withSource$.pipe(
+            filter(() => !sent),
+            map((x) => {
+              sent = true
+              return withSource((x.meta as any)[SOURCE])
+            })
+          )
+        })
+      }
+
+      const app = createApp({
+        modules: [m1, loggerModule]
+      })
+
+      app.dispatch(withSource(['test']))
+
+      expect(app.getState().eventLog.map((x) => x.meta)).toEqual([
+        { [SOURCE]: ['test', 'root'] },
+        { [SOURCE]: ['test', 'root', m1.name] }
+      ])
     })
 
     it('should queue events during initialization', () => {
