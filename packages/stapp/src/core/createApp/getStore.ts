@@ -1,7 +1,7 @@
 import { Observable } from 'light-observable'
 import { createSubject, forEach } from 'light-observable/observable'
 import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux'
-import { SOURCE_MODULE } from '../../helpers/constants'
+import { SOURCE } from '../../helpers/constants'
 import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { isSubscribable } from '../../helpers/is/isSubscribable/isSubscribable'
 import { Event } from '../createEvent/createEvent.h'
@@ -28,9 +28,10 @@ const getReduxEnhancer = (appName: string) => {
 /**
  * @private
  */
-const addMeta = (name: string, event: Event<any, any>) => {
+const updateMeta = (name: string, event: Event<any, any>) => {
   event.meta = event.meta || {}
-  event.meta[SOURCE_MODULE] = name
+  const meta = event.meta[SOURCE] || []
+  event.meta[SOURCE] = meta.concat(name)
 }
 
 /**
@@ -67,7 +68,7 @@ export const getStore = <State>(
       }
 
       if (isEvent(event)) {
-        addMeta(moduleName, event)
+        updateMeta(moduleName, event)
         if (initializing) {
           queue!.push(event)
           return event
