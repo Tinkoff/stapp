@@ -40,11 +40,11 @@ const T = () => true
  * @param condition Function, that defines if an effect should run. Must return boolean. T by default. E.g. can be used to separate server-side effects.
  * @returns
  */
-export const createEffect = <Payload, Result>(
+export const createEffect = <Payload, Result, Error = any>(
   description: string,
   effect?: (payload: Payload) => Promise<Result> | Result,
   condition: (payload?: Payload) => boolean = T
-): EffectCreator<Payload, Result> => {
+): EffectCreator<Payload, Result, Error> => {
   const success = createEvent<Result>(`${description}: SUCCESS`)
   const fail = createEvent<any>(`${description}: FAIL`)
   const start = createEvent<Payload>(`${description}: START`)
