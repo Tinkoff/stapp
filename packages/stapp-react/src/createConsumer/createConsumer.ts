@@ -55,10 +55,10 @@ export const createConsumer = <State, Api>(
     subscribe() {
       this.unsubscribe()
 
-      this.subscription = Observable.from(app)
+      this.subscription = Observable.from(app as any)
         .pipe(
           auditTime(1000 / 60),
-          map((state) => this.props.map!(state, app.api)),
+          map((state: State) => this.props.map!(state, app.api)),
           skipRepeats(shallowEqual)
         )
         .subscribe((result) => {
