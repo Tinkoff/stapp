@@ -20,7 +20,7 @@ export type ValidationState = {
 }
 
 export type ValidateConfig<State> = {
-  rules: ValidationRules<State>
+  rules: ((state: State) => ValidationRules<State>) | ValidationRules<State>
   validateOnInit?: boolean
   setTouchedOnSubmit?: boolean
 }

@@ -475,4 +475,23 @@ describe('validate', () => {
       expect(app.getState().touched).toEqual({})
     })
   })
+
+  describe('dynamic rules', () => {
+    it('should accept function as a source of rules', () => {
+      const getRules = jest.fn(() => ({}))
+      const app = getApp(
+        {
+          rules: getRules
+        },
+        {
+          initialValues: {
+            age: 10,
+            name: 'Ben'
+          }
+        }
+      )
+
+      expect(getRules).toBeCalledWith(app.getState())
+    })
+  })
 })
