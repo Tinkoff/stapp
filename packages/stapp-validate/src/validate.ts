@@ -1,6 +1,11 @@
-import { EMPTY, merge } from 'light-observable/observable'
-import { filter, map, mapTo } from 'light-observable/operators'
-import { switchMap } from 'light-observable/operators/switchMap'
+import { EMPTY, from, merge } from 'light-observable/observable'
+import {
+  filter,
+  groupBy,
+  map,
+  mergeMap,
+  switchMap
+} from 'light-observable/operators'
 import { combineEpics, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
 import { initDone } from 'stapp/lib/events/initDone'
@@ -10,94 +15,103 @@ import { runValidation } from './helpers'
 import { validateReducer } from './reducers'
 
 // Models
-import { Observable } from 'light-observable'
 import { FormBaseState } from 'stapp-formbase/lib/formBase.h'
 import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
-import { ValidateConfig, ValidationFlags, ValidationState } from './validate.h'
+import {
+  ValidateConfig,
+  ValidationFlags,
+  ValidationRules,
+  ValidationState
+} from './validate.h'
 
-/**
- * @private
- */
-const getFieldsObject = (fields: string[]) =>
-  fields.reduce((result: { [K: string]: true }, field) => {
-    result[field] = true
-    return result
-  }, {})
+const emptyEpic = () => EMPTY
 
 export const validate = <State extends FormBaseState>({
   validateOnInit = true,
   setTouchedOnSubmit = true,
   rules
 }: ValidateConfig<State>): Module<{}, ValidationState> => {
-  const fieldNames = Object.keys(rules).filter(
-    // tslint:disable-next-line strict-type-predicates
-    (fieldName) => typeof rules[fieldName] === 'function'
-  )
-  const allFields = getFieldsObject(fieldNames)
-  const setTouchedEvent = setTouched(allFields)
+  const getRules = (state: State): ValidationRules<State> => {
+    return typeof rules === 'function' ? rules(state) : rules
+  }
 
-  const validateEpic: Epic<State> = (event$, state$, { getState }) => {
-    const setValue$: Observable<{
-      fields: { [K: string]: true }
-      flags: ValidationFlags
-    }> = event$.pipe(
-      filter(select(setValue)),
-      map(({ payload }) => ({
-        fields: getFieldsObject(Object.keys(payload)),
-        flags: { onChange: true }
-      }))
-    )
+  const mapValues = (
+    state: State,
+    flags: ValidationFlags,
+    fields?: string[]
+  ) => {
+    const nextRules = getRules(state)
+    const nextFields = fields || Object.keys(nextRules)
 
-    const initDone$: Observable<{
-      fields: { [K: string]: true }
-      flags: ValidationFlags
-    }> = event$.pipe(
-      filter(select(initDone)),
-      mapTo({
-        fields: allFields,
-        flags: { onInit: true }
-      })
-    )
-
-    const revalidate$: Observable<{
-      fields: { [K: string]: true }
-      flags: ValidationFlags
-    }> = event$.pipe(
-      filter(select(revalidate)),
-      mapTo({
-        fields: allFields,
-        flags: { onRevalidate: true }
-      })
-    )
-
-    const toValidate$ = merge(setValue$, revalidate$, validateOnInit ? initDone$ : EMPTY).pipe(
-      // TODO: add share operator after it becomes available
-      map(({ fields, flags }) => ({
-        fields,
-        state: getState(),
+    return from(
+      nextFields.map((field) => ({
+        field,
+        value: state.values[field],
+        rule: nextRules[field],
         flags
       }))
     )
+  }
 
-    return (merge as any)(
-      ...fieldNames.map((fieldName) => {
-        const fieldRule = rules[fieldName]
+  type Res = ReturnType<typeof mapValues>
 
-        return toValidate$.pipe(
-          filter(({ fields }) => !!fields[fieldName]),
-          switchMap(({ state, flags }) => runValidation(state, fieldName, fieldRule, flags))
+  const validateEpic: Epic<State> = (event$, state$, { getState }) => {
+    const setValue$: Res = event$.pipe(
+      filter(select(setValue)),
+      mergeMap((event) => {
+        return mapValues(
+          getState(),
+          { onChange: true },
+          Object.keys(event.payload)
         )
+      }),
+      filter(({ rule }) => !!rule)
+    )
+
+    const initDone$: Res = validateOnInit
+      ? event$.pipe(
+          filter(select(initDone)),
+          mergeMap(() => {
+            return mapValues(getState(), { onInit: true })
+          })
+        )
+      : EMPTY
+
+    const revalidate$: Res = event$.pipe(
+      filter(select(revalidate)),
+      mergeMap(() => {
+        return mapValues(getState(), { onRevalidate: true })
       })
     )
-  }
-  // Set all fields that have validation rules as touched
-  const setTouchedOnSubmitEpic: Epic<State> = submit.epic((submit$) => {
-    if (!setTouchedOnSubmit) {
-      return EMPTY
-    }
 
-    return submit$.pipe(mapTo(setTouchedEvent))
-  })
+    return merge(setValue$, revalidate$, initDone$).pipe(
+      groupBy((res) => res.field),
+      mergeMap((field$) =>
+        field$.pipe(
+          switchMap((res) =>
+            runValidation(getState(), res.field, res.rule, res.flags)
+          )
+        )
+      )
+    )
+  }
+
+  // Set all fields that have validation rules as touched
+  const setTouchedOnSubmitEpic = setTouchedOnSubmit
+    ? submit.epic<State>((submit$, _, { getState }) => {
+        return submit$.pipe(
+          map(() => {
+            const fields = Object.keys(getRules(getState()))
+            return setTouched(
+              fields.reduce((result: { [K: string]: true }, field) => {
+                result[field] = true
+                return result
+              }, {})
+            )
+          })
+        )
+      })
+    : emptyEpic
 
   return {
     name: VALIDATE,
