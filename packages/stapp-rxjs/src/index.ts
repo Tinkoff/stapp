@@ -1,1 +1,1 @@
-export { combineEpics } from './combineEpics/combineEpics'
+export { combineEpics, Epic } from './combineEpics/combineEpics'
