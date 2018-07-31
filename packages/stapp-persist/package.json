@@ -1,6 +1,6 @@
 {
   "name": "stapp-persist",
-  "version": "2.0.1",
+  "version": "2.1.0-0",
   "description": "Persistence module for stapp - module state manager",
   "keywords": [
     "state-management",
@@ -45,7 +45,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
-    "stapp": "^2.0.1",
+    "stapp": "^2.1.0-0",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tslib": "^1.9.0",
