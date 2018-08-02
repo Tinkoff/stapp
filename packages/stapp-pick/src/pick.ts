@@ -42,10 +42,10 @@ export const pick = <State>({
 
   const reactEpic: Epic<State> = picked.epic((picked$) =>
     picked$.pipe(
-      map(({ payload: pickResult }) => {
-        console.log(react.map((event) => event(pickResult)))
-        return merge(...react.map((event) => of(event(pickResult))))
-      })
+      map(({ payload: pickResult }) =>
+        react.map((event) => of(event(pickResult)))
+      ),
+      map((eventsStreams) => merge(...eventsStreams))
     )
   )
 
