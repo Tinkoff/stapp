@@ -5,14 +5,13 @@ import { SELECT } from './constants'
 
 // Models
 import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
-import { SelectConfig, SelectState } from './select.h'
+import { SelectConfig } from './select.h'
 
 export const selected = createEvent<any>(`${SELECT}: State was selected`)
 
-const selectReducer = createReducer<SelectState>([]).on(
+const selectReducer = createReducer<any>(null).on(
   selected,
-  (state: SelectState, selectResult: Array<string | void>) =>
-    selectResult || state
+  (state: any, selectResult: any) => selectResult || state
 )
 
 /**
