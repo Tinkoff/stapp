@@ -7,7 +7,7 @@ import { renderPropType, selectorType } from '../helpers/propTypes'
 
 // Models
 import { Observable, Subscription } from 'light-observable'
-import { Stapp } from 'stapp/lib/core/createApp/createApp.h'
+import { Stapp } from 'stapp'
 import { renderComponent } from '../helpers/renderComponent'
 import { ConsumerClass, ConsumerProps } from './createConsumer.h'
 
@@ -46,6 +46,12 @@ export const createConsumer = <State, Api>(
 
     componentDidMount() {
       this.subscribe()
+    }
+
+    componentDidUpdate(prevProps: ConsumerProps<State, Api, any>) {
+      if (prevProps.map !== this.props.map) {
+        this.subscribe()
+      }
     }
 
     componentWillUnmount() {
