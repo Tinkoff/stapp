@@ -54,10 +54,10 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
-    "typescript": "^2.8.1"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "fbjs": "^0.8.17",
-    "light-observable": "^2.10.1"
+    "light-observable": "^2.11.0"
   }
 }
