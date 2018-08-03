@@ -6,6 +6,7 @@ export {
   setSubmitting,
   setTouched,
   setValue,
+  clearFields,
   submit
 } from './events'
 export { formBase } from './formBase'

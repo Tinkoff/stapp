@@ -1,5 +1,7 @@
-import { createReducer } from 'stapp/lib/core/createReducer/createReducer'
+import { createReducer } from 'stapp'
+import { has } from 'stapp/lib/helpers/has/has'
 import {
+  clearFields,
   resetForm,
   setActive,
   setError,
@@ -15,13 +17,35 @@ import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
 /**
  * @private
  */
-const commonHandler = <T, K extends keyof T>(o: T, n: Partial<T>) => {
+const mergeIfChanged = <T, K extends keyof T>(o: T, n: Partial<T>) => {
   const keys = Object.keys(n) as K[]
   const changedFields = keys.filter((field) => o[field] !== n[field])
 
   return changedFields.length !== 0 ? Object.assign({}, o, n) : o
 }
 
+/**
+ * @private
+ */
+const replace = <P>(_: any, payload: P) => payload
+
+/**
+ * @private
+ */
+const omit = <S extends { [K: string]: any }>(
+  state: S,
+  payload: string[]
+): S => {
+  const result: { [K: string]: any } = {}
+
+  for (const key in state) {
+    if (has(key, state) && !payload.includes(key)) {
+      result[key] = state[key]
+    }
+  }
+
+  return result as S
+}
 /**
  * @private
  */
@@ -43,12 +67,13 @@ const mapObject = <T, R, O extends { [K: string]: T }>(
  */
 export const createFormBaseReducers = (initialState: any) => {
   const valuesReducer = createReducer<any>(initialState)
-    .on(setValue, commonHandler)
+    .on(setValue, mergeIfChanged)
+    .on(clearFields, omit)
     .reset(resetForm)
 
   const dirtyReducer = createReducer<any>({})
     .on(setValue, (dirty, values) =>
-      commonHandler(
+      mergeIfChanged(
         dirty,
         mapObject(
           (element, key) => element !== (initialState[key] || ''),
@@ -56,22 +81,29 @@ export const createFormBaseReducers = (initialState: any) => {
         )
       )
     )
+    .on(clearFields, omit)
     .reset(resetForm)
 
   const errorsReducer = createReducer<any>({})
-    .on(setError, commonHandler)
+    .on(setError, mergeIfChanged)
+    .on(clearFields, omit)
     .reset(resetForm)
 
   const touchedReducer = createReducer<any>({})
-    .on(setTouched, commonHandler)
+    .on(setTouched, mergeIfChanged)
+    .on(clearFields, omit)
     .reset(resetForm)
 
   const readyReducer = createReducer<any>({})
-    .on(setReady, commonHandler)
+    .on(setReady, mergeIfChanged)
     .reset(resetForm)
 
   const activeReducer = createReducer<any>(null)
-    .on(setActive, (_, payload) => payload)
+    .on(setActive, replace)
+    .on(
+      clearFields,
+      (state, payload) => (payload.includes(state as string) ? null : state)
+    )
     .reset(resetForm)
 
   const pristineReducer = createReducer(true)
@@ -79,7 +111,7 @@ export const createFormBaseReducers = (initialState: any) => {
     .reset(resetForm)
 
   const submittingReducer = createReducer(false)
-    .on(setSubmitting, (_, payload) => payload)
+    .on(setSubmitting, replace)
     .reset(resetForm)
 
   return {
