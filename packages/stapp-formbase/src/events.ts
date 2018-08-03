@@ -16,6 +16,11 @@ export const setValue = createEvent<{ [K: string]: any }>(
 )
 
 /**
+ * Used to unset values for fields
+ */
+export const clearValue = createEvent<string[]>(`${FORM_BASE}: Set field value`)
+
+/**
  * Used to set errors for fields
  */
 export const setError = createEvent<{ [K: string]: any }>(

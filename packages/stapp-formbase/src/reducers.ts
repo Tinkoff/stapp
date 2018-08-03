@@ -6,7 +6,8 @@ import {
   setReady,
   setSubmitting,
   setTouched,
-  setValue
+  setValue,
+  clearValue
 } from './events'
 
 // tslint:disable-next-line
@@ -41,9 +42,26 @@ const mapObject = <T, R, O extends { [K: string]: T }>(
 /**
  * @private
  */
+const clearValues = (state: { [K: string]: any }, fields: string[]) => {
+  return Object.keys(state).reduce(
+    (result, key) => {
+      if (fields.indexOf(key) === -1) {
+        result[key] = state[key]
+      }
+
+      return result
+    },
+    {} as any
+  )
+}
+
+/**
+ * @private
+ */
 export const createFormBaseReducers = (initialState: any) => {
   const valuesReducer = createReducer<any>(initialState)
     .on(setValue, commonHandler)
+    .on(clearValue, clearValues)
     .reset(resetForm)
 
   const dirtyReducer = createReducer<any>({})
@@ -56,22 +74,31 @@ export const createFormBaseReducers = (initialState: any) => {
         )
       )
     )
+    .on(clearValue, clearValues)
     .reset(resetForm)
 
   const errorsReducer = createReducer<any>({})
     .on(setError, commonHandler)
+    .on(clearValue, clearValues)
     .reset(resetForm)
 
   const touchedReducer = createReducer<any>({})
     .on(setTouched, commonHandler)
+    .on(clearValue, clearValues)
     .reset(resetForm)
 
   const readyReducer = createReducer<any>({})
     .on(setReady, commonHandler)
+    .on(clearValue, clearValues)
     .reset(resetForm)
 
   const activeReducer = createReducer<any>(null)
     .on(setActive, (_, payload) => payload)
+    .on(
+      clearValue,
+      (active: string, fields: string[]) =>
+        fields.indexOf(active) === -1 ? active : null
+    )
     .reset(resetForm)
 
   const pristineReducer = createReducer(true)

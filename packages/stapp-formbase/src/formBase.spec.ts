@@ -6,6 +6,7 @@ import {
   setSubmitting,
   setTouched,
   setValue,
+  clearValue,
   submit
 } from './events'
 import { formBase } from './formBase'
@@ -419,6 +420,53 @@ describe('formBase', () => {
         })
       )
       expect(stateC).toBe(false)
+    })
+
+    test('clearValues should remove passed fields from reducers', () => {
+      const {
+        values: valuesReaducer,
+        errors: errorsReducer,
+        touched: touchedReducer,
+        dirty: dirtyReducer,
+        ready: readyReducer,
+        active: activeReducer
+      } = createFormBaseReducers({})
+
+      const testReducer = (
+        reducer: any,
+        state: { [K: string]: any },
+        excludedKey: string
+      ) => {
+        expect(reducer(state, clearValue([excludedKey]))).not.toEqual(
+          expect.objectContaining({
+            [excludedKey]: expect.anything()
+          })
+        )
+      }
+
+      testReducer(
+        valuesReaducer,
+        { name: 'Billy', password: 'Shazam!' },
+        'name'
+      )
+
+      testReducer(
+        errorsReducer,
+        { name: { message: 'x' }, password: { message: 'y' } },
+        'name'
+      )
+
+      testReducer(touchedReducer, { name: true, password: false }, 'name')
+
+      testReducer(dirtyReducer, { name: true, password: false }, 'name')
+
+      testReducer(readyReducer, { name: true, password: false }, 'name')
+
+      expect(activeReducer('name', clearValue(['name']))).toBeNull()
+
+      expect(activeReducer('password', clearValue(['name']))).toEqual(
+        'password'
+      )
     })
   })
 })
