@@ -31,7 +31,7 @@ export const isPristineSelector = () => <
 
 const noop = () => undefined
 
-export const fieldSelector = <State extends FormBaseState, Extra = undefined>(
+export const fieldSelector = <State extends FormBaseState, Extra>(
   name: string,
   extraSelector: ((state: State) => Extra) = noop as any
 ) =>
