@@ -1,0 +1,36 @@
+{
+  "testURL": "http://localhost",
+  "transform": {
+    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+    "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest"
+  },
+  "modulePaths": [
+    "<rootDir>"
+  ],
+  "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js"
+  ],
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "/test|spec/"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "collectCoverage": true,
+  "coverageReporters": [
+    "json",
+    "lcov"
+  ],
+  "globals": {
+    "process.env.NODE_ENV": "test"
+  }
+}
