@@ -15,6 +15,7 @@
   "files": [
     "lib"
   ],
+  "author": "Eugenie Dasaev <jackensteiny@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
@@ -27,6 +28,7 @@
     "build": "npm run build:module",
     "build:module": "tsc",
     "prebuild": "rimraf lib",
+    "update-all": "lernaupdate",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --config ./jest.config.json",
@@ -50,7 +52,8 @@
     "tslint-config-prettier": "^1.10.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-eslint-rules": "^5.3.1",
-    "typescript": "^2.8.1"
+    "tslint-react": "^3.5.1",
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "light-observable": "^2.10.1"
