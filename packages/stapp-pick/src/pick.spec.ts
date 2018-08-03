@@ -1,27 +1,29 @@
 import { createApp, createEvent } from 'stapp'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
-import { pick as pickModule, picked } from './pick'
+import { picked, pickModule } from './pick'
 
 describe('pick module', () => {
-  const event1 = createEvent('Test event 1')
-  const event2 = createEvent('Test event 2')
-  const event3 = createEvent('Test event 3')
-  const event4 = createEvent('Test event 4')
+  const event1 = createEvent('Api event 1')
+  const event2 = createEvent('Api event 2')
+  const event3 = createEvent('Api event 3')
+
+  const reactEvent1 = createEvent<Array<string | void>>('React event 1')
 
   const pickResult = ['1', '2', '3']
   const pickMock = jest.fn(() => pickResult)
+
   const someModule = {
     name: 'someModule',
     api: {
       event1,
       event2,
-      event4
+      event3
     }
   }
   const getApp = ({
     on = [event1, event2],
     pick = pickMock,
-    react = [event3]
+    react = [reactEvent1]
   } = {}) =>
     createApp({
       modules: [
@@ -51,7 +53,7 @@ describe('pick module', () => {
       expect.objectContaining(picked(pickResult))
     )
     expect(app.getState().eventLog).toContainEqual(
-      expect.objectContaining(event3(pickResult))
+      expect.objectContaining(reactEvent1(pickResult))
     )
 
     app.api.event1()
@@ -59,7 +61,7 @@ describe('pick module', () => {
   })
 
   it('should not dispatch picked on events from on', () => {
-    app.api.event4()
+    app.api.event3()
     expect(pickMock).toHaveBeenCalledTimes(2)
   })
 })

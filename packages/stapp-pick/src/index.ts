@@ -1,2 +1,2 @@
-export { pick, picked } from './pick'
+export { picked, pickModule as pick } from './pick'
 export { PICK } from './constants'

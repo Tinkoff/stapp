@@ -1,6 +1,6 @@
+import { from } from 'light-observable/observable'
+import { filter, map, mergeMap } from 'light-observable/operators'
 import { combineEpics, createEvent, createReducer, selectArray } from 'stapp'
-import { filter, map } from 'light-observable/operators'
-import { merge, of } from 'light-observable/observable'
 import { PICK } from './constants'
 
 // Models
@@ -25,7 +25,7 @@ const pickReducer = createReducer<PickState>([]).on(
  * @param react Set of event creators which should be dispatched with select result
  * @returns Module
  */
-export const pick = <State>({
+export const pickModule = <State>({
   on,
   pick,
   react
@@ -42,10 +42,9 @@ export const pick = <State>({
 
   const reactEpic: Epic<State> = picked.epic((picked$) =>
     picked$.pipe(
-      map(({ payload: pickResult }) =>
-        react.map((event) => of(event(pickResult)))
-      ),
-      map((eventsStreams) => merge(...eventsStreams))
+      mergeMap(({ payload }) => from(
+        react.map(event => event(payload))
+      ))
     )
   )
 

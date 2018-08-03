@@ -1,7 +1,7 @@
 {
   "testURL": "http://localhost",
   "transform": {
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest",
     "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest"
   },
   "modulePaths": [
@@ -19,7 +19,7 @@
   ],
   "coverageThreshold": {
     "global": {
-      "branches": 100,
+      "branches": 50,
       "functions": 100,
       "lines": 100,
       "statements": 100
