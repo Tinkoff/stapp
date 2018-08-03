@@ -15,6 +15,7 @@
     "docs:move": "cp README.md ./docs",
     "docs:book": "gitbook install && gitbook build",
     "docs:publish": "gh-pages -d _book",
+    "update-all": "lernaupdate",
     "pretest": "npm run build",
     "precommit": "lint-staged",
     "cz": "git-cz",
