@@ -1,21 +1,18 @@
 {
-  "name": "stapp-loaders",
+  "name": "name-here",
   "version": "2.1.0-0",
-  "description": "Loaders module for stapp - modular state manager",
+  "description": "DESCRIPTION HERE",
+  "private": true,
   "keywords": [
-    "state-management",
-    "state",
-    "reactive",
-    "microservice",
-    "epics",
-    "redux"
+    "keyword a",
+    "keyword b"
   ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib"
   ],
-  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
+  "author": "Firstname Lastname <email@domain.com> (optional address)",
   "repository": {
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
@@ -28,13 +25,13 @@
     "build": "npm run build:module",
     "build:module": "tsc",
     "prebuild": "rimraf lib",
+    "update-all": "lernaupdate",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --config ./jest.config.json",
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "reselect": ">=3",
     "stapp": ">=2.0.0"
   },
   "devDependencies": {
@@ -44,7 +41,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
-    "reselect": "^3.0.1",
     "stapp": "^2.1.0-0",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
@@ -53,6 +49,7 @@
     "tslint-config-prettier": "^1.10.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-eslint-rules": "^5.3.1",
+    "tslint-react": "^3.5.1",
     "typescript": "^3.0.1"
   }
 }

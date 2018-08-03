@@ -1,5 +1,7 @@
+import { createApp } from 'stapp'
 import { getInitialState } from 'stapp/lib/helpers/testHelpers/getInitialState/getInitialState'
 import {
+  clearFields,
   setActive,
   setError,
   setReady,
@@ -152,7 +154,11 @@ describe('formBase', () => {
           dirty: {
             test: false
           },
-          touched: {}
+          touched: {},
+          active: null,
+          ready: {},
+          pristine: true,
+          submitting: false
         })
       ).toEqual({
         value: 123,
@@ -174,7 +180,10 @@ describe('formBase', () => {
           dirty: {
             test: true
           },
-          active: 'test'
+          active: 'test',
+          ready: {},
+          pristine: true,
+          submitting: false
         })
       ).toEqual({
         value: undefined,
@@ -185,7 +194,7 @@ describe('formBase', () => {
       })
 
       expect(
-        fieldSelector<FormBaseState & { extraValue: string }>(
+        fieldSelector<FormBaseState & { extraValue: string }, string>(
           'test',
           ({ extraValue }) => extraValue
         )({
@@ -200,7 +209,10 @@ describe('formBase', () => {
             test: true
           },
           active: 'test',
-          extraValue: 'Some value'
+          extraValue: 'Some value',
+          ready: {},
+          pristine: true,
+          submitting: false
         })
       ).toEqual({
         value: undefined,
@@ -419,6 +431,77 @@ describe('formBase', () => {
         })
       )
       expect(stateC).toBe(false)
+    })
+
+    test('clearFields event', () => {
+      const app = createApp({
+        modules: [
+          formBase({
+            initialValues: {
+              valueA: 'Ann',
+              valueB: 'Bob',
+              valueC: 'Duke'
+            }
+          })
+        ]
+      })
+
+      app.dispatch(
+        setError({
+          valueA: 'error!'
+        })
+      )
+
+      app.dispatch(
+        setValue({
+          valueA: 'Mark'
+        })
+      )
+
+      app.dispatch(
+        setTouched({
+          valueA: true
+        })
+      )
+
+      app.dispatch(setActive('valueA'))
+
+      expect(app.getState()).toEqual({
+        values: {
+          valueA: 'Mark',
+          valueB: 'Bob',
+          valueC: 'Duke'
+        },
+        dirty: {
+          valueA: true
+        },
+        errors: {
+          valueA: 'error!'
+        },
+        active: 'valueA',
+        pristine: false,
+        ready: {},
+        submitting: false,
+        touched: {
+          valueA: true
+        }
+      })
+
+      app.dispatch(clearFields(['valueA']))
+
+      expect(app.getState()).toEqual({
+        values: {
+          valueB: 'Bob',
+          valueC: 'Duke'
+        },
+        dirty: {},
+        errors: {},
+        active: null,
+        pristine: false,
+        ready: {},
+        submitting: false,
+        touched: {}
+      })
     })
   })
 })
