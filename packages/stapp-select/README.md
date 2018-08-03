@@ -1,10 +1,10 @@
-# Stapp Pick
+# Stapp Select
 
 Module extending stapp-formbase functionality for dynamic form fields.
 
 ## Installation
 ```bash
-npm install stapp-pick
+npm install stapp-select
 ```
 
 ## License

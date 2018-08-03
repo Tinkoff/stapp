@@ -1,7 +1,7 @@
 {
-  "name": "stapp-pick",
+  "name": "stapp-select",
   "version": "2.1.0-0",
-  "description": "Pick module for stapp - modular state manager",
+  "description": "Select module for stapp - modular state manager",
   "keywords": [
     "state-management",
     "state",
