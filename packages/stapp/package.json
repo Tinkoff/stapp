@@ -28,6 +28,7 @@
     "build": "npm run build:module",
     "build:module": "tsc",
     "prebuild": "rimraf lib",
+    "update-all": "lernaupdate",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --config ./jest.config.json",
@@ -37,7 +38,7 @@
     "redux": ">=3 <4"
   },
   "dependencies": {
-    "light-observable": "^2.10.1",
+    "light-observable": "^2.11.0",
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
@@ -57,6 +58,6 @@
     "tslint-config-standard": "^7.0.0",
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.1"
   }
 }
