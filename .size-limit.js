@@ -28,6 +28,10 @@ module.exports = [
     path: './packages/stapp-rxjs/lib/index.js'
   },
   {
+    name: 'stapp-select',
+    path: './packages/stapp-select/lib/index.js'
+  },
+  {
     name: 'Total',
     path: [
       './packages/stapp/lib/stapp.js',
@@ -36,6 +40,7 @@ module.exports = [
       './packages/stapp-validate/lib/index.js',
       './packages/stapp-persist/lib/index.js',
       './packages/stapp-react/lib/index.js',
+      './packages/stapp-select/lib/index.js',
       './packages/stapp-rxjs/lib/index.js'
     ]
   }
