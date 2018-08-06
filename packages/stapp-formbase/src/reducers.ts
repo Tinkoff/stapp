@@ -1,7 +1,9 @@
 import { createReducer } from 'stapp'
-import { has } from 'stapp/lib/helpers/has/has'
+import { omit } from 'stapp/lib/utils/omit/omit'
+import { pick } from 'stapp/lib/utils/pick/pick'
 import {
   clearFields,
+  pickFields,
   resetForm,
   setActive,
   setError,
@@ -10,57 +12,10 @@ import {
   setTouched,
   setValue
 } from './events'
+import { mapObject, mergeIfChanged, replace } from './helpers'
 
 // tslint:disable-next-line
 import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
-
-/**
- * @private
- */
-const mergeIfChanged = <T, K extends keyof T>(o: T, n: Partial<T>) => {
-  const keys = Object.keys(n) as K[]
-  const changedFields = keys.filter((field) => o[field] !== n[field])
-
-  return changedFields.length !== 0 ? Object.assign({}, o, n) : o
-}
-
-/**
- * @private
- */
-const replace = <P>(_: any, payload: P) => payload
-
-/**
- * @private
- */
-const omit = <S extends { [K: string]: any }>(
-  state: S,
-  payload: string[]
-): S => {
-  const result: { [K: string]: any } = {}
-
-  for (const key in state) {
-    if (has(key, state) && !payload.includes(key)) {
-      result[key] = state[key]
-    }
-  }
-
-  return result as S
-}
-/**
- * @private
- */
-const mapObject = <T, R, O extends { [K: string]: T }>(
-  fn: (element: T, key: string, index: number) => R,
-  obj: O
-): { [K in keyof O]: R } => {
-  return Object.keys(obj).reduce(
-    (result, key, index) => {
-      result[key] = fn(obj[key], key, index)
-      return result
-    },
-    {} as any
-  )
-}
 
 /**
  * @private
@@ -69,6 +24,7 @@ export const createFormBaseReducers = (initialState: any) => {
   const valuesReducer = createReducer<any>(initialState)
     .on(setValue, mergeIfChanged)
     .on(clearFields, omit)
+    .on(pickFields, pick)
     .reset(resetForm)
 
   const dirtyReducer = createReducer<any>({})
@@ -82,16 +38,19 @@ export const createFormBaseReducers = (initialState: any) => {
       )
     )
     .on(clearFields, omit)
+    .on(pickFields, pick)
     .reset(resetForm)
 
   const errorsReducer = createReducer<any>({})
     .on(setError, mergeIfChanged)
     .on(clearFields, omit)
+    .on(pickFields, pick)
     .reset(resetForm)
 
   const touchedReducer = createReducer<any>({})
     .on(setTouched, mergeIfChanged)
     .on(clearFields, omit)
+    .on(pickFields, pick)
     .reset(resetForm)
 
   const readyReducer = createReducer<any>({})
@@ -103,6 +62,10 @@ export const createFormBaseReducers = (initialState: any) => {
     .on(
       clearFields,
       (state, payload) => (payload.includes(state as string) ? null : state)
+    )
+    .on(
+      pickFields,
+      (state, payload) => (payload.includes(state as string) ? state : null)
     )
     .reset(resetForm)
 

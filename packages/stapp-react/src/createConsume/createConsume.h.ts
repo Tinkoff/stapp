@@ -1,6 +1,6 @@
 import { ComponentClass, ComponentType } from 'react'
+import { Omit } from 'stapp/src/types/omit'
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /**
  * @hidden
  */
