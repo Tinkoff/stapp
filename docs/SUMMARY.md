@@ -22,4 +22,5 @@
   * [loaders](/modules/loaders.md)
   * [formbase](/modules/formbase.md)
   * [validate](/modules/validate.md)
+  * [select](/modules/select.md)
 

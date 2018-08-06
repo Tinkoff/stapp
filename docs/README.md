@@ -16,6 +16,7 @@ Stapp includes:
   * `stapp-validate`
   * `stapp-persist`
   * `stapp-loaders`
+  * `stapp-select`
   * `stapp-routing` (in progress)
 * React utilities (`stapp-react`):
   * a higher order component and a render-prop component to connect to the state
