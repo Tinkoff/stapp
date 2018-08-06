@@ -49,6 +49,11 @@ export const setReady = createEvent<{ [K: string]: boolean }>(
 export const clearFields = createEvent<string[]>(`${FORM_BASE}: clear fields`)
 
 /**
+ * Used to clear fields data
+ */
+export const pickFields = createEvent<string[]>(`${FORM_BASE}: pick fields`)
+
+/**
  * Used to reset form state
  */
 export const resetForm = createEvent(`${FORM_BASE}: Reset form state`)

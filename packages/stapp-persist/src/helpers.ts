@@ -1,4 +1,5 @@
-import { has } from 'stapp/lib/helpers/has/has'
+import { omit } from 'stapp/lib/helpers/omit/omit'
+import { pick as corePick } from 'stapp/lib/helpers/pick/pick'
 
 // Models
 import { Transform } from './persist.h'
@@ -16,32 +17,15 @@ export const defaultDeserialize = (data: string) => JSON.parse(data)
 /**
  * @private
  */
-export const pick = (blackList?: string[], whiteList?: string[]) => (data: any): any => {
+export const pick = (blackList?: string[], whiteList?: string[]) => (
+  data: any
+): any => {
   if (whiteList) {
-    return whiteList.reduce(
-      (result, key) => {
-        if (has(key, data)) {
-          // tslint:disable-next-line no-unnecessary-type-assertion
-          result[key] = (data as any)[key]
-        }
-
-        return result
-      },
-      {} as any
-    )
+    return corePick(data, whiteList)
   }
 
   if (blackList) {
-    return Object.keys(data).reduce(
-      (result, key) => {
-        if (blackList.indexOf(key) === -1) {
-          result[key] = data[key]
-        }
-
-        return result
-      },
-      {} as any
-    )
+    return omit(data, blackList)
   }
 
   return data
