@@ -418,6 +418,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4.5" data-path="modules/select.html">
+            
+                <a href="modules/select.html">
+            
+                    
+                    select
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -469,34 +482,22 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="stapp">Stapp</h1>
-<p><a href="https://travis-ci.org/TinkoffCreditSystems/stapp" target="_blank"><img src="https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square" alt="Buuld status"></a> <a href="https://www.typescriptlang.org/" target="_blank"><img src="https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square" alt="Written in typescript"></a> <a href="https://www.npmjs.com/package/stapp" target="_blank"><img src="https://img.shields.io/npm/v/stapp.svg?style=flat-square" alt="npm"></a> <img src="https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&amp;label=Stars" alt="GitHub stars"></p>
-<p>Stapp is the highly opinionated application state-management tool based on redux with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.</p>
-<p>Stapp comprises all the best practices and provides instruments to write understandable and predictable code.</p>
-<p>Stapp includes:</p>
+<p><a href="https://travis-ci.org/TinkoffCreditSystems/stapp" target="_blank"><img src="https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square" alt="Build status"></a> <a href="https://coveralls.io/github/TinkoffCreditSystems/stapp" target="_blank"><img src="https://img.shields.io/coveralls/github/TinkoffCreditSystems/stapp.svg?style=flat-square" alt="Coveralls github"></a> <a href="https://www.typescriptlang.org/" target="_blank"><img src="https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square" alt="Written in typescript"></a> <a href="https://www.npmjs.com/package/stapp" target="_blank"><img src="https://img.shields.io/npm/v/stapp.svg?style=flat-square" alt="npm"></a> <a href="https://github.com/TinkoffCreditSystems/stapp" target="_blank"><img src="https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&amp;label=Stars" alt="GitHub stars"></a></p>
+<p>Stapp is a modular state and side-effects management tool based on redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.</p>
+<p>Includes:</p>
 <ul>
 <li>tools for creating reactive applications</li>
-<li>full compatibility with redux tooling</li>
+<li>full compatibility with redux tooling (e.g. middlewares)</li>
 <li>SSR support</li>
-<li>bunch of drop-in modules which handle common scenarios:<ul>
-<li><code>stapp-formbase</code></li>
-<li><code>stapp-validate</code></li>
-<li><code>stapp-persist</code></li>
-<li><code>stapp-loaders</code></li>
-<li><code>stapp-routing</code> (in progress)</li>
-</ul>
-</li>
-<li>React utilities (<code>stapp-react</code>):<ul>
-<li>a higher order component and a render-prop component to connect to the state</li>
-<li>form and field components</li>
-</ul>
-</li>
+<li>bunch of drop-in modules which handle common scenarios</li>
+<li>React utilities (<code>stapp-react</code>)</li>
 </ul>
 <h3 id="table-of-contents">Table of contents</h3>
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#motivation">Motivation</a></li>
 <li><a href="#stapp-core-concepts">Stapp core concepts</a></li>
 <li><a href="#quick-start">Quick start</a></li>
 <li><a href="#modules">Modules</a></li>
@@ -509,14 +510,14 @@
 <span class="hljs-comment"># or</span>
 yarn add stapp
 </code></pre>
-<h2 id="introduction">Introduction</h2>
+<h2 id="motivation">Motivation</h2>
 <p>Here are some obvious statements:</p>
 <ol>
 <li>Small applications are easier to develop and maintain.</li>
 <li>Small blocks of business logic are easier to develop and maintain.</li>
 <li>Applications tend to become larger and harder to develop and maintain.</li>
 </ol>
-<p>Solution: separating applications into small and independent microapps.</p>
+<p>Solution: <strong>separating applications into small and independent microapps</strong>.</p>
 <p>That&apos;s what Stapp for.</p>
 <h2 id="stapp-core-concepts">Stapp core concepts</h2>
 <ol>
@@ -526,6 +527,7 @@ yarn add stapp
 <li>Modules are shape-agnostic, knows little to nothing about an app or other modules.</li>
 <li>Each module processes one task and nothing more.</li>
 <li>Microapps can run autonomously and independently from each other.</li>
+<li>Microapp is absolutely independent from the view layer.</li>
 </ol>
 <h2 id="quick-start">Quick start</h2>
 <p>Here is a classic counter example:</p>
@@ -588,7 +590,7 @@ app <span class="hljs-comment">// app itself is compatible with standard observa
 <span class="hljs-comment">// State: { counter: 0 }</span>
 
 app
-  .api <span class="hljs-comment">// api is a set of provided event creators binded to the state</span>
+  .api <span class="hljs-comment">// api is a set of provided functions binded to the state</span>
   .increase()
 <span class="hljs-comment">// State: { counter: 1 }</span>
 
@@ -599,7 +601,11 @@ app
 
 <span class="hljs-comment">// And hey, don&apos;t forget to check the redux devtools!</span>
 </code></pre>
-<p>So, a microapp in Stapp terminology is an object, that has only a few fields: <code>state$</code>, which is an observable state of an app, and an <code>api</code>, which comprises methods to change the state.</p>
+<p>So, a microapp in Stapp terminology is an object, that has only a few fields:</p>
+<ul>
+<li><code>subscribe(state =&gt; ...)</code>: method to observe state changes</li>
+<li><code>api</code>: comprises methods to change the state</li>
+</ul>
 <h2 id="modules">Modules</h2>
 <p>CreateApp itself doesn&apos;t do much work. It sets up a redux store, a couple of middlewares and returns a Stapp object. Without modules, application api will be empty, and its state will be a plain empty object. Like, forever.</p>
 <p>So, what are the modules? A module is a place where all your magic should happen. A module has an ability to:</p>
@@ -610,7 +616,7 @@ app
 <li>react to api calls.</li>
 </ol>
 <p>A basic module is an object or a function, returning an object. You&apos;ve already seen the basic example of a module. You may find other examples <a href="usage/modules.md">in the docs</a>.</p>
-<p>Stapp comes shipped with a few modules covering most common problems (see Modules section in the docs).</p>
+<p>Stapp comes shipped with a bunch of modules covering most common problems (see Modules section in the docs).</p>
 <h2 id="peer-dependencies">Peer dependencies</h2>
 <p>Stapp core package is peer dependent on redux. Other <code>stapp-*</code> packages have their own peer dependencies.</p>
 <h2 id="license">License</h2>
@@ -666,7 +672,7 @@ limitations under the License.
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Stapp","level":"1.1","depth":1,"next":{"title":"Installation","level":"1.1.1","depth":2,"anchor":"#installation","path":"README.md","ref":"README.md#installation","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"README.md","mtime":"2018-07-27T16:16:09.250Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-27T16:16:13.045Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Stapp","level":"1.1","depth":1,"next":{"title":"Installation","level":"1.1.1","depth":2,"anchor":"#installation","path":"README.md","ref":"README.md#installation","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit This Page","base":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"README.md","mtime":"2018-08-06T11:17:17.515Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-06T11:17:23.251Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
@@ -674,6 +680,10 @@ limitations under the License.
         
     <script src="gitbook/gitbook.js"></script>
     <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
     
         
         <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
