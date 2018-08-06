@@ -1,6 +1,6 @@
 import { pick } from './pick'
 
-describe('utils/object/pick', () => {
+describe('pick', () => {
   it('return new object with picked properties', () => {
     expect(pick({ a: 3, b: 2, c: 1 }, ['a', 'b'])).toEqual({ a: 3, b: 2 })
     expect(pick({}, ['a', 'b'] as any)).toEqual({})

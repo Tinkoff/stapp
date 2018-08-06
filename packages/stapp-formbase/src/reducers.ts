@@ -1,6 +1,6 @@
 import { createReducer } from 'stapp'
-import { omit } from 'stapp/lib/utils/omit/omit'
-import { pick } from 'stapp/lib/utils/pick/pick'
+import { omit } from 'stapp/lib/helpers/omit/omit'
+import { pick } from 'stapp/lib/helpers/pick/pick'
 import {
   clearFields,
   pickFields,

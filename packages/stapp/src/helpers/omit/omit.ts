@@ -1,4 +1,6 @@
-import { has } from '../../helpers/has/has'
+import { has } from '../has/has'
+
+// Models
 import { Omit } from '../../types/omit'
 
 export const omit = <T, K extends keyof T>(obj: T, props: K[]): Omit<T, K> => {

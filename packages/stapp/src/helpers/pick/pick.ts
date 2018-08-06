@@ -1,4 +1,4 @@
-import { has } from '../../helpers/has/has'
+import { has } from '../has/has'
 
 export const pick = <T, K extends keyof T>(obj: T, props: K[]): Pick<T, K> => {
   const result: { [K: string]: any } = {}
