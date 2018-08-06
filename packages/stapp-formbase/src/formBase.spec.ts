@@ -2,6 +2,7 @@ import { createApp } from 'stapp'
 import { getInitialState } from 'stapp/lib/helpers/testHelpers/getInitialState/getInitialState'
 import {
   clearFields,
+  pickFields,
   setActive,
   setError,
   setReady,
@@ -507,6 +508,83 @@ describe('formBase', () => {
       app.dispatch(clearFields(['valueC']))
 
       expect(app.getState().active).toBe('valueB')
+    })
+
+    test('pickFields event', () => {
+      const app = createApp({
+        modules: [
+          formBase({
+            initialValues: {
+              valueA: 'Ann',
+              valueB: 'Bob',
+              valueC: 'Duke'
+            }
+          })
+        ]
+      })
+
+      app.dispatch(
+        setError({
+          valueB: 'error!'
+        })
+      )
+
+      app.dispatch(
+        setValue({
+          valueA: 'Mark'
+        })
+      )
+
+      app.dispatch(
+        setTouched({
+          valueC: true
+        })
+      )
+
+      app.dispatch(setActive('valueA'))
+
+      expect(app.getState()).toEqual({
+        values: {
+          valueA: 'Mark',
+          valueB: 'Bob',
+          valueC: 'Duke'
+        },
+        dirty: {
+          valueA: true
+        },
+        errors: {
+          valueB: 'error!'
+        },
+        active: 'valueA',
+        pristine: false,
+        ready: {},
+        submitting: false,
+        touched: {
+          valueC: true
+        }
+      })
+
+      app.dispatch(pickFields(['valueA']))
+
+      expect(app.getState()).toEqual({
+        values: {
+          valueA: 'Mark'
+        },
+        dirty: {
+          valueA: true
+        },
+        errors: {},
+        active: 'valueA',
+        pristine: false,
+        ready: {},
+        submitting: false,
+        touched: {}
+      })
+
+      app.dispatch(setActive('valueB'))
+      app.dispatch(pickFields(['valueC']))
+
+      expect(app.getState().active).toBe(null)
     })
   })
 })

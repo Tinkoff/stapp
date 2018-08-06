@@ -1,6 +1,6 @@
 import { has } from './has'
 
-describe('utils/object/has', () => {
+describe('has', () => {
   it('checks if passed object has property', () => {
     expect(has('a', null)).toBe(false)
     expect(has('a', undefined)).toBe(false)
