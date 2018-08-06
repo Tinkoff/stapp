@@ -10,8 +10,8 @@ It can be usefull for expample if you want to realize logic for dynamic form.
 - [Definition](#definition)
 - [Usage](#usage)
   - [`name`](#name)
-  - [`reactOn`](#reactOn)
   - [`selector`](#selector)
+  - [`reactOn`](#reactOn)
   - [`reactWith`](#reactWith)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -22,60 +22,55 @@ It can be usefull for expample if you want to realize logic for dynamic form.
 type select = <State, Result, Name extends string>(
   config: {
     name: Name
-    reactOn: Array<AnyEventCreator | string>
     selector: (state: State) => Result
+    reactOn: Array<AnyEventCreator | string>
     reactWith?: Array<EventCreator1<Result>>
   }
-): Module<{}, { [K in Name]: Result }>
+) => Module<{}, { [K in Name]: Result }>
 ```
 
 ## Usage
-
-Usage for dynamic form: Call clearFields on bunch of events changing form structure
+Example usage: dynamic form with fields depending on authorization state.
 
 ```js
 import { createApp } from 'stapp'
-import { formbase, clearFields } from 'stapp-formbase'
+import { formBase } from 'stapp-formbase'
 import { select } from 'stapp-select'
-import { moduleChangingFormFields, changeFormFields } from 'moduleChangingFormFields'
-...
+import { authModule, authChange } from '../modules/'
 
 const app = createApp({
   name: 'My Form App',
   modules: [
     select({
       name: 'fields',
-      reactOn: [changeFormFields],
+      reactOn: [authChange],
       selector: state => {
-         return getFieldsFormState(state);
-      },
-      reactWith: [clearFields]
+         return state.auth.isAuthorized
+          ? ['fieldA', 'fieldB'] 
+          : ['name', 'email', 'fieldA', 'fieldB']
+      }
     }),
-    formbase,
-    moduleChangingFormFields,
-    ...otherModules
+    formBase(),
+    authModule()
   ]
 })
+
+console.log(app.getState().fields)
+// -> 'name', 'email', 'fieldA', 'fieldB'
+
+app.api.authorize({ ... })
+console.log(app.getState().fields)
+// ->'fieldA', 'fieldB'
 ```
 
 ### `name`
-
-`name` defines where in app store selected data will be placed. You can add several select modules to app with different names.
+`name` defines where to place the selected data in the app state. You can add several select modules to app with different names.
 
 ### `reactOn`
-
-Bunch of event creators. Module will react only on this events in app. 
+An array of event creators or event types. Module will update (call the `selector` and save the result) stored data when any of these events emits. 
 
 ### `selector`
-
-Simple selector which get state of app as first argument and return wherever you want. Result of this one will be stored in state.
+Receives state, can return anything. Result will be stored in the provided field name.
 
 ### `reactWith`
-
-Bunch of event creators which will be dispatched by app with result of ```selector```. You can miss this param if you want to only pick some data from state.
-
-<!--
-## Type definitions
-
-* [`select`](/types.html#select)
--->
+An optional array of event creators. These events will be dispatched immediately after data update with the `selector` result as a payload.

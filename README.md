@@ -1,26 +1,16 @@
 # Stapp
 
-[![Buuld status](https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) 
-[![Coveralls github](https://img.shields.io/coveralls/github/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://coveralls.io/github/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) [![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)](https://github.com/TinkoffCreditSystems/stapp)
+[![Build status](https://img.shields.io/travis/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Coveralls github](https://img.shields.io/coveralls/github/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://coveralls.io/github/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) [![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)](https://github.com/TinkoffCreditSystems/stapp)
 
-Stapp is the highly opinionated application state-management tool based on redux with significantly reduced boilerplate. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
+Stapp is a modular state and side-effects management tool based on redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
-Stapp comprises all the best practices and provides instruments to write understandable and predictable code.
-
-Stapp includes:
+Includes:
 
 * tools for creating reactive applications
-* full compatibility with redux tooling
+* full compatibility with redux tooling (e.g. middlewares)
 * SSR support
-* bunch of drop-in modules which handle common scenarios:
-  * `stapp-formbase`
-  * `stapp-validate`
-  * `stapp-persist`
-  * `stapp-loaders`
-  * `stapp-routing` (in progress)
-* React utilities (`stapp-react`):
-  * a higher order component and a render-prop component to connect to the state
-  * form and field components
+* bunch of drop-in modules which handle common scenarios
+* React utilities (`stapp-react`)
 
 ### Table of contents
 
@@ -29,7 +19,7 @@ Stapp includes:
 
 
 - [Installation](#installation)
-- [Introduction](#introduction)
+- [Motivation](#motivation)
 - [Stapp core concepts](#stapp-core-concepts)
 - [Quick start](#quick-start)
 - [Modules](#modules)
@@ -46,7 +36,7 @@ npm install stapp
 yarn add stapp
 ```
 
-## Introduction
+## Motivation
 
 Here are some obvious statements:
 
@@ -54,7 +44,7 @@ Here are some obvious statements:
 2. Small blocks of business logic are easier to develop and maintain.
 3. Applications tend to become larger and harder to develop and maintain.
 
-Solution: separating applications into small and independent microapps.
+Solution: **separating applications into small and independent microapps**.
 
 That's what Stapp for.
 
@@ -66,6 +56,7 @@ That's what Stapp for.
 4. Modules are shape-agnostic, knows little to nothing about an app or other modules.
 5. Each module processes one task and nothing more.
 6. Microapps can run autonomously and independently from each other.
+7. Microapp is absolutely independent from the view layer.
 
 ## Quick start
 
@@ -131,7 +122,7 @@ app // app itself is compatible with standard observables
 // State: { counter: 0 }
 
 app
-  .api // api is a set of provided event creators binded to the state
+  .api // api is a set of provided functions binded to the state
   .increase()
 // State: { counter: 1 }
 
@@ -143,7 +134,9 @@ app
 // And hey, don't forget to check the redux devtools!
 ```
 
-So, a microapp in Stapp terminology is an object, that has only a few fields: `state$`, which is an observable state of an app, and an `api`, which comprises methods to change the state.
+So, a microapp in Stapp terminology is an object, that has only a few fields:
+* `subscribe(state => ...)`: method to observe state changes
+* `api`: comprises methods to change the state
 
 ## Modules
 
@@ -158,7 +151,7 @@ So, what are the modules? A module is a place where all your magic should happen
 
 A basic module is an object or a function, returning an object. You've already seen the basic example of a module. You may find other examples [in the docs](usage/modules.md).
 
-Stapp comes shipped with a few modules covering most common problems (see Modules section in the docs).
+Stapp comes shipped with a bunch of modules covering most common problems (see Modules section in the docs).
 
 ## Peer dependencies
 
