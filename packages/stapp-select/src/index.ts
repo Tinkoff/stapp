@@ -1,2 +1,2 @@
-export { select, selected } from './select'
+export { select } from './select'
 export { SELECT } from './constants'

@@ -29,28 +29,25 @@ export const select = <State, Result, Name extends string>(
   const { name, selector, reactOn, reactWith = [] } = config
   const eventFilter = selectArray(reactOn)
 
-  const selectEpic: Epic<State> = (event$, _, { getState }) =>
+  // always dispatch selected even if reactWith is empty
+  reactWith.push(selected)
+
+  const reactEpic: Epic<State> = (event$, _, { getState }) =>
     event$.pipe(
       filter(eventFilter),
       map(() => getState()),
       map((state) => selector(state)),
-      map(selected)
-    )
-
-  const reactEpic: Epic<State> = selected.epic((selected$) =>
-    selected$.pipe(
-      map(({ payload }) =>
-        reactWith.map((eventCreator) => of(eventCreator(payload)))
+      map((result) =>
+        reactWith.map((eventCreator) => of(eventCreator(result)))
       ),
       map((eventsStreams) => merge(...eventsStreams))
     )
-  )
 
   return {
     name: SELECT,
     state: {
       [name]: selectReducer
     },
-    epic: combineEpics([selectEpic, reactEpic])
-  }
+    epic: combineEpics([reactEpic])
+  } as any
 }
