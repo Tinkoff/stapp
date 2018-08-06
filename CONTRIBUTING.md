@@ -16,6 +16,9 @@ npm install
 
 - Make your changes. Make sure the commands `npm run build` and `npm run test` are working.
 
+## Updating docs
+* `README.md` in the `./docs/` directory is copied automatically from the root `README.md`, so if you plan to make changes, make them in the root `README.md` file.
+
 ### Committing
 
 Please, commit changes with `npm run cz`. This will run commitizen, which will protect you against commit message pain. You may also install comittizen globall and commit with `git cz`.
@@ -29,7 +32,8 @@ You'll be asked about the changes scope. Please, select among the following:
 * `persist` - same for `stapp-persist` package
 * `react` - same for `stapp-react` package
 * `rxjs` - same for `stapp-rxjs` package
+* `select` - same for `stapp-select` package
 * `root` - changes related to the root of this project
-* leave empty when your changes a related to every single package
+* use `all` or leave empty when your changes a related to every single package
 
 Finally send a GitHub Pull Request with a clear list of what you've done (read more [about pull requests](https://help.github.com/articles/about-pull-requests/)). Make sure all of your commits are atomic (one feature per commit).
