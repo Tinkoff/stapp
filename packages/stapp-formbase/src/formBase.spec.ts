@@ -502,6 +502,11 @@ describe('formBase', () => {
         submitting: false,
         touched: {}
       })
+
+      app.dispatch(setActive('valueB'))
+      app.dispatch(clearFields(['valueC']))
+
+      expect(app.getState().active).toBe('valueB')
     })
   })
 })
