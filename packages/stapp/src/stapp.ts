@@ -14,6 +14,7 @@ export {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from './events/dangerous'
+export { initDone } from './events/initDone'
 
 // Typings
 export {
