@@ -1,7 +1,7 @@
 # Select
 
-`stapp-select` module provides a way to pick some data from app state when some events was dispatched and dispatch some events in responce.
-It can be usefull for expample if you want to realize logic for dynamic form.
+`stapp-select` utilizes the provided `selector` function when any of provided `reactOn` event is dispatched,
+stores the result at the provided field `name` in the app state and dispatches `reactWith` events is provided.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
