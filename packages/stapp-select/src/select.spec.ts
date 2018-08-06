@@ -1,7 +1,7 @@
 import { createApp, createEvent } from 'stapp'
 import { EventCreator1 } from 'stapp/lib/core/createEvent/createEvent.h'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
-import { select, selected } from './select'
+import { select } from './select'
 
 describe('select module', () => {
   const event1 = createEvent('Test event 1')
@@ -50,9 +50,6 @@ describe('select module', () => {
       expect.objectContaining({
         pick: selectResult
       })
-    )
-    expect(app.getState().eventLog).toContainEqual(
-      expect.objectContaining(selected(selectResult))
     )
     expect(app.getState().eventLog).toContainEqual(
       expect.objectContaining(reactEvent(selectResult))

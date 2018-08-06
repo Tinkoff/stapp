@@ -1,18 +1,11 @@
-import { merge, of } from 'light-observable/observable'
-import { filter, map } from 'light-observable/operators'
+import { from } from 'light-observable/observable'
+import { filter, map, mergeMap } from 'light-observable/operators'
 import { combineEpics, createEvent, createReducer, selectArray } from 'stapp'
 import { SELECT } from './constants'
 
 // Models
 import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
 import { SelectConfig } from './select.h'
-
-export const selected = createEvent<any>(`${SELECT}: State was selected`)
-
-const selectReducer = createReducer<any>(null).on(
-  selected,
-  (state: any, selectResult: any) => selectResult || state
-)
 
 /**
  * Select module.
@@ -26,6 +19,12 @@ const selectReducer = createReducer<any>(null).on(
 export const select = <State, Result, Name extends string>(
   config: SelectConfig<State, Result, Name>
 ): Module<{}, { [K in Name]: Result }> => {
+  const selected = createEvent<any>(`${SELECT}: State was selected`)
+  const selectReducer = createReducer<any>(null).on(
+    selected,
+    (state: any, selectResult: any) => selectResult || state
+  )
+
   const { name, selector, reactOn, reactWith = [] } = config
   const eventFilter = selectArray(reactOn)
 
@@ -35,12 +34,10 @@ export const select = <State, Result, Name extends string>(
   const reactEpic: Epic<State> = (event$, _, { getState }) =>
     event$.pipe(
       filter(eventFilter),
-      map(() => getState()),
-      map((state) => selector(state)),
-      map((result) =>
-        reactWith.map((eventCreator) => of(eventCreator(result)))
-      ),
-      map((eventsStreams) => merge(...eventsStreams))
+      map(() => selector(getState())),
+      mergeMap((result) =>
+        from(reactWith.map((eventCreator) => eventCreator(result)))
+      )
     )
 
   return {
