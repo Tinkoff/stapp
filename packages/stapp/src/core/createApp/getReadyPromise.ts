@@ -17,20 +17,30 @@ export const getReadyPromise = <State>(
 ): Promise<Partial<State>> => {
   const [promise, resolve] = controlledPromise<Partial<State>>()
   const toWait = new Set<string>(
-    waitFor
-      .map((event) => {
+    waitFor.reduce(
+      (result, event) => {
         if (isEvent(event)) {
-          return getEventType(event)
+          result.push(getEventType(event))
+          return result
+        }
+
+        if (event.condition && !event.condition()) {
+          return result
         }
 
         const type = getEventType(event.event)
-        setTimeout(() => {
-          removeEvent(type)
-        }, event.timeout)
 
-        return type
-      })
-      .concat(initDone.getType())
+        if (event.timeout) {
+          setTimeout(() => {
+            removeEvent(type)
+          }, event.timeout)
+        }
+
+        result.push(type)
+        return result
+      },
+      [initDone.getType()]
+    )
   )
   const removeEvent = (type: string) => {
     // We shouldn't get here due to the unsubscribing, just in case

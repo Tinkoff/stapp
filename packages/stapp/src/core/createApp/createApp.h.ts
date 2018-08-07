@@ -36,7 +36,8 @@ export type WaitFor = Array<
   | string
   | {
       event: AnyEventCreator | string
-      timeout: number
+      timeout?: number
+      condition?: () => boolean
     }
 >
 
