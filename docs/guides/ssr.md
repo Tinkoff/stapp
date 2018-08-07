@@ -15,7 +15,7 @@ The main thing about server-side is delaying render until everything needed is l
 
 Later this Promise can be used anywhere, e.g., to delay the render on the server-side, or to indicate, that the app is ready to be used on the client-side.
 
-## Usage
+## Waiting for events
 ```javascript
 import { createEvent, createEffect, createReducer, createApp } from 'stapp'
 const myEffect = createEffect('My effect', () => Promise.resolve('my data'))
@@ -58,8 +58,10 @@ See the working example on codesandbox.io:
 
 [![Edit mzw2ozw8rx](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/mzw2ozw8rx?module=%2Fsrc%2Findex.js)
 
-### Timeouts
-Module can provide not only an event creator or an event type, but also an object, defining the event and the timeout. Event will be added to the waiting queue as usual, and it will be removed from it on timeout.
+### Timeouts and conditions
+Module can provide not only an event creator or an event type, but also an object, defining an event, timeout, and a condition function.
+Event will be added to the waiting queue as usual, and it will be removed from it on timeout.
+If condition function is provided, an event will be added to the queue only if `condition` returns truthy value.
 
 ```typescript
 export type WaitFor = Array<
@@ -67,7 +69,8 @@ export type WaitFor = Array<
   | string
   | {
       event: AnyEventCreator | string
-      timeout: number
+      timeout?: number
+      condition?: () => boolean
     }
 >
 ```

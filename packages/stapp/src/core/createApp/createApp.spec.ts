@@ -568,6 +568,31 @@ describe('createApp', () => {
       expect(resolved).toBe(true)
     })
 
+    it('should accept object', async () => {
+      const module = {
+        name: 'test',
+        waitFor: [
+          {
+            event: fire1
+          }
+        ]
+      }
+
+      const app = createApp({
+        modules: [loggerModule, module]
+      })
+
+      let resolved = false
+      app.ready.then(() => (resolved = true))
+
+      await null
+      expect(resolved).toBe(false)
+
+      app.dispatch(fire1())
+      await null
+      expect(resolved).toBe(true)
+    })
+
     it('should accept timeout', async () => {
       const module = {
         name: 'test',
@@ -590,6 +615,40 @@ describe('createApp', () => {
       expect(resolved).toBe(false)
 
       jest.runAllTimers()
+      await null
+      expect(resolved).toBe(true)
+    })
+
+    it('should accept condition', async () => {
+      const module = {
+        name: 'test',
+        waitFor: [
+          {
+            event: fire1,
+            condition() {
+              return false
+            }
+          },
+          {
+            event: fire2,
+            condition() {
+              return true
+            }
+          }
+        ]
+      }
+
+      const app = createApp({
+        modules: [loggerModule, module]
+      })
+
+      let resolved = false
+      app.ready.then(() => (resolved = true))
+
+      await null
+      expect(resolved).toBe(false)
+
+      app.dispatch(fire2())
       await null
       expect(resolved).toBe(true)
     })
