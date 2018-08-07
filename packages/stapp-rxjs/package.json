@@ -20,6 +20,8 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "https://stapp.js.org/guides/interop.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-rxjs",
   "engines": {
     "node": ">=8.0.0"
   },

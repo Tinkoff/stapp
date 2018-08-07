@@ -21,6 +21,8 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "https://stapp.js.org/modules/formbase.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-formbase",
   "engines": {
     "node": ">=8.0.0"
   },

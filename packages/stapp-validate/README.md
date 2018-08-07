@@ -2,7 +2,7 @@
 
 Core part of [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
-See [documentation](https://tinkoffcreditsystems.github.io/stapp/#stapp) for more info.
+See [documentation](https://stapp.js.org/modules/validate.html) for more info.
 
 ## Installation
 ```bash
