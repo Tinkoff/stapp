@@ -7,21 +7,22 @@ By contributing to Stapp, you agree to abide by the [code of conduct](https://gi
 These steps will guide you through contributing to this project:
 
 - Fork the repo
-
 - Clone it and install dependencies
+
 ```bash
 git clone https://github.com/TinkoffCreditSystems/stapp
+cd stapp
 npm install
 ```
 
 - Make your changes. Make sure the commands `npm run build` and `npm run test` are working.
 
-## Updating docs
+## Updating documentation
 * `README.md` in the `./docs/` directory is copied automatically from the root `README.md`, so if you plan to make changes, make them in the root `README.md` file.
 
 ### Committing
 
-Please, commit changes with `npm run cz`. This will run commitizen, which will protect you against commit message pain. You may also install comittizen globall and commit with `git cz`.
+Please, commit changes with `npm run cz`. This command will run commitizen, which will protect you against commit message pain. You may also install commitizen globally and commit with `git cz`.
 
 You'll be asked about the changes scope. Please, select among the following:
 
@@ -34,6 +35,6 @@ You'll be asked about the changes scope. Please, select among the following:
 * `rxjs` - same for `stapp-rxjs` package
 * `select` - same for `stapp-select` package
 * `root` - changes related to the root of this project
-* use `all` or leave empty when your changes a related to every single package
+* use `all` or leave empty when your changes are related to every single package
 
 Finally send a GitHub Pull Request with a clear list of what you've done (read more [about pull requests](https://help.github.com/articles/about-pull-requests/)). Make sure all of your commits are atomic (one feature per commit).
