@@ -1,5 +1,4 @@
 # Select
-
 `stapp-select` utilizes the provided `selector` function when any of provided `reactOn` event is dispatched,
 stores the result at the provided field `name` in the app state and dispatches `reactWith` events is provided.
 

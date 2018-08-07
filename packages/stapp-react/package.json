@@ -22,6 +22,8 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "https://stapp.js.org/guides/react.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-react",
   "engines": {
     "node": ">=8.0.0"
   },
