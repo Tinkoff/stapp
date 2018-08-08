@@ -5,11 +5,14 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Usage](#usage)
+
+- [Binded components](#binded-components)
   - [`createComponents()`](#createcomponents)
   - [`createConsumer()`](#createconsumer)
   - [`createConsume()`](#createconsume)
   - [`createForm()` and `createField()`](#createform-and-createfield)
+- [Context-based components](#context-based-components)
+  - [Example](#example)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
