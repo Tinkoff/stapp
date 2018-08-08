@@ -219,6 +219,8 @@ const App = () => {
 Context based versions of react helpers is useful when you need reusable components that utilize different apps.
 
 ### Example
+[![Edit 8yvv75r050](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/8yvv75r050)
+
 ```js
 // app.js
 import { createApp, createEvent, createReducer } from 'stapp'
@@ -248,6 +250,7 @@ export const app1 = getApp()
 export const app2 = getApp()
 
 // Buttons.js
+import React from 'react'
 import { Consumer } from 'stapp-react'
 export const Buttons = () => <Consumer>
   {(state, api) => <>
@@ -260,16 +263,17 @@ export const Buttons = () => <Consumer>
 </Consumer>
 
 // App.js
+import React from 'react'
 import { Provider } from 'stapp-react'
 import { app1, app2 } from './app'
 import { Buttons } from './Buttons'
 const App = () => {
   return <>
     <Provider app={app1}>
-      <Button />
+      <Buttons />
     </Provider>
     <Provider app={app2}>
-      <Button />
+      <Buttons />
     </Provider>
   </>
 }
