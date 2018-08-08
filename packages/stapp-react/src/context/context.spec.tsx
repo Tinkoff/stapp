@@ -3,7 +3,14 @@ import React from 'react'
 import { createApp, createEvent, createReducer } from 'stapp'
 import { formBase } from 'stapp-formbase'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
-import { Consumer, Field, Form, Provider, StappContext } from './context'
+import {
+  consume,
+  Consumer,
+  Field,
+  Form,
+  Provider,
+  StappContext
+} from './context'
 
 describe('context tools', () => {
   const inc = createEvent()
@@ -32,6 +39,19 @@ describe('context tools', () => {
       testModule
     ]
   })
+
+  const getCatcher = (cb: any) =>
+    class Catch extends React.Component {
+      state = { error: false }
+
+      componentDidCatch(error: any) {
+        cb(error)
+      }
+
+      render() {
+        return this.props.children
+      }
+    }
 
   describe('Provider', () => {
     it('should provide context', () => {
@@ -72,7 +92,65 @@ describe('context tools', () => {
     })
 
     it('throws if components are not provided', () => {
-      expect(() => mount(<Consumer>{() => <div />}</Consumer>)).toThrow()
+      const cb = jest.fn()
+      const Catcher = getCatcher(cb)
+      mount(
+        <Catcher>
+          <Consumer>{() => <div />}</Consumer>
+        </Catcher>
+      )
+
+      expect(cb).toBeCalled()
+    })
+  })
+
+  describe('consume', () => {
+    it('should work with stateless components', (done) => {
+      expect.assertions(3)
+
+      const Dummy = consume()((props: any) => {
+        expect(typeof props.inc).toBe('function')
+        expect(typeof props.dec).toBe('function')
+        expect(props.counter).toEqual(0)
+
+        done()
+
+        return <div />
+      })
+      mount(
+        <Provider app={app}>
+          <Dummy />
+        </Provider>
+      )
+    })
+
+    it('should utilize provided map', (done) => {
+      expect.assertions(1)
+
+      const Dummy = consume((state) => ({ c: state.counter }))((props: any) => {
+        expect(props.c).toEqual(0)
+        done()
+
+        return <div />
+      })
+      mount(
+        <Provider app={app}>
+          <Dummy />
+        </Provider>
+      )
+    })
+
+    it('throws if components are not provided', () => {
+      const Dummy = consume()(() => <div />)
+      const cb = jest.fn()
+      const Catcher = getCatcher(cb)
+      mount(
+        <Catcher>
+          <Dummy />
+        </Catcher>
+      )
+
+      expect(cb).toBeCalled()
     })
   })
 
@@ -93,7 +171,15 @@ describe('context tools', () => {
     })
 
     it('throws if components are not provided', () => {
-      expect(() => mount(<Form>{() => <div />}</Form>)).toThrow()
+      const cb = jest.fn()
+      const Catcher = getCatcher(cb)
+      mount(
+        <Catcher>
+          <Form>{() => <div />}</Form>
+        </Catcher>
+      )
+
+      expect(cb).toBeCalled()
     })
   })
 
@@ -115,7 +201,15 @@ describe('context tools', () => {
     })
 
     it('throws if components are not provided', () => {
-      expect(() => mount(<Field name="test1">{() => <div />}</Field>)).toThrow()
+      const cb = jest.fn()
+      const Catcher = getCatcher(cb)
+      mount(
+        <Catcher>
+          <Field name="test1">{() => <div />}</Field>
+        </Catcher>
+      )
+
+      expect(cb).toBeCalled()
     })
   })
 })
