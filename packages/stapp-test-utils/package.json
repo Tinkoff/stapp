@@ -1,24 +1,24 @@
 {
-  "name": "name-here",
+  "name": "stapp-test-utils",
   "version": "2.2.0-3",
-  "description": "DESCRIPTION HERE",
-  "private": true,
+  "description": "Testing utilities for stapp - modular state and side effects manager",
   "keywords": [
-    "keyword a",
-    "keyword b"
+    "stapp",
+    "unit testing",
+    "testing"
   ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib"
   ],
-  "author": "Firstname Lastname <email@domain.com> (optional address)",
+  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
   "repository": {
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
-  "homepage": "LINK TO DOCS",
-  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:TAG",
+  "homepage": "https://stapp.js.org/guides/interop.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-test-utils",
   "engines": {
     "node": ">=6.0.0"
   },
