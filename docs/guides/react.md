@@ -1,14 +1,9 @@
 # React
 
-Stapp comes with a bunch of helpers that allows using stapp application with react easily. These are:
-
-* `createConsumer`: creates a component following a render-prop pattern
-* `createConsume`: old-school higher order component
-* `createForm` and `createField`: create render-prop utilities to assist with forms
+Stapp comes with a bunch of helpers that allows using stapp application with react easily. There are two types of these helpers: 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Usage](#usage)
   - [`createComponents()`](#createcomponents)
@@ -18,7 +13,11 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Usage
+## Binded components
+* `createConsumer`: creates a component following a render-prop pattern
+* `createConsume`: old-school higher order component
+* `createForm` and `createField`: create render-prop utilities to assist with forms
+* `createComponents`: creates all of the above.
 
 ### `createComponents()`
 
@@ -207,6 +206,71 @@ const App = () => {
 }
 ```
 
+## Context-based components
+* `consume`: same as `consume` created by `createConsume`, but utilizes the app provided by the `Provider`
+* `Provider`: provides an app to the sub-tree
+* `Consumer`: same as `Consumer` created by `createConsumer`, but utilizes the app provided by the `Provider`
+* `Form`: same as `Form` created by `createForm`, but utilizes the app provided by the `Provider`
+* `Field`: same as `Field` created by `createField`, but utilizes the app provided by the `Provider`
+
+Context based versions of react helpers is useful when you need reusable components that utilize different apps.
+
+### Example
+```js
+// app.js
+import { createApp, createEvent, createReducer } from 'stapp'
+
+const counterModule = () => {
+  const inc = createEvent()
+  const dec = createEvent()
+  return {
+    name: 'test',
+    state: {
+      counter: createReducer(0)
+        .on(inc, (s) => s + 1)
+        .on(dec, (s) => s - 1)
+    },
+    api: {
+      inc,
+      dec
+    }
+  }
+}
+
+const getApp = () => createApp({
+  modules: [counterModule()]
+})
+
+export const app1 = getApp()
+export const app2 = getApp()
+
+// Buttons.js
+import { Consumer } from 'stapp-react'
+export const Buttons = () => <Consumer>
+  {(state, api) => <>
+    <p>Current: { state.counter }</p>
+    <p>
+      <button onClick={api.inc}>Increase</button>{' '}
+      <button onClick={api.dec}>Decrease</button>
+    </p>
+  </>}
+</Consumer>
+
+// App.js
+import { Provider } from 'stapp-react'
+import { app1, app2 } from './app'
+import { Buttons } from './Buttons'
+const App = () => {
+  return <>
+    <Provider app={app1}>
+      <Button />
+    </Provider>
+    <Provider app={app2}>
+      <Button />
+    </Provider>
+  </>
+}
+```
 <!--
 ## Type definitions
 
