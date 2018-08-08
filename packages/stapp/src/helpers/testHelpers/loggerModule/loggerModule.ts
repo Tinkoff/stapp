@@ -8,7 +8,7 @@ import { APP_KEY } from '../../constants'
 export const loggerModule = ({
   pattern = new RegExp(`^${APP_KEY}`)
 }: {
-  pattern: RegExp | void
+  pattern?: RegExp | null
 }): Module<{}, { eventLog: Array<Event<any, any>> }> => ({
   name: 'logger',
   reducers: {
