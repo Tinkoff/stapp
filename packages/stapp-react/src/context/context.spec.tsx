@@ -70,6 +70,10 @@ describe('context tools', () => {
         </Provider>
       )
     })
+
+    it('throws if components are not provided', () => {
+      expect(() => mount(<Consumer>{() => <div />}</Consumer>)).toThrow()
+    })
   })
 
   describe('Form', () => {
@@ -86,6 +90,10 @@ describe('context tools', () => {
           </Form>
         </Provider>
       )
+    })
+
+    it('throws if components are not provided', () => {
+      expect(() => mount(<Form>{() => <div />}</Form>)).toThrow()
     })
   })
 
@@ -104,6 +112,10 @@ describe('context tools', () => {
           </Field>
         </Provider>
       )
+    })
+
+    it('throws if components are not provided', () => {
+      expect(() => mount(<Field name="test1">{() => <div />}</Field>)).toThrow()
     })
   })
 })
