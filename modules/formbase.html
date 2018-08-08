@@ -531,47 +531,67 @@
 </code></pre>
 <h3 id="state-fields-and-events-explanation">State fields and events explanation</h3>
 <ul>
-<li><strong><code>values</code></strong>: <code>{ [fieldName]: fieldValue}</code>. Value preferably should be of a string type. Related:<ul>
+<li><p><strong><code>values</code></strong>: <code>{ [fieldName]: fieldValue}</code>. Value preferably should be of a string type. Related:</p>
+<ul>
 <li><code>setValue</code> event:  sets values.</li>
 <li><code>resetForm</code> event: sets values back to initial.</li>
+<li><code>clearFields</code> event: removes values for fields listed in the payload.</li>
+<li><code>pickFields</code> event: removes values for fields NOT listed in the payload.</li>
 </ul>
 </li>
-<li><strong><code>errors</code></strong>: <code>{ [fieldName]: fieldError}</code>. Value of any type can be an error. Related:<ul>
+<li><p><strong><code>errors</code></strong>: <code>{ [fieldName]: fieldError}</code>. Value of any type can be an error. Related:</p>
+<ul>
 <li><code>setError</code> event: sets errors.</li>
 <li><code>resetForm</code> event: clears all errors.</li>
 <li><code>isValidSelector</code> selector creator: creates a selector that returnes <code>true</code> if there is no errors, <code>false</code> otherwise.</li>
+<li><code>clearFields</code> event: removes errors for fields listed in the payload.</li>
+<li><code>pickFields</code> event: removes errors for fields NOT listed in the payload.</li>
 </ul>
 </li>
-<li><strong><code>touched</code></strong>: <code>{ [fieldName]: boolean }</code>. Indicates that a field was active at some time. Related:<ul>
+<li><p><strong><code>touched</code></strong>: <code>{ [fieldName]: boolean }</code>. Indicates that a field was active at some time. Related:</p>
+<ul>
 <li><code>setTouched</code> event: sets fields as touched. Should be called on <code>blur</code> events.</li>
 <li><code>resetForm</code> event: clears <code>touched</code> state.</li>
+<li><code>clearFields</code> event: removes values for fields listed in the payload.</li>
+<li><code>pickFields</code> event: removes values for fields NOT listed in the payload.</li>
 </ul>
 </li>
-<li><strong><code>active</code></strong>: <code>string | null</code> . Indicates currently active (focused) field. Related:<ul>
+<li><p><strong><code>active</code></strong>: <code>string | null</code> . Indicates currently active (focused) field. Related:</p>
+<ul>
 <li><code>setActive</code> event: sets a field as active.</li>
 <li><code>resetForm</code> event: sets <code>active</code> to <code>null</code>.</li>
+<li><code>clearFields</code> event: sets <code>active</code> to <code>null</code> if active field is listed in the payload.</li>
+<li><code>pickFields</code> event: sets <code>active</code> to <code>null</code> if active field is NOT listed in the payload.</li>
 </ul>
 </li>
-<li><strong><code>dirty</code></strong>: <code>{ [fieldName]: boolean}</code>. Field is dirty if its value differs from initial value. Related:<ul>
+<li><p><strong><code>dirty</code></strong>: <code>{ [fieldName]: boolean}</code>. Field is dirty if its value differs from initial value. Related:</p>
+<ul>
 <li><code>setValue</code> event: sets values.</li>
 <li><code>resetForm</code> event: clears <code>dirty</code> state.</li>
+<li><code>clearFields</code> event: removes values for fields listed in the payload.</li>
+<li><code>pickFields</code> event: removes values for fields NOT listed in the payload.</li>
 <li><code>isDirtySelector</code> selector creator: creates a selector that returns <code>false</code> if form values state equals to initial state, <code>true</code> otherwise.</li>
 </ul>
 </li>
-<li><strong><code>pristine</code></strong>: <code>boolean</code>. Indicates that a user has ever interacted with a form. Related:<ul>
+<li><p><strong><code>pristine</code></strong>: <code>boolean</code>. Indicates that a user has ever interacted with a form. Related:</p>
+<ul>
 <li><code>setValue</code> event: sets <code>pristine</code> value to <code>false</code>.</li>
 <li><code>setTouched</code> event: sets <code>pristine</code> value to <code>false</code>.</li>
 <li><code>resetForm</code> event: sets <code>pristine</code> falue to <code>true</code></li>
+<li><code>clearFields</code> event: removes values for fields listed in the payload.</li>
+<li><code>pickFields</code> event: removes values for fields NOT listed in the payload.</li>
 <li><code>isPrisineSelector</code> selector creator: creates a selector that returns <code>pristine</code> value.</li>
 </ul>
 </li>
-<li><strong><code>ready</code></strong>: <code>{ [K: string]: boolean }</code>. Can be used to set readiness flags. Used for validation, async requests etc. Related:<ul>
+<li><p><strong><code>ready</code></strong>: <code>{ [K: string]: boolean }</code>. Can be used to set readiness flags. Used for validation, async requests etc. Related:</p>
+<ul>
 <li><code>setReady</code> event: sets readiness flags.</li>
 <li><code>resetForm</code> event: clears <code>ready</code> state.</li>
 <li><code>isReadySelector</code> selector creator: creates a selector that returns <code>true</code> if all readiness flags are <code>true</code>, <code>false</code> otherwise.</li>
 </ul>
 </li>
-<li><strong><code>submitting</code></strong>: <code>boolean</code>. Indicates that a form is being submitted. Related:<ul>
+<li><p><strong><code>submitting</code></strong>: <code>boolean</code>. Indicates that a form is being submitted. Related:</p>
+<ul>
 <li><code>setSubmitting</code> event: sets submitting to <code>true</code> or <code>false</code></li>
 </ul>
 </li>
@@ -583,6 +603,9 @@
 <span class="hljs-keyword">type</span> setTouched = EventCreator&lt;{ [K: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">boolean</span> }&gt; 
 <span class="hljs-keyword">type</span> setActive = EventCreator&lt;<span class="hljs-built_in">string</span>&gt;
 <span class="hljs-keyword">type</span> setSubmitting = EventCreator&lt;<span class="hljs-built_in">boolean</span>&gt;
+<span class="hljs-keyword">type</span> setReady = EventCreator&lt;{ [K: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">boolean</span> }&gt; 
+<span class="hljs-keyword">type</span> clearFields = EventCreator&lt;<span class="hljs-built_in">string</span>[]&gt; 
+<span class="hljs-keyword">type</span> pickFields = EventCreator&lt;<span class="hljs-built_in">string</span>[]&gt; 
 <span class="hljs-keyword">type</span> setReady = EventCreator&lt;{ [K: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">boolean</span> }&gt; 
 <span class="hljs-keyword">type</span> resetForm = EventCreator&lt;<span class="hljs-built_in">void</span>&gt;
 <span class="hljs-keyword">type</span> submit = EventCreator&lt;<span class="hljs-built_in">void</span>&gt;
@@ -676,7 +699,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"formbase","level":"1.4.3","depth":2,"next":{"title":"validate","level":"1.4.4","depth":2,"path":"modules/validate.md","ref":"modules/validate.md","articles":[]},"previous":{"title":"loaders","level":"1.4.2","depth":2,"path":"modules/loaders.md","ref":"modules/loaders.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit This Page","base":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"modules/formbase.md","mtime":"2018-07-20T15:26:26.581Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-06T11:20:57.403Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"formbase","level":"1.4.3","depth":2,"next":{"title":"validate","level":"1.4.4","depth":2,"path":"modules/validate.md","ref":"modules/validate.md","articles":[]},"previous":{"title":"loaders","level":"1.4.2","depth":2,"path":"modules/loaders.md","ref":"modules/loaders.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"edit-link":{"label":"Edit This Page","base":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"modules/formbase.md","mtime":"2018-08-08T14:20:29.868Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-08T14:20:34.152Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
