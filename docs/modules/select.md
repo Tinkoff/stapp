@@ -9,9 +9,9 @@ stores the result at the provided field `name` in the app state and dispatches `
 - [Definition](#definition)
 - [Usage](#usage)
   - [`name`](#name)
+  - [`reactOn`](#reacton)
   - [`selector`](#selector)
-  - [`reactOn`](#reactOn)
-  - [`reactWith`](#reactWith)
+  - [`reactWith`](#reactwith)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

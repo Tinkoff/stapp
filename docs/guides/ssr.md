@@ -6,8 +6,8 @@ There is not that much what can be asked from a state-management library to supp
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Usage](#usage)
-  - [Timeouts](#timeouts)
+- [Waiting for events](#waiting-for-events)
+- [Timeouts and conditions](#timeouts-and-conditions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -58,7 +58,7 @@ See the working example on codesandbox.io:
 
 [![Edit mzw2ozw8rx](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/mzw2ozw8rx?module=%2Fsrc%2Findex.js)
 
-### Timeouts and conditions
+## Timeouts and conditions
 Module can provide not only an event creator or an event type, but also an object, defining an event, timeout, and a condition function.
 Event will be added to the waiting queue as usual, and it will be removed from it on timeout.
 If condition function is provided, an event will be added to the queue only if `condition` returns truthy value.
