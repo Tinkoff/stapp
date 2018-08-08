@@ -1,7 +1,7 @@
 # Stapp Select
+Simple module which provides a way to pick some data from app state when some events was dispatched and dispatch some events in response.
 
-Simple module which provides a way to pick some data from app state when some events was dispatched and dispatch some events in responce.
-It can be usefull for expample if you want to realize logic for dynamic form.
+See [documentation](https://stapp.js.org/modules/select.html) for more info.
 
 ## Installation
 ```bash

@@ -1,6 +1,6 @@
 {
   "name": "stapp-loaders",
-  "version": "2.2.0-0",
+  "version": "2.2.0-1",
   "description": "Loaders module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -20,6 +20,8 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "https://stapp.js.org/modules/loaders.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-loaders",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -45,7 +47,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
     "reselect": "^3.0.1",
-    "stapp": "^2.2.0-0",
+    "stapp": "^2.2.0-1",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tslib": "^1.9.0",
