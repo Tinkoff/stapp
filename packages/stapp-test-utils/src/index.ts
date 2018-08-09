@@ -1,1 +1,1 @@
-export const hello = (name: string) => `hello, ${name}!`
+export { loggerModule } from './loggerModule/loggerModule'
