@@ -52,5 +52,9 @@
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
     "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "light-observable": "^2.11.0",
+    "redux": "^4.0.0"
   }
 }

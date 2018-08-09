@@ -1,7 +1,7 @@
 import { APP_KEY } from 'stapp/lib/helpers/constants'
 
 // Models
-import { Module, Event } from 'stapp'
+import { Event, Module } from 'stapp'
 
 const stappPattern = new RegExp(`^${APP_KEY}`)
 
