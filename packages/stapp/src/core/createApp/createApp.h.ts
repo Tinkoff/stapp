@@ -121,6 +121,19 @@ export type Stapp<State, Api> = Subscribable<State> & {
   ready: Promise<Partial<State>>
 }
 
+export type StappApi<T extends Stapp<any, any>> = T extends Stapp<
+  infer Api,
+  any
+>
+  ? Api
+  : any
+export type StappState<T extends Stapp<any, any>> = T extends Stapp<
+  any,
+  infer State
+>
+  ? State
+  : any
+
 /**
  * Yes, it takes hundreds of loc, but it works as expected.
  * @hidden
