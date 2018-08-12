@@ -25,7 +25,9 @@ export {
   ModuleFactory,
   Stapp,
   Thunk,
-  WaitFor
+  WaitFor,
+  StappApi,
+  StappState
 } from './core/createApp/createApp.h'
 export { EffectCreator } from './core/createEffect/createEffect.h'
 export {
