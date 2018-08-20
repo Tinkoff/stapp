@@ -72,6 +72,13 @@ describe('createApp', () => {
       expect(() => createApp({ modules: [moduleFactory as any] })).toThrow()
     })
 
+    it('should throw if two or more modules have same names', () => {
+      const module = { name: 'test' }
+      const moduleFactory = () => ({ name: 'test' })
+
+      expect(() => createApp({ modules: [module, moduleFactory] })).toThrow()
+    })
+
     it('should check dependencies', () => {
       const moduleA = {
         name: 'testA',

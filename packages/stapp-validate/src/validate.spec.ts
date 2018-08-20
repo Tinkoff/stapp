@@ -30,6 +30,15 @@ describe('validate', () => {
       ]
     })
 
+  it('should accept custom name', () => {
+    const validationModule = validate({
+      rules: {},
+      moduleName: 'test name'
+    })
+
+    expect(validationModule.name).toEqual('test name')
+  })
+
   describe('validation calls', () => {
     it('should call validation functions on init', () => {
       const age = jest.fn()
