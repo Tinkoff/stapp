@@ -57,6 +57,10 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
       throw new Error(`${APP_KEY} error: Module name is not provided`)
     }
 
+    if (moduleNames.has(module.name)) {
+      throw new Error(`${APP_KEY} error: Module name should be unique`)
+    }
+
     moduleNames.add(module.name)
 
     if (module.dependencies) {
