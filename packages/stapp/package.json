@@ -1,6 +1,6 @@
 {
   "name": "stapp",
-  "version": "2.2.0-3",
+  "version": "2.2.0",
   "description": "Modular state manager for microapps",
   "keywords": [
     "state-management",
