@@ -21,6 +21,7 @@ export type ValidationState = {
 
 export type ValidateConfig<State> = {
   rules: ((state: State) => ValidationRules<State>) | ValidationRules<State>
+  moduleName?: string
   validateOnInit?: boolean
   setTouchedOnSubmit?: boolean
 }

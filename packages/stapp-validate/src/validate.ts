@@ -29,6 +29,7 @@ const emptyEpic = () => EMPTY
 export const validate = <State extends FormBaseState>({
   validateOnInit = true,
   setTouchedOnSubmit = true,
+  moduleName = VALIDATE,
   rules
 }: ValidateConfig<State>): Module<{}, ValidationState> => {
   const getRules = (state: State): ValidationRules<State> => {
@@ -114,7 +115,7 @@ export const validate = <State extends FormBaseState>({
     : emptyEpic
 
   return {
-    name: VALIDATE,
+    name: moduleName,
     state: {
       validating: validateReducer
     },
