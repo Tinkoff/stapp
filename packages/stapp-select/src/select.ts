@@ -1,6 +1,6 @@
 import { from } from 'light-observable/observable'
 import { filter, map, mergeMap } from 'light-observable/operators'
-import { createEvent, createReducer, selectArray } from 'stapp'
+import { createEvent, createReducer, initDone, selectArray } from 'stapp'
 import { SELECT } from './constants'
 
 // Models
@@ -22,7 +22,7 @@ export const select = <State, Result, Name extends string>({
     (state, selectResult) => selectResult || state
   )
 
-  const eventFilter = selectArray(reactOn)
+  const eventFilter = selectArray(reactOn.concat(initDone))
   const events = reactWith.concat(selected)
 
   const reactEpic: Epic<State> = (event$, _, { getState }) => {
