@@ -40,7 +40,7 @@ type Reducer<State> = {
 
 ## Usage
 
-```JS
+```js
 import { createEvent, createReducer } from 'stapp'
 
 const increment = createEvent()
