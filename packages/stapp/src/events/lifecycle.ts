@@ -13,6 +13,11 @@ export const initEvent: EmptyEventCreator = createEvent(
 )
 
 /**
+ * @deprecated
+ */
+export const initDone = initEvent
+
+/**
  * Indicates about completing initialization
  * @private
  */
