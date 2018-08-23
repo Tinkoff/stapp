@@ -1,5 +1,5 @@
 // Core utils
-export { createApp } from './core/createApp/createApp'
+export { createApp, setObservableConfig } from './core/createApp/createApp'
 export { createEvent } from './core/createEvent/createEvent'
 export { createEffect } from './core/createEffect/createEffect'
 export { createReducer } from './core/createReducer/createReducer'
@@ -23,6 +23,7 @@ export {
   EventEpic,
   Module,
   ModuleFactory,
+  ObservableConfig,
   Stapp,
   Thunk,
   WaitFor,
