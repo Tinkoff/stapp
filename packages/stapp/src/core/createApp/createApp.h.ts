@@ -111,8 +111,8 @@ export type Thunk<State, Result> = (
 ) => Result
 
 export type ObservableConfig<Stream> = {
-  fromESObservable: (innerStream: Observable<any>) => Stream
-  toESObservable: (outerStream: Stream) => Observable<any>
+  fromESObservable?: (innerStream: Observable<any>) => Stream
+  toESObservable?: (outerStream: Stream) => Observable<any>
 }
 
 /**

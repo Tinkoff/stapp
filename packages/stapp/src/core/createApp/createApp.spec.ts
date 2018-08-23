@@ -12,8 +12,9 @@ import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModul
 import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
 import { createReducer } from '../createReducer/createReducer'
-import { createApp, setObservableConfig } from './createApp'
+import { createApp } from './createApp'
 import { Epic, Thunk } from './createApp.h'
+import { setObservableConfig } from './setObservableConfig'
 
 jest.useFakeTimers()
 

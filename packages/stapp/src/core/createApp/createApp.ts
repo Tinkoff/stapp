@@ -3,30 +3,13 @@ import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
 import { initDone } from '../../events/initDone'
 import { APP_KEY } from '../../helpers/constants'
-import { identity } from '../../helpers/identity/identity'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { bindApi } from './bindApi'
-import {
-  AnyModule,
-  CreateApp,
-  Module,
-  ObservableConfig,
-  Stapp,
-  WaitFor
-} from './createApp.h'
+import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
-
-const defaultObservableConfig: ObservableConfig<any> = {
-  fromESObservable: identity,
-  toESObservable: identity
-}
-let globalObservableConfig = defaultObservableConfig
-
-export const setObservableConfig = <T>(config: ObservableConfig<T>) => {
-  globalObservableConfig = config
-}
+import { getConfig } from './setObservableConfig'
 
 /**
  * Creates an application and returns a [[Stapp]].
@@ -117,17 +100,10 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
 
     const dispatch = store.createDispatch(module.name)
 
-    const { epic, useGlobalObservableConfig = true, observableConfig } = module
-    const {
-      fromESObservable,
-      toESObservable
-    }: ObservableConfig<any> = observableConfig
-      ? observableConfig
-      : useGlobalObservableConfig
-        ? globalObservableConfig
-        : defaultObservableConfig
+    const { epic } = module
 
     if (epic) {
+      const { fromESObservable, toESObservable } = getConfig(module)
       const epicStream = epic(
         fromESObservable(store.event$),
         fromESObservable(store.state$),
