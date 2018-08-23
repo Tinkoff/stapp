@@ -6,7 +6,7 @@ import {
   mergeMap,
   switchMap
 } from 'light-observable/operators'
-import { combineEpics, select, initEvent } from 'stapp'
+import { combineEpics, initEvent, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
 import { VALIDATE } from './constants'
 import { revalidate } from './events'
