@@ -9,13 +9,13 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-Stapp uses a reactive approach to business logic handling. Observables, streams, and epics are the core parts of Stapp. 
+Stapp uses a reactive approach to business logic handling. Observables, streams, and epics are the core parts of Stapp.
 
 Observables in Stapp conform to the [Observable proposal](https://github.com/tc39/proposal-observable). See [`light-observable`](http://light-observable.js.org/) for more details.
 
 This means that those streams are fully compatible with any ECMAScript compatible reactive library, including **RxJS**, **most**, **kefir**, **bacon** and so on.
 
-There are several ways to use these streams with preferable reactive library.
+There are several ways to use these streams with a preferable reactive library.
 
 ## Global config: `setObservableConfig()`
 ```typescript
@@ -47,10 +47,10 @@ setObservableConfig(observableConfig)
 ```
 
 #### Notice on interoperability with RxJS 6
-RxJS 6 doesn't use 'symbol-observable' polyfill. This may cause some weird issues with interop depending on the import order. It is recommended to install and import symbol-observable polyfill somewhere at the top of your JS bundle.
+RxJS 6 doesn't use 'symbol-observable' polyfill, and this may cause some weird issues with interop depending on the import order. It is recommended to install and import symbol-observable polyfill somewhere at the top of your JS bundle.
 
 ## Local module config
-Every module can expose it's local observable configuration which will take precedence over the global config.
+Every module can expose its local observable configuration which takes precedence over the global config.
 
 ```javascript
 import { observableConfig } from 'stapp-rxjs'
@@ -67,6 +67,8 @@ const module = {
 ```
 
 ## Direct transformation
+Finally, streams can be transformed in place. If you want to make sure that your module ignores global observable configuration and receives the standard Observable stream, set `useGlobalObservableConfig` to `false`.
+
 ```javascript
 import { from } from 'rxjs'
 import { switchMap, filter } from 'rxjs/operators'
@@ -78,6 +80,6 @@ const module = {
     filter(({ type }) => type === 'some event'),
     switchMap(({ payload }) => myEffect(payload))
   ),
-  observableConfig
+  useGlobalObservableConfig: false // This is necessary if you plan to publish your module elsewhere
 }
 ```
