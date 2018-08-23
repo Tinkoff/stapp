@@ -1,7 +1,7 @@
-import { PartialObserver } from 'light-observable/core/types.h'
+import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
-import { initDone } from '../../events/initDone'
+import { disconnectEvent, initEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
@@ -48,6 +48,8 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const reducers: any = {}
   const api: any = {}
   let waitFor: WaitFor = []
+
+  const subscriptions: Subscription[] = []
 
   for (const anyModule of anyModules) {
     const module = isModule(anyModule) ? anyModule : anyModule(dependencies)
@@ -107,7 +109,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
       })
 
       if (epicStream) {
-        epicStream.subscribe(dispatch)
+        subscriptions.push(epicStream.subscribe(dispatch))
       }
     }
 
@@ -121,7 +123,15 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const rootDispatch = store.createDispatch('root')
 
   store.flushQueue()
-  rootDispatch(initDone())
+  rootDispatch(initEvent())
+
+  const disconnect = () => {
+    rootDispatch(disconnectEvent())
+    store.disconnect()
+    subscriptions.forEach((subscription) => {
+      subscription.unsubscribe()
+    })
+  }
 
   return {
     name: appName,
@@ -132,6 +142,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     getState: store.getState,
     ready: readyPromise,
     api,
+    disconnect,
     [$$observable]() {
       return this
     }

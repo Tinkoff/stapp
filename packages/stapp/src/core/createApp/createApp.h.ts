@@ -109,7 +109,7 @@ export type Thunk<State, Result> = (
 ) => Result
 
 /**
- * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
+ * An app created by [[createApp]] is another core concept of Stapp. See README.md for details.
  * @typeparam State Application state shape
  * @typeparam Api Application api interface
  */
@@ -119,6 +119,7 @@ export type Stapp<State, Api> = Subscribable<State> & {
   dispatch: Dispatch<State>
   getState: () => State
   ready: Promise<Partial<State>>
+  disconnect: () => void
 }
 
 export type StappApi<T extends Stapp<any, any>> = T extends Stapp<
