@@ -9,6 +9,7 @@ import { bindApi } from './bindApi'
 import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
+import { getConfig } from './setObservableConfig'
 
 /**
  * Creates an application and returns a [[Stapp]].
@@ -99,15 +100,21 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
 
     const dispatch = store.createDispatch(module.name)
 
-    const epic = module.epic
+    const { epic } = module
+
     if (epic) {
-      const epicStream = epic(store.event$, store.state$, {
-        dispatch,
-        getState: store.getState
-      })
+      const { fromESObservable, toESObservable } = getConfig(module)
+      const epicStream = epic(
+        fromESObservable(store.event$),
+        fromESObservable(store.state$),
+        {
+          dispatch,
+          getState: store.getState
+        }
+      )
 
       if (epicStream) {
-        epicStream.subscribe(dispatch)
+        toESObservable(epicStream).subscribe(dispatch)
       }
     }
 

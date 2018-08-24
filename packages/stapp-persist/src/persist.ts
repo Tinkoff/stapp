@@ -51,7 +51,8 @@ export const persist = <State>({
   {}
 > => {
   const storageKey = `${PERSIST}:${key}`
-  const serialize: (data: any) => string = _serialize === false ? identity : defaultSerialize
+  const serialize: (data: any) => string =
+    _serialize === false ? identity : defaultSerialize
   const deserialize = _serialize === false ? identity : defaultDeserialize
   const merge = stateReconciler || defaultMerge
 
@@ -69,7 +70,9 @@ export const persist = <State>({
       skipRepeats(shallowEqual),
       map(mapTransform(transforms)),
       tap((state) => {
-        storage.setItem(storageKey, serialize(state)).catch((error) => logError(PERSIST, error))
+        storage
+          .setItem(storageKey, serialize(state))
+          .catch((error) => logError(PERSIST, error))
       }),
       map(() => null)
     )
@@ -97,6 +100,7 @@ export const persist = <State>({
     api: {
       clearStorage
     },
-    epic: combineEpics([setEpic, getEpic])
+    epic: combineEpics([setEpic, getEpic]),
+    useGlobalObservableConfig: false
   }
 }

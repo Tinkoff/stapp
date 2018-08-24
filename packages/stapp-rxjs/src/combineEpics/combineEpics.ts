@@ -21,22 +21,13 @@ const fromOrEmpty = <T>(stream: rxObservable<T> | void): Observable<T> => {
   return Observable.from(stream as any)
 }
 
-export function combineEpics<S>(epics: [Epic<S>]): StappEpic<S>
-export function combineEpics<S1, S2>(
-  epics: [Epic<S1>, Epic<S2>]
-): StappEpic<S1 & S2>
-export function combineEpics<S1, S2, S3>(
-  epics: [Epic<S1>, Epic<S2>, Epic<S3>]
-): StappEpic<S1 & S2 & S3>
-export function combineEpics<S1, S2, S3, S4>(
-  epics: [Epic<S1>, Epic<S2>, Epic<S3>, Epic<S4>]
-): StappEpic<S1 & S2 & S3 & S4>
-export function combineEpics<S1, S2, S3, S4, S5>(
-  epics: [Epic<S1>, Epic<S2>, Epic<S3>, Epic<S4>, Epic<S5>]
-): StappEpic<S1 & S2 & S3 & S4 & S5>
-export function combineEpics<S1, S2, S3, S4, S5, S6>(
-  epics: [Epic<S1>, Epic<S2>, Epic<S3>, Epic<S4>, Epic<S5>, Epic<S6>]
-): StappEpic<S1 & S2 & S3 & S4 & S5 & S6>
+/**
+ * @deprecated since version 2.3.0. Will be removed in 2.5.0
+ * To convert es observables to rxjs use `setObservableConfig(observableConfig)`.
+ * To combine rxjs epics use standard combineEpics from 'stapp' package.
+ *
+ * @param epics
+ */
 export function combineEpics(epics: Array<Epic<any>>): StappEpic<any> {
   if (!epics.length) {
     return () => EMPTY

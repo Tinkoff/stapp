@@ -120,6 +120,7 @@ export const validate = <State extends FormBaseState>({
       validating: validateReducer
     },
     epic: combineEpics([validateEpic, setTouchedOnSubmitEpic]) as any,
-    dependencies: [FORM_BASE]
+    dependencies: [FORM_BASE],
+    useGlobalObservableConfig: false
   }
 }

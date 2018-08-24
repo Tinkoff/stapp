@@ -65,6 +65,8 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
 
   // Epics
   epic?: Epic<Partial<Full>>
+  useGlobalObservableConfig?: boolean
+  observableConfig?: ObservableConfig<any>
 }
 
 /**
@@ -107,6 +109,11 @@ export type Thunk<State, Result> = (
   getState: () => State,
   dispatch: Dispatch<State>
 ) => Result
+
+export type ObservableConfig<Stream> = {
+  fromESObservable?: (innerStream: Observable<any>) => Stream
+  toESObservable?: (outerStream: Stream) => Observable<any>
+}
 
 /**
  * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
