@@ -1,7 +1,13 @@
 import { createApp } from 'stapp'
-import { formBase, setError, setReady, setValue, submit } from 'stapp-formbase'
-import { FormBaseConfig } from 'stapp-formbase/lib/formBase.h'
-import { initDone } from 'stapp/lib/events/initDone'
+import {
+  formBase,
+  setError,
+  setReady,
+  setValue,
+  submit,
+  FormBaseConfig
+} from 'stapp-formbase'
+import { initEvent } from 'stapp'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
 import { wait } from 'stapp/lib/helpers/testHelpers/wait/wait'
 import { asyncValidationEnd, asyncValidationStart, revalidate } from './events'
@@ -204,7 +210,7 @@ describe('validate', () => {
       })
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(
           setError({
             age: 'Required!'
@@ -233,7 +239,7 @@ describe('validate', () => {
       })
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(
           setError({
             age: 'Hey!',
@@ -265,7 +271,7 @@ describe('validate', () => {
       })
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(
           setError({
             age: 'Heeeeeey!'
@@ -299,7 +305,7 @@ describe('validate', () => {
       })
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
         expect.objectContaining(
@@ -336,7 +342,7 @@ describe('validate', () => {
       })
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
         expect.objectContaining(asyncValidationStart('name')),
@@ -376,7 +382,7 @@ describe('validate', () => {
       expect(selector(app.getState())).toEqual(true)
 
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false }))
@@ -393,7 +399,7 @@ describe('validate', () => {
       await wait(50)
       app.dispatch(setValue({ age: 12 }))
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
@@ -404,7 +410,7 @@ describe('validate', () => {
 
       await wait(50)
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
@@ -415,7 +421,7 @@ describe('validate', () => {
 
       await wait(50)
       expect(app.getState().eventLog).toEqual([
-        expect.objectContaining(initDone()),
+        expect.objectContaining(initEvent()),
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),

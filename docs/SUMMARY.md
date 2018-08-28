@@ -1,26 +1,28 @@
-* [Stapp](README.md#stapp)
-  * [Installation](README.md#installation)
-  * [Introduction](README.md#introduction)
-  * [Stapp core concepts](README.md#stapp-core-concepts)
-  * [Quick start](README.md#quick-start)
-  * [Modules](README.md#modules)
-  * [Peer dependencies](README.md#peer-dependencies)
-  * [License](README.md#license)
-* Core
-  * [createApp](/core/createApp.md)
-  * [createEvent](/core/createEvent.md)
-  * [createEffect](/core/createEffect.md)
-  * [createReducer](/core/createReducer.md)
-  * [Modules](/core/modules.md)
-  * [Epics](/core/epics.md)
-* Guides
-  * [React](/guides/react.md)
-  * [SSR](/guides/ssr.md)
-  * [RxJS and other reactive libs](/guides/interop.md)
-* Modules
-  * [persist](/modules/persist.md)
-  * [loaders](/modules/loaders.md)
-  * [formbase](/modules/formbase.md)
-  * [validate](/modules/validate.md)
-  * [select](/modules/select.md)
+# Summary
+### Stapp
+* [Introduction](README.md)
+* [Installation](README.md#installation)
+* [Motivation](README.md#motivation)
+* [Core concepts](README.md#stapp-core-concepts)
+
+### Core
+* [createApp](/core/createApp.md)
+* [createEvent](/core/createEvent.md)
+* [createEffect](/core/createEffect.md)
+* [createReducer](/core/createReducer.md)
+* [Modules](/core/modules.md)
+* [Epics](/core/epics.md)
+
+### Guides
+* [React](/guides/react.md)
+* [SSR](/guides/ssr.md)
+* [RxJS and other reactive libs](/guides/interop.md)
+* [Application lifecycle](/guides/lifecycle.md)
+
+### Modules
+* [persist](/modules/persist.md)
+* [loaders](/modules/loaders.md)
+* [formbase](/modules/formbase.md)
+* [validate](/modules/validate.md)
+* [select](/modules/select.md)
 

@@ -15,7 +15,7 @@ export {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from './events/dangerous'
-export { initDone } from './events/initDone'
+export { disconnectEvent, initEvent, initDone } from './events/lifecycle'
 
 // Typings
 export {
