@@ -8,12 +8,14 @@ import {
 } from '../../events/dangerous'
 import { disconnectEvent } from '../../events/lifecycle'
 import { SOURCE } from '../../helpers/constants'
+import { identity } from '../../helpers/identity/identity'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic, Thunk } from './createApp.h'
+import { setObservableConfig } from './setObservableConfig'
 
 jest.useFakeTimers()
 
@@ -356,7 +358,7 @@ describe('createApp', () => {
     })
   })
 
-  describe('Epics', () => {
+  describe('epics', () => {
     it('should provide epics a stream of events and a stream of state', () => {
       const events = jest.fn()
       const state = jest.fn()
@@ -430,6 +432,84 @@ describe('createApp', () => {
         modules: [loggerModule, m1]
       })
       jest.runTimersToTime(100)
+    })
+
+    it('should use globalObservableConfig if defined', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+      setObservableConfig(config)
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
+    })
+
+    it('should use local observable config by default', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret,
+        observableConfig: config
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
     })
   })
 

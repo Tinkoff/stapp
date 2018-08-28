@@ -14,5 +14,6 @@ export const formBase = <FormValues, ReadyKeys extends string = any>(
   config: FormBaseConfig<FormValues> = {}
 ): Module<{}, FormBaseState<FormValues, ReadyKeys>> => ({
   name: FORM_BASE,
-  reducers: createFormBaseReducers(config.initialValues || {})
+  state: createFormBaseReducers(config.initialValues || {}),
+  useGlobalObservableConfig: false
 })

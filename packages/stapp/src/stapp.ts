@@ -5,6 +5,7 @@ export { createEffect } from './core/createEffect/createEffect'
 export { createReducer } from './core/createReducer/createReducer'
 
 // Epic utils
+export { setObservableConfig } from './core/createApp/setObservableConfig'
 export { select, selectArray } from './helpers/select/select'
 export { getEventType } from './helpers/getEventType/getEventType'
 export { combineEpics } from './helpers/combineEpics/combineEpics'
@@ -23,6 +24,7 @@ export {
   EventEpic,
   Module,
   ModuleFactory,
+  ObservableConfig,
   Stapp,
   Thunk,
   WaitFor,

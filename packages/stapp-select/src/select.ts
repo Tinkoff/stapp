@@ -39,7 +39,8 @@ export const select = <State, Result, Name extends string>({
     name: `${SELECT}/${name}`,
     state: {
       [name]: selectReducer
-    },
-    epic: reactEpic
-  } as any
+    } as any,
+    epic: reactEpic,
+    useGlobalObservableConfig: false
+  }
 }

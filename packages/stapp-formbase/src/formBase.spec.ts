@@ -28,7 +28,7 @@ describe('formBase', () => {
     it('creates module with reducers and events', () => {
       const module = formBase()
 
-      expect(typeof module.reducers).toBe('object')
+      expect(typeof module.state).toBe('object')
       expect(typeof module.name).toBe('string')
     })
 
@@ -39,7 +39,7 @@ describe('formBase', () => {
         }
       })
 
-      expect(getInitialState(module.reducers!.values)).toEqual({
+      expect(getInitialState(module.state!.values)).toEqual({
         test: 123
       })
     })
