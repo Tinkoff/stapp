@@ -135,12 +135,63 @@ export type StappApi<T extends Stapp<any, any>> = T extends Stapp<
 >
   ? Api
   : any
+
 export type StappState<T extends Stapp<any, any>> = T extends Stapp<
   any,
   infer State
 >
   ? State
   : any
+
+export type DevtoolsConfig<State> = {
+  name?: string
+  actionCreators?:
+    | Array<() => Event<any, any>>
+    | { [K: string]: () => Event<any, any> }
+  latency?: number
+  maxAge?: number
+  serialize?: {
+    options: {
+      date?: boolean
+      regex?: boolean
+      undefined?: boolean
+      nan?: boolean
+      infinity?: boolean
+      error?: boolean
+      symbol?: boolean
+      map?: boolean
+      set?: boolean
+      function?: (fn: Function) => string // tslint:disable-line ban-types
+    }
+    replacer?: (key: string, value: any) => any
+    reviver?: (key: string, value: any) => any
+    immutable?: object
+    refs?: object[]
+  }
+  actionSanitizer?: (event: Event<any, any>) => Event<any, any>
+  stateSanitizer?: (state: State) => State
+  actionsBlacklist?: string | string[]
+  actionsWhitelist?: string | string[]
+  predicate?: (state: State, event: Event<any, any>) => true
+  shouldRecordChanges?: boolean
+  pauseActionType?: string
+  autoPause?: boolean
+  shouldStartLocked?: boolean
+  shouldHotReload?: boolean
+  shouldCatchErrors?: string
+  features: {
+    pause?: boolean
+    lock?: boolean
+    persist?: boolean
+    export?: boolean | 'custom'
+    import?: boolean | 'custom'
+    jump?: boolean
+    skip?: boolean
+    reorder?: boolean
+    dispatch?: boolean
+    test?: boolean
+  }
+}
 
 /**
  * Yes, it takes hundreds of loc, but it works as expected.
@@ -159,6 +210,7 @@ export type CreateApp = {
     dependencies?: E1
     rehydrate?: Partial<S1>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<S1>
   }): Stapp<S1, A1>
 
   <
@@ -177,6 +229,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -197,6 +250,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -218,6 +272,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -241,6 +296,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -266,6 +322,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -293,6 +350,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -322,6 +380,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -353,6 +412,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 
   <
@@ -387,5 +447,6 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtoolsConfig?: DevtoolsConfig<State>
   }): Stapp<State, Api>
 }

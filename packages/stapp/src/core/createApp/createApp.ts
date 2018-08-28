@@ -6,7 +6,14 @@ import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 import { bindApi } from './bindApi'
-import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
+import {
+  AnyModule,
+  CreateApp,
+  DevtoolsConfig,
+  Module,
+  Stapp,
+  WaitFor
+} from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
 import { getConfig } from './setObservableConfig'
@@ -36,8 +43,16 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   dependencies?: Extra
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
+  devtoolsConfig?: DevtoolsConfig<State>
 }): Stapp<State, Api> => {
   const appName = config.name || `Stapp [${uniqueId()}]`
+  const devtoolsConfig = Object.assign(
+    {
+      name: appName
+    },
+    config.devtoolsConfig
+  )
+
   const anyModules = config.modules
   const dependencies = config.dependencies || {}
   const initialState = config.rehydrate || {}
@@ -93,7 +108,12 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     )
   }
 
-  const store = getStore<State>(appName, reducers, initialState, middlewares)
+  const store = getStore<State>(
+    reducers,
+    initialState,
+    middlewares,
+    devtoolsConfig
+  )
 
   for (const module of modules) {
     if (!module.epic && !module.api && !module.events) {

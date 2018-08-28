@@ -5,21 +5,19 @@ import { SOURCE } from '../../helpers/constants'
 import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { isSubscribable } from '../../helpers/is/isSubscribable/isSubscribable'
 import { Event } from '../createEvent/createEvent.h'
-import { Dispatch } from './createApp.h'
+import { DevtoolsConfig, Dispatch } from './createApp.h'
 import { getRootReducer } from './getRootReducer'
 
 /**
  * @private
  */
-const getReduxEnhancer = (appName: string) => {
+const getReduxEnhancer = (config: DevtoolsConfig<any>) => {
   if (
     process.env.NODE_ENV !== 'production' &&
     typeof window === 'object' && // tslint:disable-line strict-type-predicates
     typeof (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function'
   ) {
-    return (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      name: appName
-    })
+    return (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(config)
   }
 
   return compose
@@ -39,10 +37,10 @@ const updateMeta = (name: string, event: Event<any, any>) => {
  * @internal
  */
 export const getStore = <State>(
-  appName: string,
   reducers: any,
   initialState: Partial<State>,
-  middlewares: Middleware[]
+  middlewares: Middleware[],
+  devtoolsConfig: DevtoolsConfig<State>
 ): {
   state$: Observable<State>
   event$: Observable<Event<any, any>>
@@ -57,7 +55,7 @@ export const getStore = <State>(
   const store: Store<State> = createStore(
     getRootReducer(reducers, initialState),
     initialState as any,
-    getReduxEnhancer(appName)(applyMiddleware(...middlewares))
+    getReduxEnhancer(devtoolsConfig)(applyMiddleware(...middlewares))
   )
 
   const state$ = Observable.from<State>(store as any)
