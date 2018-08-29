@@ -26,3 +26,6 @@
 * [validate](/modules/validate.md)
 * [select](/modules/select.md)
 
+### Links
+* [Issues](https://github.com/TinkoffCreditSystems/stapp/issues)
+* [Changelog](https://github.com/TinkoffCreditSystems/stapp/releases)

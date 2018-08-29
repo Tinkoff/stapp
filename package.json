@@ -12,7 +12,7 @@
     "test:ci": "lerna run test:ci && npm run test:size",
     "docs": "rimraf _book && npm run docs:toc && npm run docs:move && npm run docs:book && npm run docs:publish",
     "docs:toc": "doctoc docs/README.md docs/guides/. docs/core/. docs/modules/. --notitle --github",
-    "docs:move": "cp README.md ./docs",
+    "docs:move": "cp docs/README.md ./",
     "docs:book": "gitbook install && gitbook build",
     "docs:publish": "gh-pages -d _book",
     "update-all": "lernaupdate",
