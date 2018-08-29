@@ -356,6 +356,82 @@ describe('createApp', () => {
 
       expect(rdec.mock.calls[1][0]).toHaveProperty('name')
     })
+
+    it('should disable devtools', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: false
+      })
+
+      expect(rdec).not.toBeCalled()
+    })
+
+    it('should ignore devtools parameter if set to true', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: true as false
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp' })
+    })
+
+    it('should pass devtools config', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          maxAge: 1
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp', maxAge: 1 })
+    })
+
+    it('should overwrite name', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          name: 'test'
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'test' })
+    })
   })
 
   describe('epics', () => {

@@ -43,15 +43,18 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   dependencies?: Extra
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
-  devtoolsConfig?: DevtoolsConfig<State>
+  devtools?: false | DevtoolsConfig
 }): Stapp<State, Api> => {
   const appName = config.name || `Stapp [${uniqueId()}]`
-  const devtoolsConfig = Object.assign(
-    {
-      name: appName
-    },
-    config.devtoolsConfig
-  )
+  const devtools =
+    config.devtools !== false
+      ? Object.assign(
+          {
+            name: appName
+          },
+          config.devtools
+        )
+      : false
 
   const anyModules = config.modules
   const dependencies = config.dependencies || {}
@@ -108,12 +111,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     )
   }
 
-  const store = getStore<State>(
-    reducers,
-    initialState,
-    middlewares,
-    devtoolsConfig
-  )
+  const store = getStore<State>(reducers, initialState, middlewares, devtools)
 
   for (const module of modules) {
     if (!module.epic && !module.api && !module.events) {

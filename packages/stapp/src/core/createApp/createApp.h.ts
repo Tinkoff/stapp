@@ -143,7 +143,7 @@ export type StappState<T extends Stapp<any, any>> = T extends Stapp<
   ? State
   : any
 
-export type DevtoolsConfig<State> = {
+export type DevtoolsConfig = {
   name?: string
   actionCreators?:
     | Array<() => Event<any, any>>
@@ -169,17 +169,17 @@ export type DevtoolsConfig<State> = {
     refs?: object[]
   }
   actionSanitizer?: (event: Event<any, any>) => Event<any, any>
-  stateSanitizer?: (state: State) => State
+  stateSanitizer?: (state: any) => any
   actionsBlacklist?: string | string[]
   actionsWhitelist?: string | string[]
-  predicate?: (state: State, event: Event<any, any>) => true
+  predicate?: (state: any, event: Event<any, any>) => true
   shouldRecordChanges?: boolean
   pauseActionType?: string
   autoPause?: boolean
   shouldStartLocked?: boolean
   shouldHotReload?: boolean
   shouldCatchErrors?: string
-  features: {
+  features?: {
     pause?: boolean
     lock?: boolean
     persist?: boolean
@@ -210,7 +210,7 @@ export type CreateApp = {
     dependencies?: E1
     rehydrate?: Partial<S1>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<S1>
+    devtools?: false | DevtoolsConfig
   }): Stapp<S1, A1>
 
   <
@@ -229,7 +229,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -250,7 +250,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -272,7 +272,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -296,7 +296,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -322,7 +322,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -350,7 +350,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -380,7 +380,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -412,7 +412,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -447,6 +447,6 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
-    devtoolsConfig?: DevtoolsConfig<State>
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 }
