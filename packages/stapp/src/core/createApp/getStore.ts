@@ -11,7 +11,7 @@ import { getRootReducer } from './getRootReducer'
 /**
  * @private
  */
-const getReduxEnhancer = (config: false | DevtoolsConfig<any>) => {
+const getReduxEnhancer = (config: false | DevtoolsConfig) => {
   if (
     config &&
     process.env.NODE_ENV !== 'production' &&
@@ -40,7 +40,7 @@ export const getStore = <State>(
   reducers: any,
   initialState: Partial<State>,
   middlewares: Middleware[],
-  devtools: false | DevtoolsConfig<State>
+  devtools: false | DevtoolsConfig
 ): {
   state$: Observable<State>
   event$: Observable<Event<any, any>>
