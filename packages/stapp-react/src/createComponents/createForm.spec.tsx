@@ -3,8 +3,8 @@ import React from 'react'
 import { formBase, submit } from 'stapp-formbase'
 import { createApp } from 'stapp/lib/core/createApp/createApp'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
-import { createConsumer } from '../createConsumer/createConsumer'
-import { createField } from '../createField/createField'
+import { createConsumer } from '../binded/createConsumer'
+import { createField } from './createField'
 import { createForm } from './createForm'
 
 describe('createForm', () => {

@@ -1,7 +1,7 @@
-export { createConsume, createInject } from './createConsume/createConsume'
-export { createConsumer } from './createConsumer/createConsumer'
-export { createForm } from './createForm/createForm'
-export { createField } from './createField/createField'
+export { createConsume, createInject } from './createComponents/createConsume'
+export { createConsumer } from './binded/createConsumer'
+export { createForm } from './createComponents/createForm'
+export { createField } from './createComponents/createField'
 export { createComponents } from './createComponents/createComponents'
 export {
   Consumer,
@@ -12,6 +12,6 @@ export {
 } from './context/context'
 
 // Types
-export { ConsumerProps, RenderProps } from './createConsumer/createConsumer.h'
+export { ConsumerProps, RenderProps } from './binded/createConsumer.h'
 export { FieldApi, FieldProps } from './createField/createField.h'
 export { FormApi } from './createForm/createForm.h'
