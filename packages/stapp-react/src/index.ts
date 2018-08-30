@@ -1,17 +1,17 @@
+// Binded
+export { createComponents } from './createComponents/createComponents'
 export { createConsume, createInject } from './createComponents/createConsume'
 export { createConsumer } from './binded/createConsumer'
-export { createForm } from './createComponents/createForm'
 export { createField } from './createComponents/createField'
-export { createComponents } from './createComponents/createComponents'
-export {
-  Consumer,
-  Field,
-  Form,
-  Provider,
-  StappContext
-} from './context/context'
+export { createForm } from './createComponents/createForm'
+
+// Context
+export { consume, inject } from './context/consume'
+export { Consumer } from './context/Consumer'
+export { Field } from './context/Field'
+export { Form } from './context/Form'
+export { Provider } from './context/Provider'
 
 // Types
-export { ConsumerProps, RenderProps } from './binded/createConsumer.h'
-export { FieldApi, FieldProps } from './createField/createField.h'
-export { FormApi } from './createForm/createForm.h'
+export { ConsumerProps, RenderProps, FieldProps } from './models/Props'
+export { FieldApi, FormApi } from './models/Form'

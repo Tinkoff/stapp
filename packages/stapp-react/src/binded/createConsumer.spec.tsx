@@ -110,14 +110,17 @@ describe('createConsumer', () => {
   })
 
   it('can accept component prop', () => {
-    expect.assertions(1)
+    expect.assertions(3)
+
+    const app = getApp()
 
     const DummyComponent = (props: any) => {
-      expect(props.r1).toEqual({ test: 0 })
+      expect(props.counter).toEqual(0)
+      expect(props.app).toBe(app)
+      expect(props.api).toBe(app.api)
 
       return null
     }
-    const app = getApp()
     const Consumer = createConsumer(app)
 
     mount(<Consumer component={DummyComponent} />)

@@ -14,7 +14,7 @@ import { FieldProps, RenderProps } from '../models/Props'
 export const createComponents = <State extends FormBaseState, Api>(
   app: Stapp<State, Api>
 ) => {
-  const Consumer = createConsumer(app)
+  const Consumer = createConsumer(app, app.name)
   let consume: ConsumeHoc<State, Api>
   let Form: StatelessComponent<RenderProps<FormApi>>
   let Field: StatelessComponent<FieldProps<State>>
@@ -23,15 +23,15 @@ export const createComponents = <State extends FormBaseState, Api>(
     Consumer,
 
     get consume() {
-      return consume || (consume = createConsume(Consumer))
+      return consume || (consume = createConsume(Consumer, app.name))
     },
 
     get Form() {
-      return Form || (Form = createForm(Consumer))
+      return Form || (Form = createForm(Consumer, app.name))
     },
 
     get Field() {
-      return Field || (Field = createField(Consumer))
+      return Field || (Field = createField(Consumer, app.name))
     }
   }
 }
