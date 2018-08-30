@@ -95,35 +95,28 @@ Epics allow *reacting* to events and state changes *reactively*. That's fun!
 ### Filtering event stream by event type
 #### `select()`
 ```typescript
-type select = (eventCreatorOrType: AnyEventCreator | string) => (event: Event) => boolean
+type select = (eventCreatorOrType:
+  | AnyEventCreator
+  | string
+  | Array<AnyEventCreator | string>
+) => (event: Event) => boolean
 ```
 
 ```js
 import { createEvent, select } from 'stapp'
 import { filter } from 'light-observable'
 
-const myEvent = createEvent()
-
-const epic = (events$) => events$.pipe(
-  filter(select(myEvent))
-)
-```
-
-#### `selectArray()`
-```typescript
-type selectArray = (eventCreators: Array<AnyEventCreator | string>) => (event: Event) => boolean
-```
-
-```js
-import { createEvent, selectArray } from 'stapp'
-import { filter } from 'light-observable'
-
 const myEventA = createEvent()
 const myEventB = createEvent()
 
-const epic = (events$) => events$.pipe(
-  filter(selectArray([myEventA, myEventB]))
+const epicA = (events$) => events$.pipe(
+  filter(select(myEventA))
 )
+
+const epic = (events$) => events$.pipe(
+  filter(select([myEventA, myEventB]))
+)
+
 ```
 
 #### `createEpic`

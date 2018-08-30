@@ -1,6 +1,6 @@
-import { filter } from 'light-observable/observable'
 import { identity } from '../../helpers/identity/identity'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { createEpic } from '../createEpic/createEpic'
 
 // Models
 import { Epic } from '../createApp/createApp.h'
@@ -18,7 +18,6 @@ import {
   PayloadTransformer2,
   PayloadTransformer3
 } from './createEvent.h'
-import { createEpic } from '../createEpic/createEpic'
 
 /**
  * Checks if provided value is an instance of Error
