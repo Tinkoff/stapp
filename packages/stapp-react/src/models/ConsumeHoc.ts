@@ -4,7 +4,7 @@ import { Omit } from 'stapp/src/types/omit'
 /**
  * @hidden
  */
-export type ConsumerHoc<State, Api> = {
+export type ConsumeHoc<State, Api> = {
   // No mapState and no mapApi
   (): <
     ConsumerProps extends Partial<State & Api>,

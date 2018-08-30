@@ -1,41 +1,37 @@
-import { createConsume } from '../createConsume/createConsume'
-import { createConsumer } from '../createConsumer/createConsumer'
-import { createField } from '../createField/createField'
-import { createForm } from '../createForm/createForm'
+import { createConsumer } from '../binded/createConsumer'
+import { createConsume } from './createConsume'
+import { createField } from './createField'
+import { createForm } from './createForm'
 
 // Models
-// tslint:disable-next-line no-unused-variable // declarations
-import { Subscription } from 'light-observable' // don't ask why, we'll try to fix it later
-// tslint:disable-next-line no-unused-variable // declarations
-import React, { ReactElement, StatelessComponent } from 'react'
+import { StatelessComponent } from 'react'
 import { Stapp } from 'stapp'
 import { FormBaseState } from 'stapp-formbase'
-import { ConsumerHoc } from '../createConsume/createConsume.h'
-import { ConsumerProps, RenderProps } from '../createConsumer/createConsumer.h'
-import { FieldProps } from '../createField/createField.h'
-import { FormApi } from '../createForm/createForm.h'
+import { ConsumeHoc } from '../models/ConsumeHoc'
+import { FormApi } from '../models/Form'
+import { FieldProps, RenderProps } from '../models/Props'
 
-export const createComponents = <State extends FormBaseState, Api>(app: Stapp<State, Api>) => {
-  const Consumer = createConsumer(app)
-  let consume: ConsumerHoc<State, Api>
+export const createComponents = <State extends FormBaseState, Api>(
+  app: Stapp<State, Api>
+) => {
+  const Consumer = createConsumer(app, app.name)
+  let consume: ConsumeHoc<State, Api>
   let Form: StatelessComponent<RenderProps<FormApi>>
-  let Field: <Extra>(
-    config: FieldProps<State, Extra>
-  ) => ReactElement<ConsumerProps<State, Api, any>>
+  let Field: StatelessComponent<FieldProps<State>>
 
   return {
     Consumer,
 
     get consume() {
-      return consume || (consume = createConsume(Consumer))
+      return consume || (consume = createConsume(Consumer, app.name))
     },
 
     get Form() {
-      return Form || (Form = createForm(Consumer))
+      return Form || (Form = createForm(Consumer, app.name))
     },
 
     get Field() {
-      return Field || (Field = createField(Consumer))
+      return Field || (Field = createField(Consumer, app.name))
     }
   }
 }

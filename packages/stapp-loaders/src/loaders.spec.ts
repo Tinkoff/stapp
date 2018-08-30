@@ -20,3 +20,9 @@ test('loaders module', () => {
   expect(selector({ loaders: nextState2 })).toEqual(false)
   expect(loadersReducer(nextState2, loaderEnd('test'))).toBe(nextState2)
 })
+
+test('safe selector', () => {
+  const selector = isLoadingSelector()
+
+  expect(selector({})).toBe(false)
+})

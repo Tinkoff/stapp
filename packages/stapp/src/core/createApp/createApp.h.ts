@@ -130,14 +130,14 @@ export type Stapp<State, Api> = Subscribable<State> & {
 }
 
 export type StappApi<T extends Stapp<any, any>> = T extends Stapp<
-  infer Api,
-  any
+  any,
+  infer Api
 >
   ? Api
   : any
 export type StappState<T extends Stapp<any, any>> = T extends Stapp<
-  any,
-  infer State
+  infer State,
+  any
 >
   ? State
   : any
