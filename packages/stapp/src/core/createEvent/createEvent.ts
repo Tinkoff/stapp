@@ -1,4 +1,4 @@
-import { filter } from 'light-observable/operators'
+import { filter } from 'light-observable/observable'
 import { identity } from '../../helpers/identity/identity'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
 
@@ -18,6 +18,7 @@ import {
   PayloadTransformer2,
   PayloadTransformer3
 } from './createEvent.h'
+import { createEpic } from '../createEpic/createEpic'
 
 /**
  * Checks if provided value is an instance of Error
@@ -39,7 +40,9 @@ export function createEvent(description?: string): EmptyEventCreator
  * @typeparam Meta Type of event meta
  * @param description Event description
  */
-export function createEvent<Payload>(description?: string): EventCreator1<Payload, Payload>
+export function createEvent<Payload>(
+  description?: string
+): EventCreator1<Payload, Payload>
 
 /**
  * Creates an event creator that accepts no arguments ([[EventCreator0]]).
@@ -111,7 +114,9 @@ export function createEvent(
   payloadCreator: AnyPayloadTransformer = identity,
   metaCreator?: AnyPayloadTransformer
 ): AnyEventCreator {
-  const type = description ? `${description} [${uniqueId()}]` : `[${uniqueId()}]`
+  const type = description
+    ? `${description} [${uniqueId()}]`
+    : `[${uniqueId()}]`
 
   const eventCreator: any = (...args: any[]) => {
     const event: any = {
@@ -119,7 +124,9 @@ export function createEvent(
     }
 
     try {
-      event.payload = isError(args[0]) ? args[0] : (payloadCreator as any)(...args)
+      event.payload = isError(args[0])
+        ? args[0]
+        : (payloadCreator as any)(...args)
     } catch (error) {
       event.payload = error
     }
@@ -136,8 +143,8 @@ export function createEvent(
   eventCreator.getType = () => type
   eventCreator.is = (event: Event<any, any>) => event.type === type
 
-  eventCreator.epic = (fn: Epic<any>): Epic<any> => (events$, state$, staticApi) =>
-    fn(filter((event: Event<any, any>) => event.type === type)(events$), state$, staticApi)
+  eventCreator.epic = <State>(fn: Epic<State>): Epic<State> =>
+    createEpic(eventCreator, fn)
 
   return eventCreator
 }

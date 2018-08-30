@@ -129,7 +129,9 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
         fromESObservable(store.state$),
         {
           dispatch,
-          getState: store.getState
+          getState: store.getState,
+          fromESObservable,
+          toESObservable
         }
       )
 

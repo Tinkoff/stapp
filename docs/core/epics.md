@@ -126,9 +126,19 @@ const epic = (events$) => events$.pipe(
 )
 ```
 
+#### `createEpic`
+```typescript
+type createEpic = <Payload, Meta, State>(
+  events: AnyEventCreator<Payload, Meta> | string | Array<AnyEventCreator | string>,
+  fn: Epic<State>
+) => Epic<State>
+```
+
+Accepts events and an Epic and returns a filtered Epic.
+
 #### `EventCreator.epic()`
 
-Accepts an Epic and returns an Epic. Provides a filtered stream of events to incoming Epic.
+Accepts an Epic and returns an Epic, filtered by this EventCreator type.
 
 ```js
 const myEvent = createEvent()
