@@ -1,10 +1,10 @@
-export type FormBaseState<Values = any, ReadyKeys extends string = any> = {
+export type FormBaseState<Values = any> = {
   values: Values
   errors: { [K in keyof Values]: any }
   touched: { [K in keyof Values]: boolean }
   dirty: { [K in keyof Values]: boolean }
   active: keyof Values | null
-  ready: { [K in ReadyKeys]: boolean }
+  ready: { [K: string]: boolean }
   pristine: boolean
   submitting: boolean
 }

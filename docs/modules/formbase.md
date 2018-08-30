@@ -104,7 +104,8 @@ const app = createApp({
 
 ### Events
 
-`stapp-formbase` doesn't expose any of it's events to the global application API. They should be imported and used in other modules and store-to-view connecting utilities. See [react usage](/usage/react.html) or `createForm` and `createField` source code for an example.
+`stapp-formbase` exposes every event to the public application API.
+Events are available in the `formBase` field of an `api` object.
 
 ```typescript
 type setValue = EventCreator<{ [K: string]: string }>

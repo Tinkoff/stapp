@@ -49,9 +49,11 @@ export const getStore = <State>(
   createDispatch: (moduleName: string) => Dispatch<State>
   flushQueue: () => void
   getState: () => State
+  disconnect: () => void
 } => {
   let initializing = true
   let queue: Array<Event<any, any>> | null = []
+  let completed = false
   const store: Store<State> = createStore(
     getRootReducer(reducers, initialState),
     initialState as any,
@@ -63,6 +65,10 @@ export const getStore = <State>(
 
   const createDispatch = (moduleName: string) => {
     const dispatch: Dispatch<State> = (event?: any) => {
+      if (completed) {
+        return
+      }
+
       if (event == null) {
         return event
       }
@@ -104,11 +110,17 @@ export const getStore = <State>(
     queue = null
   }
 
+  const disconnect = () => {
+    eventInput$.complete()
+    completed = true
+  }
+
   return {
     state$,
     event$,
+    getState: store.getState,
     createDispatch,
     flushQueue,
-    getState: store.getState
+    disconnect
   }
 }

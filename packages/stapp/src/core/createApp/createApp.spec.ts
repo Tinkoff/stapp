@@ -1,18 +1,21 @@
 import { Observable } from 'light-observable'
-import { EMPTY, of } from 'light-observable/observable'
+import { createSubject, EMPTY, of } from 'light-observable/observable'
 import { filter, map } from 'light-observable/operators'
 import { compose, Middleware } from 'redux'
 import {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from '../../events/dangerous'
+import { disconnectEvent } from '../../events/lifecycle'
 import { SOURCE } from '../../helpers/constants'
+import { identity } from '../../helpers/identity/identity'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic, Thunk } from './createApp.h'
+import { setObservableConfig } from './setObservableConfig'
 
 jest.useFakeTimers()
 
@@ -28,7 +31,7 @@ describe('createApp', () => {
     })
   )
 
-  describe('creation', () => {
+  describe('lifesycle', () => {
     it('should create an app', () => {
       const m1 = {
         name: 'm1',
@@ -60,6 +63,62 @@ describe('createApp', () => {
       })
 
       expect(module).toBeCalledWith(extraValue)
+    })
+
+    it('should disconnect reducers and subscribers', () => {
+      const app = createApp({
+        modules: [loggerModule({ pattern: null })]
+      })
+
+      const initialCalls = app.getState().eventLog.length
+
+      app.dispatch(fire1())
+      expect(app.getState().eventLog.length - initialCalls).toEqual(1)
+
+      app.disconnect()
+      expect(
+        app.getState().eventLog[app.getState().eventLog.length - 1]
+      ).toEqual(expect.objectContaining(disconnectEvent()))
+      expect(app.getState().eventLog.length - initialCalls).toEqual(2)
+
+      app.dispatch(fire1())
+      expect(app.getState().eventLog.length - initialCalls).toEqual(2)
+    })
+
+    it('should unsubscribe from epics', () => {
+      let eventStream: any
+      const [stream, sink] = createSubject()
+      const epic: Epic<any> = (event$) => {
+        eventStream = event$
+        return stream
+      }
+      const module = {
+        name: 't',
+        epic
+      }
+
+      const app = createApp({
+        modules: [module, loggerModule]
+      })
+
+      const observer = {
+        next: jest.fn(),
+        complete: jest.fn()
+      }
+      eventStream.subscribe(observer)
+
+      sink.next(fire1())
+      expect(observer.next).toBeCalledWith(expect.objectContaining(fire1()))
+      expect(observer.next.mock.calls).toHaveLength(1)
+      expect(app.getState().eventLog).toHaveLength(1)
+
+      app.disconnect()
+      expect(observer.next.mock.calls).toHaveLength(2)
+      expect(observer.complete).toBeCalled()
+
+      sink.next(fire1())
+      expect(observer.next.mock.calls).toHaveLength(2)
+      expect(app.getState().eventLog).toHaveLength(1)
     })
   })
 
@@ -299,7 +358,7 @@ describe('createApp', () => {
     })
   })
 
-  describe('Epics', () => {
+  describe('epics', () => {
     it('should provide epics a stream of events and a stream of state', () => {
       const events = jest.fn()
       const state = jest.fn()
@@ -373,6 +432,84 @@ describe('createApp', () => {
         modules: [loggerModule, m1]
       })
       jest.runTimersToTime(100)
+    })
+
+    it('should use globalObservableConfig if defined', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+      setObservableConfig(config)
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
+    })
+
+    it('should use local observable config by default', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret,
+        observableConfig: config
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
     })
   })
 

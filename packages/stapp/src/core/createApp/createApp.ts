@@ -1,7 +1,7 @@
-import { PartialObserver } from 'light-observable/core/types.h'
+import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
-import { initDone } from '../../events/initDone'
+import { disconnectEvent, initEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
@@ -9,6 +9,7 @@ import { bindApi } from './bindApi'
 import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
+import { getConfig } from './setObservableConfig'
 
 /**
  * Creates an application and returns a [[Stapp]].
@@ -48,6 +49,8 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const reducers: any = {}
   const api: any = {}
   let waitFor: WaitFor = []
+
+  const subscriptions: Subscription[] = []
 
   for (const anyModule of anyModules) {
     const module = isModule(anyModule) ? anyModule : anyModule(dependencies)
@@ -99,15 +102,21 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
 
     const dispatch = store.createDispatch(module.name)
 
-    const epic = module.epic
+    const { epic } = module
+
     if (epic) {
-      const epicStream = epic(store.event$, store.state$, {
-        dispatch,
-        getState: store.getState
-      })
+      const { fromESObservable, toESObservable } = getConfig(module)
+      const epicStream = epic(
+        fromESObservable(store.event$),
+        fromESObservable(store.state$),
+        {
+          dispatch,
+          getState: store.getState
+        }
+      )
 
       if (epicStream) {
-        epicStream.subscribe(dispatch)
+        subscriptions.push(toESObservable(epicStream).subscribe(dispatch))
       }
     }
 
@@ -121,7 +130,15 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const rootDispatch = store.createDispatch('root')
 
   store.flushQueue()
-  rootDispatch(initDone())
+  rootDispatch(initEvent())
+
+  const disconnect = () => {
+    rootDispatch(disconnectEvent())
+    store.disconnect()
+    subscriptions.forEach((subscription) => {
+      subscription.unsubscribe()
+    })
+  }
 
   return {
     name: appName,
@@ -132,6 +149,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     getState: store.getState,
     ready: readyPromise,
     api,
+    disconnect,
     [$$observable]() {
       return this
     }

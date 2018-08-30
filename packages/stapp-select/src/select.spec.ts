@@ -40,7 +40,7 @@ describe('select module', () => {
       reactWith: [reactEvent]
     })
 
-    it('should react on initDone event', () => {
+    it('should react on init event', () => {
       expect(selectMock).toHaveBeenCalledTimes(1)
     })
 

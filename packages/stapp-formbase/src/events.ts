@@ -27,14 +27,14 @@ export const setError = createEvent<{ [K: string]: any }>(
 /**
  * Used to set field as touched
  */
-export const setTouched = createEvent<{ [K: string]: boolean }>(
+export const setTouched = createEvent<{ [K: string]: void | boolean }>(
   `${FORM_BASE}: Set field as touched`
 )
 
 /**
  * Set field as active
  */
-export const setActive = createEvent<string | null>(
+export const setActive = createEvent<string | number | symbol | null>(
   `${FORM_BASE}: Set field as active`
 )
 

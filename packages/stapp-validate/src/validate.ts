@@ -6,9 +6,8 @@ import {
   mergeMap,
   switchMap
 } from 'light-observable/operators'
-import { combineEpics, select } from 'stapp'
+import { combineEpics, initEvent, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
-import { initDone } from 'stapp/lib/events/initDone'
 import { VALIDATE } from './constants'
 import { revalidate } from './events'
 import { runValidation } from './helpers'
@@ -71,7 +70,7 @@ export const validate = <State extends FormBaseState>({
 
     const initDone$: Res = validateOnInit
       ? event$.pipe(
-          filter(select(initDone)),
+          filter(select(initEvent)),
           mergeMap(() => {
             return mapValues(getState(), { onInit: true })
           })
@@ -120,6 +119,7 @@ export const validate = <State extends FormBaseState>({
       validating: validateReducer
     },
     epic: combineEpics([validateEpic, setTouchedOnSubmitEpic]) as any,
-    dependencies: [FORM_BASE]
+    dependencies: [FORM_BASE],
+    useGlobalObservableConfig: false
   }
 }
