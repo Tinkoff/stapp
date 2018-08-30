@@ -8,6 +8,8 @@ import {
   EventCreator1
 } from 'stapp/lib/core/createEvent/createEvent.h'
 
+const u = () => undefined
+
 /**
  * Used to set values for fields
  */
@@ -56,12 +58,12 @@ export const pickFields = createEvent<string[]>(`${FORM_BASE}: pick fields`)
 /**
  * Used to reset form state
  */
-export const resetForm = createEvent(`${FORM_BASE}: Reset form state`)
+export const resetForm = createEvent(`${FORM_BASE}: Reset form state`, u)
 
 /**
  * Used to indicate form submission
  */
-export const submit = createEvent(`${FORM_BASE}: Submit`, () => undefined)
+export const submit = createEvent(`${FORM_BASE}: Submit`, u)
 
 export const setSubmitting = createEvent<boolean>(
   `${FORM_BASE}: Set submitting`

@@ -1,48 +1,26 @@
 // tslint:disable max-classes-per-file jsx-no-lambda
 import { mount } from 'enzyme'
 import React from 'react'
-import { createApp, createEvent, createReducer } from 'stapp'
-import { uniqueId } from 'stapp/lib/helpers/uniqueId/uniqueId'
-import { createConsumer } from '../createConsumer/createConsumer'
+import { createConsumer } from '../binded/createConsumer'
+import { getApp } from '../helpers/testApp'
 import { createConsume } from './createConsume'
 
 describe('createConsume', () => {
-  const initialState = {
-    test: 0
-  }
-
-  const e1 = createEvent()
-  const r1 = createReducer(initialState).on(e1, (state) => ({ test: state.test + 1 }))
-
-  const getApp = () =>
-    createApp({
-      name: 'test' + uniqueId(),
-      modules: [
-        {
-          name: 'test',
-          reducers: {
-            r1
-          },
-          events: {
-            e1
-          }
-        }
-      ]
-    })
-
   const getConsumer = () => createConsumer(getApp())
 
   it('should pass state to wrapped component', (done) => {
-    expect.assertions(2)
+    expect.assertions(3)
 
-    const Consumer = getConsumer()
+    const app = getApp()
+    const Consumer = createConsumer(app)
     const consume = createConsume(Consumer)
 
     const Dummy = consume()(
       class extends React.Component<any> {
         componentDidMount() {
-          expect(typeof this.props.e1).toBe('function')
-          expect(this.props.r1).toEqual(initialState)
+          expect(this.props.app).toBe(app)
+          expect(this.props.api).toBe(app.api)
+          expect(this.props.counter).toEqual(0)
 
           done()
         }
@@ -63,7 +41,7 @@ describe('createConsume', () => {
     const consume = createConsume(Consumer)
 
     const Dummy = consume((state) => ({
-      test: state.r1.test + 5,
+      test: state.counter + 5,
       test2: 'test'
     }))(
       class extends React.Component<{
@@ -96,11 +74,16 @@ describe('createConsume', () => {
     const consume = createConsume(Consumer)
 
     const Dummy = consume((state, api, props) => ({
-      test: state.r1.test + 5,
+      test: state.counter + 5,
       test2: 'test',
       props: { test3: props.test3 }
     }))(
-      class extends React.Component<{ test: number; test2: string; test3: boolean; props: any }> {
+      class extends React.Component<{
+        test: number
+        test2: string
+        test3: boolean
+        props: any
+      }> {
         componentDidMount() {
           expect(this.props.test).toEqual(5)
           expect(this.props.test2).toEqual('test')
@@ -121,14 +104,16 @@ describe('createConsume', () => {
   })
 
   it('should work with stateless components', (done) => {
-    expect.assertions(2)
+    expect.assertions(3)
 
-    const Consumer = getConsumer()
+    const app = getApp()
+    const Consumer = createConsumer(app)
     const consume = createConsume(Consumer)
 
     const Dummy = consume()((props: any) => {
-      expect(typeof props.e1).toBe('function')
-      expect(props.r1).toEqual(initialState)
+      expect(props.app).toBe(app)
+      expect(props.api).toBe(app.api)
+      expect(props.counter).toEqual(0)
 
       done()
 

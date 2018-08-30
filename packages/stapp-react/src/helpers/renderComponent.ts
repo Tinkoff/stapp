@@ -1,24 +1,28 @@
 import React, { ReactElement } from 'react'
-import { RenderProps } from '../createConsumer/createConsumer.h'
+import { Stapp } from 'stapp'
+import { RenderProps } from '../models/Props'
 import { STAPP_REACT } from './constants'
 
-export const renderComponent = (
-  name: string,
-  props: RenderProps<any, any>,
-  ...values: any[]
-): ReactElement<any> | null => {
-  const { render, children, component } = props
+export const renderComponent = (parameters: {
+  name: string
+  renderProps: RenderProps<any, any>
+  result: any
+  api: any
+  app: Stapp<any, any>
+}): ReactElement<any> | null => {
+  const { name, renderProps, result, api, app } = parameters
+  const { render, children, component } = renderProps
 
   if (component) {
-    return React.createElement(component, Object.assign({}, ...values))
+    return React.createElement(component, Object.assign({ api, app }, result))
   }
 
   if (render) {
-    return (render as any)(...values)
+    return render(result, api, app)
   }
 
   if (typeof children === 'function') {
-    return (children as any)(...values)
+    return children(result, api, app)
   }
 
   throw new Error(
