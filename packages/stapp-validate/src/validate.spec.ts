@@ -509,4 +509,11 @@ describe('validate', () => {
       expect(getRules).toBeCalledWith(app.getState())
     })
   })
+
+  describe('selectors', () => {
+    it('should be safe', () => {
+      const selector = isValidatingSelector()
+      expect(selector({})).toBe(false)
+    })
+  })
 })

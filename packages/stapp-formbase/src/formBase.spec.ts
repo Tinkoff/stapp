@@ -61,6 +61,8 @@ describe('formBase', () => {
     test('isValidSelector', () => {
       const selector = isValidSelector()
 
+      expect(selector({})).toEqual(true)
+
       expect(
         selector({
           errors: {}
@@ -78,6 +80,8 @@ describe('formBase', () => {
 
     test('isReadySelector', () => {
       const selector = isReadySelector()
+
+      expect(selector({})).toEqual(true)
 
       expect(
         selector({
@@ -110,6 +114,8 @@ describe('formBase', () => {
           dirty: {}
         })
       ).toEqual(false)
+
+      expect(selector({})).toEqual(false)
 
       expect(
         selector({
@@ -144,6 +150,14 @@ describe('formBase', () => {
     })
 
     test('fieldSelector', () => {
+      expect(fieldSelector('test')({} as any)).toEqual({
+        value: undefined,
+        error: undefined,
+        touched: false,
+        active: false,
+        dirty: false
+      })
+
       expect(
         fieldSelector('test')({
           values: {
