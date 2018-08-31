@@ -17,6 +17,8 @@ export type EventEpic<Payload, Meta, State> = (
   staticApi: {
     dispatch: Dispatch<State>
     getState(): State
+    fromESObservable(innerStream: Observable<any>): any
+    toESObservable(outerStream: any): Observable<any>
   }
 ) => Subscribable<any> | void
 
