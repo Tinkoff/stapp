@@ -53,7 +53,7 @@ export const createField = <State extends FormBaseState, Api>(
           renderProps: props,
           result: {
             input: {
-              name,
+              name: props.name,
               value: fieldState.value || '',
               onChange: handleChange(api),
               onBlur: handleBlur(api),
