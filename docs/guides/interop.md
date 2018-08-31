@@ -4,8 +4,13 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [RxJS](#rxjs)
+- [Global config: `setObservableConfig()`](#global-config-setobservableconfig)
+  - [Example](#example)
+  - [Prepacked configurations](#prepacked-configurations)
+    - [RxJS:](#rxjs)
     - [Notice on interoperability with RxJS 6](#notice-on-interoperability-with-rxjs-6)
+- [Local module config](#local-module-config)
+- [Direct transformation](#direct-transformation)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

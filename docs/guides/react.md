@@ -6,6 +6,7 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Render-prop pattern](#render-prop-pattern)
 - [Binded components](#binded-components)
   - [`createComponents()`](#createcomponents)
   - [`createConsumer()`](#createconsumer)

@@ -12,7 +12,7 @@ Epics allow harnessing async logic with ease.
 - [Usage](#usage)
   - [Filtering event stream by event type](#filtering-event-stream-by-event-type)
     - [`select()`](#select)
-    - [`selectArray()`](#selectarray)
+    - [`createEpic`](#createepic)
     - [`EventCreator.epic()`](#eventcreatorepic)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
