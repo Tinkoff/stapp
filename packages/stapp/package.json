@@ -39,7 +39,7 @@
     "redux": ">=3 <4"
   },
   "dependencies": {
-    "light-observable": "^2.11.0",
+    "light-observable": "^2.12.0",
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
