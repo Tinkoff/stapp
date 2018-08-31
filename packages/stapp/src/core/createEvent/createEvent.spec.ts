@@ -1,6 +1,7 @@
 import { FluxStandardAction } from 'flux-standard-action'
 import { Observable } from 'light-observable'
 import { EMPTY } from 'light-observable/observable'
+import { identity } from '../../helpers/identity/identity'
 import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { createEvent } from './createEvent'
 
@@ -60,22 +61,33 @@ describe('createEvent', () => {
   })
 
   it('should create a second event creator', () => {
-    secondEvent = createEvent('second event', (one: any, two: any, three: any) => ({
-      one,
-      two,
-      three: three.join(', ')
-    }))
+    secondEvent = createEvent(
+      'second event',
+      (one: any, two: any, three: any) => ({
+        one,
+        two,
+        three: three.join(', ')
+      })
+    )
     testEventCreator(secondEvent)
   })
 
   it('should return a valid second event', () => {
     const event = secondEvent(111, 'test', [1, 'a', true])
-    testEvent(event, { one: 111, two: 'test', three: '1, a, true' }, 'second event')
+    testEvent(
+      event,
+      { one: 111, two: 'test', three: '1, a, true' },
+      'second event'
+    )
   })
 
   it('should return a valid second event again', () => {
     const event = secondEvent(true, 222, ['a', 'b', 'c', 'd'])
-    testEvent(event, { one: true, two: 222, three: 'a, b, c, d' }, 'second event')
+    testEvent(
+      event,
+      { one: true, two: 222, three: 'a, b, c, d' },
+      'second event'
+    )
   })
 
   it('should add error key', () => {
@@ -88,7 +100,11 @@ describe('createEvent', () => {
       return value
     })
 
-    const eventWithMeta = createEvent('', (x: any) => x, (x) => ({ more: true, content: x }))
+    const eventWithMeta = createEvent(
+      '',
+      (x: any) => x,
+      (x) => ({ more: true, content: x })
+    )
 
     const errorEvent = event(error)
     const errorEventPayload = eventWithPayload('error')
@@ -96,7 +112,13 @@ describe('createEvent', () => {
 
     testEvent(errorEvent, error, undefined, undefined, true)
     testEvent(errorEventPayload, error, undefined, undefined, true)
-    testEvent(errorEventMeta, error, undefined, { more: true, content: error }, true)
+    testEvent(
+      errorEventMeta,
+      error,
+      undefined,
+      { more: true, content: error },
+      true
+    )
   })
 
   it('should add error, if payload transformer throws', () => {
@@ -130,8 +152,15 @@ describe('createEvent', () => {
     const a = createEvent()
     const b = createEvent()
     const aEpic = a.epic((event$) => event$)
-    const events$ = Observable.of(a(), b())
-    const result = await collectData(aEpic(events$, EMPTY, {} as any))
+    const events$ = Observable.of(a(), b(), {})
+    const result = await collectData(
+      aEpic(events$, EMPTY, {
+        getState: () => ({}),
+        dispatch: (x: any) => x,
+        fromESObservable: identity,
+        toESObservable: identity
+      } as any)
+    )
 
     expect(result).toEqual([a()])
   })

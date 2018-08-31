@@ -21,6 +21,26 @@ describe('select', () => {
 
     expect(values.filter(filterFn)).toEqual([a(), a()])
   })
+
+  it('should filter stream by event creators', () => {
+    const a = createEvent()
+    const b = createEvent()
+    const c = createEvent()
+    const values = [a(), b(), c(), a(), b(), c()]
+    const filterFn = select([a, b])
+
+    expect(values.filter(filterFn)).toEqual([a(), b(), a(), b()])
+  })
+
+  it('should filter stream by types', () => {
+    const a = createEvent()
+    const b = createEvent()
+    const c = createEvent()
+    const values = [a(), b(), c(), a(), b(), c()]
+    const filterFn = select([a.getType(), b.getType()])
+
+    expect(values.filter(filterFn)).toEqual([a(), b(), a(), b()])
+  })
 })
 
 describe('selectArray', () => {

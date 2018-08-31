@@ -95,40 +95,43 @@ Epics allow *reacting* to events and state changes *reactively*. That's fun!
 ### Filtering event stream by event type
 #### `select()`
 ```typescript
-type select = (eventCreatorOrType: AnyEventCreator | string) => (event: Event) => boolean
+type select = (eventCreatorOrType:
+  | AnyEventCreator
+  | string
+  | Array<AnyEventCreator | string>
+) => (event: Event) => boolean
 ```
 
 ```js
 import { createEvent, select } from 'stapp'
 import { filter } from 'light-observable'
 
-const myEvent = createEvent()
-
-const epic = (events$) => events$.pipe(
-  filter(select(myEvent))
-)
-```
-
-#### `selectArray()`
-```typescript
-type selectArray = (eventCreators: Array<AnyEventCreator | string>) => (event: Event) => boolean
-```
-
-```js
-import { createEvent, selectArray } from 'stapp'
-import { filter } from 'light-observable'
-
 const myEventA = createEvent()
 const myEventB = createEvent()
 
-const epic = (events$) => events$.pipe(
-  filter(selectArray([myEventA, myEventB]))
+const epicA = (events$) => events$.pipe(
+  filter(select(myEventA))
 )
+
+const epic = (events$) => events$.pipe(
+  filter(select([myEventA, myEventB]))
+)
+
 ```
+
+#### `createEpic`
+```typescript
+type createEpic = <Payload, Meta, State>(
+  events: AnyEventCreator<Payload, Meta> | string | Array<AnyEventCreator | string>,
+  fn: Epic<State>
+) => Epic<State>
+```
+
+Accepts events and an Epic and returns a filtered Epic.
 
 #### `EventCreator.epic()`
 
-Accepts an Epic and returns an Epic. Provides a filtered stream of events to incoming Epic.
+Accepts an Epic and returns an Epic, filtered by this EventCreator type.
 
 ```js
 const myEvent = createEvent()
