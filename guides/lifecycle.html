@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>SSR · GitBook</title>
+        <title>Application lifecycle · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="interop.html" />
+    <link rel="next" href="../modules/persist.html" />
     
     
-    <link rel="prev" href="react.html" />
+    <link rel="prev" href="interop.html" />
     
 
     </head>
@@ -248,7 +248,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.2" data-path="ssr.html">
+        <li class="chapter " data-level="3.2" data-path="ssr.html">
             
                 <a href="ssr.html">
             
@@ -274,7 +274,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="lifecycle.html">
+        <li class="chapter active" data-level="3.4" data-path="lifecycle.html">
             
                 <a href="lifecycle.html">
             
@@ -422,7 +422,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >SSR</a>
+        <a href=".." >Application lifecycle</a>
     </h1>
 </div>
 
@@ -437,70 +437,21 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="server-side-render">Server-side render</h1>
-<p>There is not that much what can be asked from a state-management library to support server-side render, but we tried to do our best.</p>
+                                <h1 id="application-lifecycle">Application lifecycle</h1>
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
-<li><a href="#waiting-for-events">Waiting for events</a></li>
-<li><a href="#timeouts-and-conditions">Timeouts and conditions</a></li>
+<li><a href="#init"><code>init</code></a></li>
+<li><a href="#disconnect"><code>disconnect</code></a></li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<p>The main thing about server-side is delaying render until everything needed is loaded. Modules can tell the application what events they need to receive before the app can be rendered. The application exposes a special field, <code>ready</code>, which is a Promise, that will resolve after all of these events will be received by the store.</p>
-<p>Later this Promise can be used anywhere, e.g., to delay the render on the server-side, or to indicate, that the app is ready to be used on the client-side.</p>
-<h2 id="waiting-for-events">Waiting for events</h2>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { createEvent, createEffect, createReducer, createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
-<span class="hljs-keyword">const</span> myEffect = createEffect(<span class="hljs-string">&apos;My effect&apos;</span>, () =&gt; <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">&apos;my data&apos;</span>))
-<span class="hljs-keyword">const</span> triggerEffect = createEvent(<span class="hljs-string">&apos;start effect&apos;</span>) 
-<span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = {
-  state: {
-    result: createReducer(<span class="hljs-literal">null</span>)
-      .on(myEffect.success, (_, payload) =&gt; payload)
-      .on(myEffect.fail, (_, error) =&gt; error),
-    isLoading: createReducer(<span class="hljs-literal">false</span>)
-      .on(myEffect.start, () =&gt; <span class="hljs-literal">true</span>)
-      .on(myEffect.complete, () =&gt; <span class="hljs-literal">false</span>)
-  },
-  epic: triggerEffect.epic(ev$ =&gt; ev$.pipe(
-    switchMap(myEffect)
-  )),
-  api: {
-    triggerEffect
-  },
-  waitFor: [myEffect.complete]
-}
-
-<span class="hljs-keyword">const</span> app = createApp({
-  name: <span class="hljs-string">&apos;My App&apos;</span>,
-  modules: [<span class="hljs-built_in">module</span>]
-})
-
-<span class="hljs-comment">// Currently the `ready` promise is not resolved, because</span>
-<span class="hljs-comment">// the app didn&apos;t receive `myEffect.complete` event.</span>
-app.ready.then(state =&gt; {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&apos;State: &apos;</span>, <span class="hljs-built_in">JSON</span>.stringify(state))
-})
-
-app.api.triggerEffect()
-<span class="hljs-comment">// Some time later:</span>
-<span class="hljs-comment">// State: { result: &apos;my data&apos;, isLoading: false }</span>
-</code></pre>
-<p>See the working example on codesandbox.io:</p>
-<p><a href="https://codesandbox.io/s/mzw2ozw8rx?module=%2Fsrc%2Findex.js" target="_blank"><img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Edit mzw2ozw8rx"></a></p>
-<h2 id="timeouts-and-conditions">Timeouts and conditions</h2>
-<p>Module can provide not only an event creator or an event type, but also an object, defining an event, timeout, and a condition function.
-Event will be added to the waiting queue as usual, and it will be removed from it on timeout.
-If condition function is provided, an event will be added to the queue only if <code>condition</code> returns truthy value.</p>
-<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> WaitFor = <span class="hljs-built_in">Array</span>&lt;
-  | AnyEventCreator
-  | <span class="hljs-built_in">string</span>
-  | {
-      event: AnyEventCreator | <span class="hljs-built_in">string</span>
-      timeout?: <span class="hljs-built_in">number</span>
-      condition?: () =&gt; <span class="hljs-built_in">boolean</span>
-    }
-&gt;
-</code></pre>
+<p>Stapp applications have two major events in their lifecycle.</p>
+<h2 id="init"><code>init</code></h2>
+<p>The initiation process starts when <code>createApp</code> is called. The completion of the process is indicated by the <code>initEvent</code>.</p>
+<h2 id="disconnect"><code>disconnect</code></h2>
+<p>The disconnection process starts when <code>Stapp.disconnect</code> is called. It starts with the <code>disconnectEvent</code>.
+After that the application disables all dispatch functions and unsubscribes from epics.
+Note, that currently the application can&apos;t be restarted after the disconnection process completes.</p>
 
                                 
                                 </section>
@@ -528,12 +479,12 @@ If condition function is provided, an event will be added to the queue only if <
 
             
                 
-                <a href="react.html" class="navigation navigation-prev " aria-label="Previous page: React">
+                <a href="interop.html" class="navigation navigation-prev " aria-label="Previous page: RxJS and other reactive libs">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="interop.html" class="navigation navigation-next " aria-label="Next page: RxJS and other reactive libs">
+                <a href="../modules/persist.html" class="navigation navigation-next " aria-label="Next page: persist">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -544,7 +495,7 @@ If condition function is provided, an event will be added to the queue only if <
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"SSR","level":"3.2","depth":1,"next":{"title":"RxJS and other reactive libs","level":"3.3","depth":1,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]},"previous":{"title":"React","level":"3.1","depth":1,"path":"guides/react.md","ref":"guides/react.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/ssr.md","mtime":"2018-08-31T09:01:25.644Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-31T09:01:32.804Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Application lifecycle","level":"3.4","depth":1,"next":{"title":"persist","level":"4.1","depth":1,"path":"modules/persist.md","ref":"modules/persist.md","articles":[]},"previous":{"title":"RxJS and other reactive libs","level":"3.3","depth":1,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/lifecycle.md","mtime":"2018-08-31T09:01:25.642Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-31T09:01:32.804Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
