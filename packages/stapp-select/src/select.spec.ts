@@ -1,8 +1,11 @@
+import { tap } from 'light-observable/operators'
 import { createApp, createEvent } from 'stapp'
 import { EventCreator1 } from 'stapp/lib/core/createEvent/createEvent.h'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'
 import { select } from './select'
 import { SelectConfig } from './select.h'
+
+const SELECT_NAME = 'pick'
 
 describe('select module', () => {
   const event1 = createEvent('Test event 1')
@@ -13,12 +16,27 @@ describe('select module', () => {
 
   const selectResult = ['1', '2', '3']
   const selectMock = jest.fn(() => selectResult)
-  const someModule = {
-    name: 'someModule',
-    api: {
-      event1,
-      event2,
-      event3
+
+  const someModuleSelectorMock = jest.fn()
+  const someModule = () => {
+    const epic = reactEvent.epic((events$, _, { getState }) =>
+      events$.pipe(
+        tap(() => {
+          const state: any = getState()
+
+          someModuleSelectorMock(state[SELECT_NAME])
+        })
+      )
+    )
+
+    return {
+      name: 'someModule',
+      api: {
+        event1,
+        event2,
+        event3
+      },
+      epic
     }
   }
   const getApp = (config: SelectConfig<any, any, any>) =>
@@ -34,10 +52,16 @@ describe('select module', () => {
 
   describe('with correct selector and with reactWith', () => {
     const app = getApp({
-      name: 'pick',
+      name: SELECT_NAME,
       reactOn: [event1, event2],
       selector: selectMock,
       reactWith: [reactEvent]
+    })
+
+    it('should dispatch selected event before events from reactWith', () => {
+      app.api.event1()
+
+      expect(someModuleSelectorMock).toHaveBeenCalledWith(selectResult)
     })
 
     it('should react on init event', () => {
