@@ -28,7 +28,7 @@ export const select = <State, Result, Name extends string>({
   )
 
   const eventFilter = selectEvents(reactOn.concat(initEvent))
-  const events = [selected, ...reactWith]
+  const events = [selected].concat(reactWith)
 
   const reactEpic: Epic<State> = (event$, _, { getState }) => {
     return event$.pipe(
