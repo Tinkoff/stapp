@@ -20,18 +20,18 @@ export const createConsumer = <State, Api>(
       map: identity
     }
 
-    memo: ReturnType<typeof renderComponent> | null = null
-    prevState: any = null
-
     render() {
+      let memo: ReturnType<typeof renderComponent> | null = null
+      let prevState: any = null
+
       return createElement(Subscription, {
         source: app,
         children: (state: any) => {
           const nextState = this.props.map!(state, app.api)
 
-          if (!shallowEqual(this.prevState, nextState)) {
-            this.prevState = nextState
-            return (this.memo = renderComponent({
+          if (!shallowEqual(prevState, nextState)) {
+            prevState = nextState
+            return (memo = renderComponent({
               name: 'Consumer',
               renderProps: this.props,
               result: nextState,
@@ -40,7 +40,7 @@ export const createConsumer = <State, Api>(
             }))
           }
 
-          return this.memo
+          return memo
         }
       })
     }
