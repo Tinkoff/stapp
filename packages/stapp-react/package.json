@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "2.3.1",
+  "version": "2.3.3",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
