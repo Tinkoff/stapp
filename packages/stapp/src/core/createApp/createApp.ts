@@ -4,7 +4,7 @@ import $$observable from 'symbol-observable'
 import { disconnectEvent, initEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { uniqify } from '../../helpers/uniqueId/uniqify'
 import { bindApi } from './bindApi'
 import {
   AnyModule,
@@ -45,7 +45,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   middlewares?: Middleware[]
   devtools?: false | DevtoolsConfig
 }): Stapp<State, Api> => {
-  const appName = config.name || `Stapp [${uniqueId()}]`
+  const appName = config.name || uniqify('Stapp')
   const devtools =
     config.devtools !== false
       ? Object.assign(
