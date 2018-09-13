@@ -1,7 +1,7 @@
 import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
-import { disconnectEvent, initEvent } from '../../events/lifecycle'
+import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqueId } from '../../helpers/uniqueId/uniqueId'
@@ -159,6 +159,8 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
       subscription.unsubscribe()
     })
   }
+
+  readyPromise.then(() => rootDispatch(readyEvent()))
 
   return {
     name: appName,
