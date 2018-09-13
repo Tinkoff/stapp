@@ -15,7 +15,7 @@ Stapp applications have two major events in their lifecycle.
 The initiation process starts when `createApp` is called. The completion of the process is indicated by the `initEvent`.
 
 ## `ready`
-`readyEvent` is emitted after the `ready` promise resolves. See [SSR section](/guides/SSR.html). for more info.
+`readyEvent` is emitted after the `ready` promise resolves. See [SSR section](/guides/SSR.html) for more info.
 
 ## `disconnect`
 The disconnection process starts when `Stapp.disconnect` is called. It starts with the `disconnectEvent`.
