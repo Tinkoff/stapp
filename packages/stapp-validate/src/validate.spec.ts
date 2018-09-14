@@ -193,6 +193,47 @@ describe('validate', () => {
     })
   })
 
+  it('should call validation of specified fields on forceValidation', () => {
+    const age = jest.fn()
+    const name = jest.fn()
+    const username = jest.fn()
+
+    const app = getApp(
+      {
+        rules: {
+          age,
+          name,
+          username
+        },
+        validateOnInit: false
+      },
+      {
+        initialValues: {
+          age: '18',
+          name: 'John'
+        }
+      }
+    )
+
+    expect(age).not.toBeCalled()
+    expect(name).not.toBeCalled()
+    expect(username).not.toBeCalled()
+
+    app.dispatch(revalidate(['age', 'name']))
+
+    expect(age.mock.calls).toHaveLength(1)
+    expect(age).toBeCalledWith('18', 'age', app.getState(), {
+      onRevalidate: true
+    })
+
+    expect(name.mock.calls).toHaveLength(1)
+    expect(name).toBeCalledWith('John', 'name', app.getState(), {
+      onRevalidate: true
+    })
+
+    expect(username.mock.calls).toHaveLength(0)
+  })
+
   describe('sync validation', () => {
     it('should accept strings as errors', () => {
       const app = getAppWithLogger({

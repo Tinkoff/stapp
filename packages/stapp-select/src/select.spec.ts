@@ -58,12 +58,6 @@ describe('select module', () => {
       reactWith: [reactEvent]
     })
 
-    it('should dispatch selected event before events from reactWith', () => {
-      app.api.event1()
-
-      expect(someModuleSelectorMock).toHaveBeenCalledWith(selectResult)
-    })
-
     it('should react on init event', () => {
       expect(selectMock).toHaveBeenCalledTimes(1)
     })
@@ -88,6 +82,12 @@ describe('select module', () => {
     it('should not react on events not listed in reactOn', () => {
       app.api.event3()
       expect(selectMock).toHaveBeenCalledTimes(3)
+    })
+
+    it('should dispatch selected event before events from reactWith', () => {
+      app.api.event1()
+
+      expect(someModuleSelectorMock).toHaveBeenCalledWith(selectResult)
     })
   })
 

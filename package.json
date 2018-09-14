@@ -6,6 +6,7 @@
   },
   "license": "Apache-2.0",
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test && npm run test:size",
     "test:size": "size-limit",
