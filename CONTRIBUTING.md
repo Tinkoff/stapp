@@ -8,7 +8,7 @@ These steps will guide you through contributing to this project:
 
 - Fork the repo.
 - Checkout the `develop` branch.
-- Clone it and install dependencies.
+- Clone it and install dependencies with `npm run bootstrap` command.
 
 ```bash
 git clone https://github.com/TinkoffCreditSystems/stapp
