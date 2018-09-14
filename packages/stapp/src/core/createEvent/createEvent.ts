@@ -1,5 +1,5 @@
 import { identity } from '../../helpers/identity/identity'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { uniqify } from '../../helpers/uniqueId/uniqify'
 import { createEpic } from '../createEpic/createEpic'
 
 // Models
@@ -113,9 +113,7 @@ export function createEvent(
   payloadCreator: AnyPayloadTransformer = identity,
   metaCreator?: AnyPayloadTransformer
 ): AnyEventCreator {
-  const type = description
-    ? `${description} [${uniqueId()}]`
-    : `[${uniqueId()}]`
+  const type = uniqify(description)
 
   const eventCreator: any = (...args: any[]) => {
     const event: any = {
