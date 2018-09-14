@@ -3,8 +3,8 @@ import { VALIDATE } from './constants'
 
 // tslint:disable-next-line
 import {
-  EventCreator1,
-  EmptyEventCreator
+  EmptyEventCreator,
+  EventCreator1
 } from 'stapp/lib/core/createEvent/createEvent.h'
 
 /**
