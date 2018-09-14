@@ -64,8 +64,7 @@ export const validate = <State extends FormBaseState>({
           { onChange: true },
           Object.keys(event.payload)
         )
-      }),
-      filter(({ rule }) => !!rule)
+      })
     )
 
     const initDone$: Res = validateOnInit
@@ -79,12 +78,13 @@ export const validate = <State extends FormBaseState>({
 
     const revalidate$: Res = event$.pipe(
       filter(select(revalidate)),
-      mergeMap(() => {
-        return mapValues(getState(), { onRevalidate: true })
+      mergeMap((event) => {
+        return mapValues(getState(), { onRevalidate: true }, event.payload)
       })
     )
 
     return merge(setValue$, revalidate$, initDone$).pipe(
+      filter(({ rule }) => !!rule),
       groupBy((res) => res.field),
       mergeMap((field$) =>
         field$.pipe(
