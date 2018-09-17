@@ -6,11 +6,10 @@ import {
 } from 'react'
 
 import { Stapp } from 'stapp'
-import { Subscription } from '../subscription/subscription'
 
-export type Context = { state?: any; app?: Stapp<any, any> }
+export type Context = { app: Stapp<any, any> }
 
-export const StappContext = createContext<Context>({})
+export const StappContext = createContext<Context>({} as any)
 
 export const Provider = <State, Api>({
   app,
@@ -18,16 +17,9 @@ export const Provider = <State, Api>({
 }: {
   app: Stapp<State, Api>
   children?: ReactNode
-}) => {
-  return createElement(Subscription, {
-    source: app,
-    children: (state: State) => {
-      return createElement(StappContext.Provider, {
-        value: { state, app },
-        children
-      })
-    }
+}) =>
+  createElement(StappContext.Provider, {
+    value: { app },
+    children
   })
-}
-
 ;(Provider as StatelessComponent<any>).displayName = 'Stapp.Provider'
