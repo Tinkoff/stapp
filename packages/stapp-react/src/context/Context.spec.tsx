@@ -8,29 +8,15 @@ import { Consumer } from './Consumer'
 import { Provider, StappContext } from './Provider'
 
 describe('context tools', () => {
-  const getCatcher = (cb: any) =>
-    class Catch extends React.Component {
-      state = { error: false }
-
-      componentDidCatch(error: any) {
-        cb(error)
-      }
-
-      render() {
-        return this.props.children
-      }
-    }
-
   describe('Provider', () => {
     it('should provide state and app', () => {
-      expect.assertions(2)
+      expect.assertions(1)
       const app = getApp()
 
       mount(
         <Provider app={app}>
           <StappContext.Consumer>
-            {({ state, app: innerApp }) => {
-              expect(state).toEqual(app.getState())
+            {({ app: innerApp }) => {
               expect(innerApp).toBe(app)
               return <div />
             }}
@@ -162,8 +148,6 @@ describe('context tools', () => {
     })
 
     it('throws if components are not provided', () => {
-      const cb = jest.fn()
-      const Catcher = getCatcher(cb)
       try {
         mount(
           // <Catcher>

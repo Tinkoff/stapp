@@ -2,8 +2,9 @@ import shallowEqual from 'fbjs/lib/shallowEqual'
 import { Subscription } from 'light-observable'
 import { Component } from 'react'
 import { Stapp } from 'stapp'
-import { ConsumerProps } from '..'
 import { renderComponent } from '../helpers/renderComponent'
+
+import { ConsumerProps } from '../models/Props'
 
 export class ConsumerClass<State, Api> extends Component<
   { app: Stapp<State, Api> } & ConsumerProps<State, Api, any>
