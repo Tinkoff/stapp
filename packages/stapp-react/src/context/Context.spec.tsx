@@ -16,7 +16,7 @@ describe('context tools', () => {
       mount(
         <Provider app={app}>
           <StappContext.Consumer>
-            {({ app: innerApp }) => {
+            {(innerApp) => {
               expect(innerApp).toBe(app)
               return <div />
             }}

@@ -7,9 +7,7 @@ import {
 
 import { Stapp } from 'stapp'
 
-export type Context = { app: Stapp<any, any> }
-
-export const StappContext = createContext<Context>({} as any)
+export const StappContext = createContext<Stapp<any, any> | null>(null)
 
 export const Provider = <State, Api>({
   app,
@@ -19,7 +17,7 @@ export const Provider = <State, Api>({
   children?: ReactNode
 }) =>
   createElement(StappContext.Provider, {
-    value: { app },
+    value: app,
     children
   })
 ;(Provider as StatelessComponent<any>).displayName = 'Stapp.Provider'

@@ -1,6 +1,6 @@
 import { Component, ComponentClass, createElement } from 'react'
 import { identity } from 'stapp/lib/helpers/identity/identity'
-import { ConsumerClass } from '../context/ConsumerClass'
+import { AppSubscription } from '../context/AppSubscription'
 import { consumerPropTypes } from '../helpers/propTypes'
 
 // Models
@@ -19,7 +19,7 @@ export const createConsumer = <State, Api>(
     }
 
     render() {
-      return createElement(ConsumerClass, {
+      return createElement(AppSubscription, {
         ...this.props,
         app
       })
