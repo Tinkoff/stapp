@@ -127,6 +127,39 @@ describe('context tools', () => {
       expect(count).toBe(1)
     })
 
+    it('should resubscribe if app changed', () => {
+      const app1 = getApp()
+      const subscribe1 = jest.fn()
+      app1.subscribe = subscribe1
+      const app2 = getApp()
+      const subscribe2 = jest.fn()
+      app2.subscribe = subscribe2
+
+      class Mock extends React.Component<{}, any> {
+        state = { app: app1 }
+
+        constructor(props: any, context: any) {
+          super(props, context)
+        }
+
+        render() {
+          return (
+            <Provider app={this.state.app}>
+              <Consumer>{() => null}</Consumer>
+            </Provider>
+          )
+        }
+      }
+
+      const mock = mount(<Mock />)
+
+      expect(subscribe1).toHaveBeenCalledTimes(1)
+
+      mock.setState({ app: app2 })
+
+      expect(subscribe2).toHaveBeenCalledTimes(1)
+    })
+
     it('can accept component prop', () => {
       expect.assertions(3)
 
