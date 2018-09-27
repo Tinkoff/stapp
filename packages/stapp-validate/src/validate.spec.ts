@@ -1,4 +1,4 @@
-import { createApp } from 'stapp'
+import { createApp, readyEvent } from 'stapp'
 import {
   formBase,
   setError,
@@ -355,7 +355,8 @@ describe('validate', () => {
           })
         ),
         expect.objectContaining(asyncValidationEnd('age')),
-        expect.objectContaining(setReady({ age: true }))
+        expect.objectContaining(setReady({ age: true })),
+        expect.objectContaining(readyEvent())
       ])
     })
 
@@ -401,7 +402,8 @@ describe('validate', () => {
           })
         ),
         expect.objectContaining(asyncValidationEnd('name')),
-        expect.objectContaining(setReady({ name: true }))
+        expect.objectContaining(setReady({ name: true })),
+        expect.objectContaining(readyEvent())
       ])
     })
 
@@ -444,6 +446,7 @@ describe('validate', () => {
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
+        expect.objectContaining(readyEvent()),
         expect.objectContaining(setValue({ age: 12 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false }))
@@ -455,6 +458,7 @@ describe('validate', () => {
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
+        expect.objectContaining(readyEvent()),
         expect.objectContaining(setValue({ age: 12 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false }))
@@ -466,6 +470,7 @@ describe('validate', () => {
         expect.objectContaining(setValue({ age: 10 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
+        expect.objectContaining(readyEvent()),
         expect.objectContaining(setValue({ age: 12 })),
         expect.objectContaining(asyncValidationStart('age')),
         expect.objectContaining(setReady({ age: false })),
