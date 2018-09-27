@@ -41,6 +41,7 @@ export const fieldSelector = <State extends FormBaseState, Extra>(
     State,
     {
       value: any
+      meta: any
       error: any
       dirty: boolean
       touched: boolean
@@ -49,6 +50,7 @@ export const fieldSelector = <State extends FormBaseState, Extra>(
     }
   >({
     value: (state: State) => (state.values ? state.values[name] : undefined),
+    meta: (state: State) => (state.meta ? state.meta[name] : undefined),
     error: (state: State) => (state.errors ? state.errors[name] : undefined),
     dirty: (state: State) => (state.dirty ? !!state.dirty[name] : false),
     touched: (state: State) => (state.touched ? !!state.touched[name] : false),
