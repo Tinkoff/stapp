@@ -74,17 +74,19 @@ describe('context tools', () => {
 
     it('should unsubscribe on unmount', () => {
       const app = getApp()
-      const subscribe = app.subscribe.bind(app)
       let subscription: Subscription
 
-      app.subscribe = (subscriber: any) => {
-        subscription = subscribe(subscriber)
+      const mockApp: any = {
+        getState: app.getState,
+        subscribe: (subscriber: any) => {
+          subscription = app.subscribe(subscriber)
 
-        return subscription
+          return subscription
+        }
       }
 
       const wrapper = mount(
-        <Provider app={app}>
+        <Provider app={mockApp}>
           <Consumer>{() => <div />}</Consumer>
         </Provider>
       )
@@ -130,13 +132,20 @@ describe('context tools', () => {
     it('should resubscribe if app changed', () => {
       const app1 = getApp()
       const subscribe1 = jest.fn()
-      app1.subscribe = subscribe1
+      const mockApp1: any = {
+        getState: app1.getState,
+        subscribe: subscribe1
+      }
+
       const app2 = getApp()
       const subscribe2 = jest.fn()
-      app2.subscribe = subscribe2
+      const mockApp2: any = {
+        getState: app2.getState,
+        subscribe: subscribe2
+      }
 
       class Mock extends React.Component<{}, any> {
-        state = { app: app1 }
+        state = { app: mockApp1 }
 
         constructor(props: any, context: any) {
           super(props, context)
@@ -155,7 +164,7 @@ describe('context tools', () => {
 
       expect(subscribe1).toHaveBeenCalledTimes(1)
 
-      mock.setState({ app: app2 })
+      mock.setState({ app: mockApp2 })
 
       expect(subscribe2).toHaveBeenCalledTimes(1)
     })

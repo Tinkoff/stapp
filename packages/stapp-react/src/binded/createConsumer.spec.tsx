@@ -59,16 +59,18 @@ describe('createConsumer', () => {
 
   it('should unsubscribe on unmount', () => {
     const app = getApp()
-    const subscribe = app.subscribe.bind(app)
     let subscription: Subscription
 
-    app.subscribe = (subscriber: any) => {
-      subscription = subscribe(subscriber)
+    const mockApp: any = {
+      getState: app.getState,
+      subscribe: (subscriber: any) => {
+        subscription = app.subscribe(subscriber)
 
-      return subscription
+        return subscription
+      }
     }
 
-    const Consumer = createConsumer(app)
+    const Consumer = createConsumer(mockApp)
     const wrapper = mount(<Consumer>{() => <div />}</Consumer>)
 
     wrapper.unmount()
