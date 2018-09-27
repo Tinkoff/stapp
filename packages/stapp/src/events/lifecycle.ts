@@ -13,6 +13,12 @@ export const initEvent: EmptyEventCreator = createEvent(
 )
 
 /**
+ * Indicates ready event
+ * @private
+ */
+export const readyEvent: EmptyEventCreator = createEvent(`${APP_KEY}: Ready`)
+
+/**
  * @deprecated
  */
 export const initDone = initEvent
