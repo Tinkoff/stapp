@@ -163,6 +163,7 @@ describe('formBase', () => {
           values: {
             test: 123
           },
+          meta: {},
           errors: {
             test: null
           },
@@ -186,6 +187,7 @@ describe('formBase', () => {
       expect(
         fieldSelector('test')({
           values: {},
+          meta: {},
           errors: {
             test: 'Some error'
           },
@@ -202,6 +204,7 @@ describe('formBase', () => {
         })
       ).toEqual({
         value: undefined,
+        meta: undefined,
         error: 'Some error',
         touched: true,
         dirty: true,
@@ -214,6 +217,7 @@ describe('formBase', () => {
           ({ extraValue }) => extraValue
         )({
           values: {},
+          meta: {},
           errors: {
             test: 'Some error'
           },
@@ -231,11 +235,38 @@ describe('formBase', () => {
         })
       ).toEqual({
         value: undefined,
+        meta: undefined,
         error: 'Some error',
         touched: true,
         dirty: true,
         active: true,
         extra: 'Some value'
+      })
+
+      expect(
+        fieldSelector<FormBaseState, string>('test')({
+          values: {
+            test: '1'
+          },
+          meta: {
+            test: 'some meta'
+          },
+          errors: {},
+          touched: {},
+          dirty: {},
+          active: 'test',
+          ready: {},
+          pristine: true,
+          submitting: false
+        })
+      ).toEqual({
+        value: '1',
+        meta: 'some meta',
+        error: undefined,
+        touched: false,
+        dirty: false,
+        active: true,
+        extra: undefined
       })
     })
 
@@ -487,6 +518,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {
           valueA: true
         },
@@ -509,6 +541,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {},
         errors: {},
         active: null,
@@ -563,6 +596,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {
           valueA: true
         },
@@ -584,6 +618,7 @@ describe('formBase', () => {
         values: {
           valueA: 'Mark'
         },
+        meta: {},
         dirty: {
           valueA: true
         },

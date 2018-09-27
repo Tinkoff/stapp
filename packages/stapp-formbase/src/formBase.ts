@@ -5,6 +5,7 @@ import {
   resetForm,
   setActive,
   setError,
+  setMeta,
   setReady,
   setSubmitting,
   setTouched,
@@ -39,6 +40,7 @@ export const formBase = <
       setSubmitting: (isSubmitting: boolean) => void
       setTouched: (touched: { [K in keyof FormValues]?: boolean }) => void
       setValue: (values: Partial<FormValues>) => void
+      setMeta: (meta: Partial<FormValues>) => void
       submit: () => void
     }
   },
@@ -57,6 +59,7 @@ export const formBase = <
       setSubmitting,
       setTouched,
       setValue,
+      setMeta,
       submit
     }
   },

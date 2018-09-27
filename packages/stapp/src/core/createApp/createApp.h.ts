@@ -102,7 +102,6 @@ export type AnyModule<Api, State, Full extends Partial<State>, Extra> =
 export type Dispatch<State> = <T>(
   event: T
 ) =>
-  T extends Event<any, any> ? Event<any, any> :
   T extends Subscribable<any> ? Promise<void> :
   T extends Promise<infer P> ? P :
   T extends Thunk<State, infer R> ? R : T

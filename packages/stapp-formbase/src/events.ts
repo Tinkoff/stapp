@@ -18,6 +18,13 @@ export const setValue = createEvent<{ [K: string]: any }>(
 )
 
 /**
+ * Used to set meta for fields
+ */
+export const setMeta = createEvent<{ [K: string]: any }>(
+  `${FORM_BASE}: Set field meta`
+)
+
+/**
  * Used to set errors for fields
  */
 export const setError = createEvent<{ [K: string]: any }>(
