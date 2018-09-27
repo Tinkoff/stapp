@@ -160,9 +160,10 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     })
   }
 
+  // tslint:disable-next-line no-floating-promises
   readyPromise.then(() => rootDispatch(readyEvent()))
 
-  return {
+  return Object.freeze({
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
       return store.state$.subscribe(next)
@@ -175,5 +176,5 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     [$$observable]() {
       return this
     }
-  }
+  })
 }
