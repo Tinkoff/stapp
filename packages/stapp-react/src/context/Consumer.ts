@@ -2,8 +2,8 @@ import { Component, createElement } from 'react'
 import { Stapp } from 'stapp'
 import { STAPP_REACT } from '../helpers/constants'
 import { consumerPropTypes } from '../helpers/propTypes'
+import { StappSubscription } from '../helpers/StappSubscription'
 import { StappContext } from './Provider'
-import { StappSubscription } from './StappSubscription'
 
 // Models
 import { ConsumerProps } from '../models/Props'

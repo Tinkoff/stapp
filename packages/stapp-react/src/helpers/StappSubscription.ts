@@ -3,7 +3,7 @@ import { Subscription } from 'light-observable'
 import { Component } from 'react'
 import { Stapp } from 'stapp'
 import { identity } from 'stapp/lib/helpers/identity/identity'
-import { renderComponent } from '../helpers/renderComponent'
+import { renderComponent } from './renderComponent'
 
 import { ConsumerProps } from '../models/Props'
 
@@ -25,19 +25,14 @@ export class StappSubscription<State, Api, Result> extends Component<
     map: identity
   }
 
-  private subscription?: Subscription = undefined
-
-  constructor(props: StappSubscriptionProps<State, Api, Result>, context: any) {
-    super(props, context)
-
-    this.state = {
-      app: props.app,
-      map: props.map,
-      appState: props.map!(props.app.getState(), props.app.api)
-    }
-
-    this.subscribe(props.app)
+  state = {
+    app: this.props.app,
+    map: this.props.map,
+    appState: this.props.map!(this.props.app.getState(), this.props.app.api)
   }
+
+  private unmounted: boolean = false
+  private subscription?: Subscription = undefined
 
   static getDerivedStateFromProps(
     props: StappSubscriptionProps<any, any, any>,
@@ -54,20 +49,29 @@ export class StappSubscription<State, Api, Result> extends Component<
     return null
   }
 
+  componentDidMount() {
+    this.subscribe()
+  }
+
   componentDidUpdate(
     prevProps: StappSubscriptionProps<State, Api, Result>,
     prevState: StappSubscriptionState<State, Api, Result>
   ) {
     if (this.props.app !== prevProps.app) {
-      this.subscribe(this.props.app)
+      this.unsubscribe()
+      this.subscribe()
     }
   }
 
   componentWillUnmount() {
+    this.unmounted = true
     this.unsubscribe()
   }
 
-  shouldComponentUpdate(nextProps: any, nextState: { appState: any }) {
+  shouldComponentUpdate(
+    _: any,
+    nextState: StappSubscriptionState<State, Api, Result>
+  ) {
     return !shallowEqual(this.state.appState, nextState.appState)
   }
 
@@ -84,15 +88,17 @@ export class StappSubscription<State, Api, Result> extends Component<
     })
   }
 
-  private setAppState(state: State) {
-    const app = this.props.app
+  private subscribe() {
+    const { app } = this.props
 
-    this.setState({ appState: this.props.map!(state, app.api) })
-  }
+    this.subscription = app.subscribe((state: State) => {
+      /* istanbul ignore next */
+      if (this.unmounted) {
+        return
+      }
 
-  private subscribe(app: Stapp<State, Api>) {
-    this.unsubscribe()
-    this.subscription = app.subscribe((state: State) => this.setAppState(state))
+      this.setState({ appState: this.props.map!(state, app.api) })
+    })
   }
 
   private unsubscribe() {
