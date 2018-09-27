@@ -60,6 +60,6 @@
   },
   "dependencies": {
     "fbjs": "^0.8.17",
-    "light-observable": "^2.12.0"
+    "light-observable": "^2.13.0"
   }
 }
