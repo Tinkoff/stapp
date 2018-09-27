@@ -20,7 +20,7 @@
     "pretest": "npm run build",
     "precommit": "lint-staged",
     "cz": "git-cz",
-    "prepush": "npm run build",
+    "prepush": "npm run test",
     "preversion": "npm run build"
   },
   "lint-staged": {
