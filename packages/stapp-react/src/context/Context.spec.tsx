@@ -8,29 +8,15 @@ import { Consumer } from './Consumer'
 import { Provider, StappContext } from './Provider'
 
 describe('context tools', () => {
-  const getCatcher = (cb: any) =>
-    class Catch extends React.Component {
-      state = { error: false }
-
-      componentDidCatch(error: any) {
-        cb(error)
-      }
-
-      render() {
-        return this.props.children
-      }
-    }
-
   describe('Provider', () => {
     it('should provide state and app', () => {
-      expect.assertions(2)
+      expect.assertions(1)
       const app = getApp()
 
       mount(
         <Provider app={app}>
           <StappContext.Consumer>
-            {({ state, app: innerApp }) => {
-              expect(state).toEqual(app.getState())
+            {(innerApp) => {
               expect(innerApp).toBe(app)
               return <div />
             }}
@@ -141,6 +127,39 @@ describe('context tools', () => {
       expect(count).toBe(1)
     })
 
+    it('should resubscribe if app changed', () => {
+      const app1 = getApp()
+      const subscribe1 = jest.fn()
+      app1.subscribe = subscribe1
+      const app2 = getApp()
+      const subscribe2 = jest.fn()
+      app2.subscribe = subscribe2
+
+      class Mock extends React.Component<{}, any> {
+        state = { app: app1 }
+
+        constructor(props: any, context: any) {
+          super(props, context)
+        }
+
+        render() {
+          return (
+            <Provider app={this.state.app}>
+              <Consumer>{() => null}</Consumer>
+            </Provider>
+          )
+        }
+      }
+
+      const mock = mount(<Mock />)
+
+      expect(subscribe1).toHaveBeenCalledTimes(1)
+
+      mock.setState({ app: app2 })
+
+      expect(subscribe2).toHaveBeenCalledTimes(1)
+    })
+
     it('can accept component prop', () => {
       expect.assertions(3)
 
@@ -162,8 +181,6 @@ describe('context tools', () => {
     })
 
     it('throws if components are not provided', () => {
-      const cb = jest.fn()
-      const Catcher = getCatcher(cb)
       try {
         mount(
           // <Catcher>
