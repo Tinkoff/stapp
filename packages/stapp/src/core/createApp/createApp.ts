@@ -1,7 +1,7 @@
 import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
-import { disconnectEvent, initEvent } from '../../events/lifecycle'
+import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
 import { uniqify } from '../../helpers/uniqueId/uniqify'
@@ -160,7 +160,10 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     })
   }
 
-  return {
+  // tslint:disable-next-line no-floating-promises
+  readyPromise.then(() => rootDispatch(readyEvent()))
+
+  return Object.freeze({
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
       return store.state$.subscribe(next)
@@ -173,5 +176,5 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     [$$observable]() {
       return this
     }
-  }
+  })
 }

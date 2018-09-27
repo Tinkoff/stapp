@@ -6,7 +6,7 @@ import {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from '../../events/dangerous'
-import { disconnectEvent } from '../../events/lifecycle'
+import { disconnectEvent, readyEvent } from '../../events/lifecycle'
 import { SOURCE } from '../../helpers/constants'
 import { identity } from '../../helpers/identity/identity'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
@@ -31,7 +31,7 @@ describe('createApp', () => {
     })
   )
 
-  describe('lifesycle', () => {
+  describe('lifecycle', () => {
     it('should create an app', () => {
       const m1 = {
         name: 'm1',
@@ -753,14 +753,22 @@ describe('createApp', () => {
   describe('ready promise', () => {
     it('should be resolved by default', async () => {
       const app = createApp({
-        modules: [loggerModule]
+        modules: [loggerModule({ pattern: null })]
       })
 
       let resolved = false
+      expect(app.getState().eventLog).toHaveLength(1)
       app.ready.then(() => (resolved = true))
 
       await null
       expect(resolved).toBe(true)
+
+      await null
+      expect(app.getState().eventLog).toHaveLength(2)
+
+      expect(app.getState().eventLog[1]).toEqual(
+        expect.objectContaining(readyEvent())
+      )
     })
 
     it('should wait for events', async () => {

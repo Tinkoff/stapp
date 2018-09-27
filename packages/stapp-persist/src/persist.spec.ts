@@ -68,7 +68,7 @@ describe('persist module', () => {
 
       // wait until restore does its job
       await null
-      expect(storage.getParsed(defaultKey)).toEqual(null)
+      expect(storage.getParsed(defaultKey)).toEqual({ r1: '' })
 
       app.api.e1('test2')
 
