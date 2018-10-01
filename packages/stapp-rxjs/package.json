@@ -1,6 +1,6 @@
 {
   "name": "stapp-rxjs",
-  "version": "2.4.0-0",
+  "version": "2.4.0",
   "description": "RxJS tools for Stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -45,7 +45,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
-    "stapp": "^2.4.0-0",
+    "stapp": "^2.4.0",
     "symbol-observable": "^1.2.0",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
