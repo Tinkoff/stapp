@@ -2,6 +2,7 @@ export {
   resetForm,
   setActive,
   setError,
+  setMeta,
   setReady,
   setSubmitting,
   setTouched,

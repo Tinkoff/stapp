@@ -12,6 +12,9 @@ export { Field } from './context/Field'
 export { Form } from './context/Form'
 export { Provider } from './context/Provider'
 
+// Generic
+export { StappSubscription } from './helpers/StappSubscription'
+
 // Types
 export { ConsumerProps, RenderProps, FieldProps } from './models/Props'
 export { FieldApi, FormApi } from './models/Form'

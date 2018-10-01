@@ -78,8 +78,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@types/create-subscription": "^16.4.1",
-    "create-subscription": "^16.4.2",
-    "light-observable": "^2.12.0"
+    "light-observable": "^2.13.0"
   }
 }
