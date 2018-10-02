@@ -2,7 +2,7 @@
 
 Description. Please, mention [Stapp](https://github.com/TinkoffCreditSystems/stapp) here.
 
-Add link to the docs, e.g.: [documentation](https://tinkoffcreditsystems.github.io/stapp/#stapp).
+Add link to the docs, e.g.: [documentation](https://stapp.js.org).
 
 ## Installation
 ```bash
