@@ -1,7 +1,13 @@
 // tslint:disable-next-line no-unused-variable
-import React, { ComponentClass, createElement, StatelessComponent } from 'react'
+import React, {
+  ComponentClass,
+  createElement,
+  StatelessComponent,
+  SyntheticEvent
+} from 'react'
 import { formSelector } from 'stapp-formbase'
 import { renderComponent } from '../helpers/renderComponent'
+import { simpleMemoize } from '../helpers/simpleMemoize'
 
 // Models
 import { Stapp } from 'stapp'
@@ -17,6 +23,22 @@ export const createForm = <State, Api>(
 ): StatelessComponent<RenderProps<FormApi>> => {
   const formDataSelector = formSelector()
 
+  const handle = simpleMemoize(
+    (fn: () => void) => (syntheticEvent: SyntheticEvent<any>) => {
+      // preventDefault might not exist in some environments (React Native e.g.)
+      /* istanbul ignore next */
+      if (
+        syntheticEvent &&
+        // tslint:disable-next-line strict-type-predicates
+        typeof syntheticEvent.preventDefault === 'function'
+      ) {
+        syntheticEvent.preventDefault()
+      }
+
+      fn()
+    }
+  )
+
   const Form = (props: RenderProps<FormApi>) => {
     return createElement(Consumer, {
       map: formDataSelector,
@@ -29,8 +51,8 @@ export const createForm = <State, Api>(
           name: 'Form',
           renderProps: props,
           result: {
-            handleSubmit: api.formBase.submit,
-            handleReset: api.formBase.resetForm,
+            handleSubmit: handle(api.formBase.submit),
+            handleReset: handle(api.formBase.resetForm),
             submitting: formData.submitting,
             valid: formData.valid,
             ready: formData.ready,
@@ -43,7 +65,6 @@ export const createForm = <State, Api>(
       }
     })
   }
-
   ;(Form as StatelessComponent<any>).displayName = `${name}.Form`
 
   return Form
