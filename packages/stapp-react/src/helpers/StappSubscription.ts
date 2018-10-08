@@ -68,13 +68,6 @@ export class StappSubscription<State, Api, Result> extends Component<
     this.unsubscribe()
   }
 
-  shouldComponentUpdate(
-    _: any,
-    nextState: StappSubscriptionState<State, Api, Result>
-  ) {
-    return !shallowEqual(this.state.appState, nextState.appState)
-  }
-
   render() {
     const app = this.props.app
     const appState = this.state.appState
@@ -97,7 +90,11 @@ export class StappSubscription<State, Api, Result> extends Component<
         return
       }
 
-      this.setState({ appState: this.props.map!(state, app.api) })
+      const nextAppState = this.props.map!(state, app.api)
+
+      if (!shallowEqual(this.state.appState, nextAppState)) {
+        this.setState({ appState: nextAppState })
+      }
     })
   }
 
