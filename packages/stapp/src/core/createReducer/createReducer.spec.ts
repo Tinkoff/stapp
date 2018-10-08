@@ -1,4 +1,5 @@
-import { bindActionCreators, combineReducers, createStore } from 'redux'
+import { bindActionCreators, createStore } from 'redux'
+import { combineReducers } from '../../helpers/combineReducers/combineReducers'
 import { identity } from '../../helpers/identity/identity'
 import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { createEvent } from '../createEvent/createEvent'
@@ -50,45 +51,6 @@ describe('createReducer', () => {
     expect(store.getState()).toEqual(2)
     store.dispatch(add(40))
     expect(store.getState()).toEqual(42)
-  })
-
-  it('should combine reducers', () => {
-    const increment = createEvent()
-    const decrement = createEvent()
-    const add = createEvent<number>()
-    const sub = createEvent<number>()
-
-    const firstReducer = createReducer(0, {
-      [increment.getType()]: (state) => state + 1,
-      [add.getType()]: (state, payload) => state + payload
-    })
-
-    const secondReducer = createReducer(42, {
-      [decrement.getType()]: (state) => state - 1,
-      [sub.getType()]: (state, payload) => state - payload
-    })
-
-    const ultimateReducer = combineReducers({
-      up: firstReducer,
-      down: secondReducer
-    })
-
-    const store = createStore(ultimateReducer)
-
-    store.dispatch(increment())
-    expect(store.getState()).toEqual({ up: 1, down: 42 })
-    store.dispatch(increment())
-    expect(store.getState()).toEqual({ up: 2, down: 42 })
-    store.dispatch(decrement())
-    expect(store.getState()).toEqual({ up: 2, down: 41 })
-    store.dispatch(sub(30))
-    expect(store.getState()).toEqual({ up: 2, down: 11 })
-    store.dispatch(add(40))
-    expect(store.getState()).toEqual({ up: 42, down: 11 })
-    store.dispatch(decrement())
-    expect(store.getState()).toEqual({ up: 42, down: 10 })
-    store.dispatch(sub(10))
-    expect(store.getState()).toEqual({ up: 42, down: 0 })
   })
 
   it('should support on and off methods', () => {

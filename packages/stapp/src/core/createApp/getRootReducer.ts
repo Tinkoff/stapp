@@ -1,5 +1,9 @@
-import { combineReducers, Reducer } from 'redux'
-import { dangerouslyReplaceState, dangerouslyResetState } from '../../events/dangerous'
+import {
+  dangerouslyReplaceState,
+  dangerouslyResetState
+} from '../../events/dangerous'
+import { combineReducers } from '../../helpers/combineReducers/combineReducers'
+import { ReducerFunction, ReducersMap } from '../createReducer/createReducer.h'
 
 /**
  * @private
@@ -18,9 +22,9 @@ const dangerouslyResetStateType = dangerouslyResetState.getType()
  * @internal
  */
 export function getRootReducer<State>(
-  reducers: { [K in keyof State]: Reducer<State[K]> },
+  reducers: ReducersMap<State>,
   initialState: Partial<State>
-): Reducer<State> {
+): ReducerFunction<State> {
   const rootReducer = combineReducers<State>(reducers)
 
   return (oldState: any, event) => {
