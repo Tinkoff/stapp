@@ -36,8 +36,10 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "reselect": ">=3",
-    "stapp": ">=2.0.0"
+    "stapp": "^2.4.0"
+  },
+  "dependencies": {
+    "reselect": ">=3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",
@@ -46,7 +48,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
-    "reselect": "^3.0.1",
     "stapp": "^2.4.0",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",

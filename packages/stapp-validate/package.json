@@ -38,9 +38,12 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "reselect": ">=3",
     "stapp": ">=2.0.0",
     "stapp-formbase": ">=2.0.0"
+  },
+  "dependencies": {
+    "reselect": "^3.0.1",
+    "light-observable": "^2.13.0"
   },
   "devDependencies": {
     "@types/jest": "^23.1.0",
@@ -50,7 +53,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.1.0",
     "request": "^2.85.0",
-    "reselect": "^3.0.1",
     "stapp": "^2.4.0",
     "stapp-formbase": "^2.4.0",
     "ts-jest": "^23.0.1",
@@ -62,8 +64,5 @@
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
     "typescript": "^3.0.1"
-  },
-  "dependencies": {
-    "light-observable": "^2.13.0"
   }
 }

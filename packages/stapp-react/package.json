@@ -38,11 +38,14 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "fbjs": ">=0.8",
-    "prop-types": ">=15.6",
-    "react": ">=15",
-    "stapp": ">=2.0.0",
-    "stapp-formbase": ">=2.0.0"
+    "stapp-formbase": ">=2.4.0",
+    "react": ">=16",
+    "stapp": "^2.4.0"
+  },
+  "dependencies": {
+    "fbjs": ">=0.8.0",
+    "light-observable": "^2.13.0",
+    "prop-types": ">=15.6"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -57,9 +60,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^3.4.0",
     "enzyme-adapter-react-16": "^1.2.0",
-    "fbjs": "^0.8.16",
     "jest": "^23.1.0",
-    "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "redux": "^4.0.0",
@@ -76,8 +77,5 @@
     "tslint-eslint-rules": "^5.3.1",
     "tslint-react": "^3.5.1",
     "typescript": "^3.0.1"
-  },
-  "dependencies": {
-    "light-observable": "^2.13.0"
   }
 }

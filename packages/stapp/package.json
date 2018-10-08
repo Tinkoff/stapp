@@ -35,10 +35,8 @@
     "test:jest": "jest --config ./jest.config.json",
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
-  "peerDependencies": {
-    "redux": ">=3 <4"
-  },
   "dependencies": {
+    "redux": ">= 4",
     "light-observable": "^2.13.0",
     "symbol-observable": "^1.2.0"
   },
@@ -50,7 +48,6 @@
     "babel-preset-stage-0": "^6.24.1",
     "flux-standard-action": "^2.0.1",
     "jest": "^23.1.0",
-    "redux": "^4.0.0",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tslib": "^1.9.0",
