@@ -14,9 +14,8 @@ describe('(helpers) renderComponent', () => {
       renderProps: {
         render
       },
-      result: testA,
-      api: testB,
-      app: testC as Stapp<any, any>
+      renderArgs: [testA, testB, testC],
+      componentProps: Object.assign({ api: testB, app: testC }, testA)
     })
 
     expect(render).toBeCalledWith(testA, testB, testC)
@@ -33,9 +32,8 @@ describe('(helpers) renderComponent', () => {
       renderProps: {
         children
       },
-      result: testA,
-      api: testB,
-      app: testC as Stapp<any, any>
+      renderArgs: [testA, testB, testC],
+      componentProps: Object.assign({ api: testB, app: testC }, testA)
     })
 
     expect(children).toBeCalledWith(testA, testB, testC)
@@ -61,9 +59,8 @@ describe('(helpers) renderComponent', () => {
     renderComponent({
       name: 'test',
       renderProps: { component: Component },
-      result: testA,
-      api: testB,
-      app: testC as Stapp<any, any>
+      renderArgs: [testA, testB, testC],
+      componentProps: Object.assign({ api: testB, app: testC }, testA)
     })
   })
 
@@ -72,9 +69,8 @@ describe('(helpers) renderComponent', () => {
       renderComponent({
         name: 'test',
         renderProps: {},
-        result: {},
-        api: {},
-        app: {} as Stapp<any, any>
+        renderArgs: [{}, {}, {}],
+        componentProps: { app: {}, api: {} }
       })
     ).toThrow()
   })

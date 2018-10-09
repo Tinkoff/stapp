@@ -17,6 +17,12 @@ export type ConsumerProps<State, Api, Result> = {
   map?: (state: State, api: Api) => Result
 } & RenderProps<Result, Api>
 
+export type ApiProps<State, Api> = {
+  children?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  render?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  component?: ReactType<{ api: Api; app: Stapp<State, Api> }>
+}
+
 export type FieldProps<State extends FormBaseState> = RenderProps<FieldApi> & {
   name: string
   extraSelector?: (state: State) => any

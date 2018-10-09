@@ -47,20 +47,21 @@ export const createForm = <State, Api>(
         api: any,
         app: Stapp<State, Api>
       ) => {
+        const result = {
+          handleSubmit: handle(api.formBase.submit),
+          handleReset: handle(api.formBase.resetForm),
+          submitting: formData.submitting,
+          valid: formData.valid,
+          ready: formData.ready,
+          dirty: formData.dirty,
+          pristine: formData.pristine
+        }
+
         return renderComponent({
           name: 'Form',
           renderProps: props,
-          result: {
-            handleSubmit: handle(api.formBase.submit),
-            handleReset: handle(api.formBase.resetForm),
-            submitting: formData.submitting,
-            valid: formData.valid,
-            ready: formData.ready,
-            dirty: formData.dirty,
-            pristine: formData.pristine
-          },
-          api,
-          app
+          renderArgs: [result, api, app],
+          componentProps: Object.assign({ api, app }, result)
         })
       }
     })
