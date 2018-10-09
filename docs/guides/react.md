@@ -33,6 +33,7 @@ type RenderProps<S, A = {}, State = S> = {
 * `createConsumer`: creates a Consumer component
 * `createConsume`: old-school higher order component
 * `createForm` and `createField`: creates utilities to assist with forms
+* `createApi`: creates an Api components, that provides only app's api and the app itself
 * `createComponents`: creates all of the above.
 
 ### `createComponents()`
@@ -49,7 +50,7 @@ type createComponents = (app: Stapp) => {
 NB: `consume`, `Form` and `Field` components are created "on-demand" with corresponding getters.
 This means that you can safely use `createComponents` without worrying about unused components.
 
-Consumer, Form and Field components follow the 
+Consumer, Form and Field components follow the render-prop pattern.
 See usage examples below. 
 
 ### `createConsumer()`
@@ -59,7 +60,7 @@ type createConsumer = (app: Stapp) => Consumer
 
 type Consumer<State, Api, Result = State> = React.Component<{
   map?: (state: State, api: Api) => Result
-} & RenderProps<Result, Api, State>
+} & RenderProps<Result, Api, State>>
 ```
 
 `Consumer` takes an application state, transforms it with `mapState` (`identity` by default), then takes an application API, transforms it with `mapApi` (`identity` by default) and merges them into one object with `mergeProps` (`Object.assign` by default). On each state update, Consumer calls provided `children` or `render` prop with a resulting object. If `component` prop is used, the provided component will be rendered with a resulting object as props.
@@ -101,6 +102,39 @@ const List = ({ todos, handleClick }) => {
   />
 }
 const App = () => <Consumer component={ List } />
+```
+
+### `createApi`
+```typescript
+type createApi = (app: Stapp) => Api
+
+type Api<State, Api> = React.Component<{
+  children?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  render?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  component?: ReactType<{
+    api: Api
+    app: Stapp<State, Api>
+  }>
+}>
+```
+
+`Api` provides application's api and the app itself.
+
+```jsx
+import { createApi } from 'stapp-react'
+import todoApp from '../myApps/todoApp.js'
+import ListItem from '../components'
+
+const Api = createApi(todoApp)
+
+const ListItem = ({ text, id }) => <Api>
+  {
+    ({ handleClick }) => <div>
+      {text}
+      <button onClick={() => handleClick(id)}>delete</button>
+    </div>
+  }
+</Consumer>
 ```
 
 ### `createConsume()`
@@ -218,6 +252,7 @@ const App = () => {
 * `consume`: same as `consume` created by `createConsume`, but utilizes the app provided by the `Provider`
 * `Provider`: provides an app to the sub-tree
 * `Consumer`: same as `Consumer` created by `createConsumer`, but utilizes the app provided by the `Provider`
+* `Api`: same as `Api` created by `createApi`, but utilizes the app provided by the `Provider`
 * `Form`: same as `Form` created by `createForm`, but utilizes the app provided by the `Provider`
 * `Field`: same as `Field` created by `createField`, but utilizes the app provided by the `Provider`
 
