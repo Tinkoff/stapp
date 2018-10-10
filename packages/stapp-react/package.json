@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -65,8 +65,8 @@
     "redux": "^4.0.0",
     "request": "^2.85.0",
     "reselect": "^3.0.1",
-    "stapp": "^2.4.0",
-    "stapp-formbase": "^2.4.0",
+    "stapp": "^2.4.2",
+    "stapp-formbase": "^2.4.2",
     "ts-jest": "^23.0.1",
     "ts-node": "^7.0.0",
     "tslib": "^1.9.0",
@@ -78,6 +78,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "light-observable": "^2.13.0"
+    "light-observable": "^2.13.1"
   }
 }
