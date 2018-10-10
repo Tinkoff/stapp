@@ -58,6 +58,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "light-observable": "^2.13.0"
+    "light-observable": "^2.13.1"
   }
 }

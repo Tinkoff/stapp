@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "fbjs": "^0.8.16",
-    "light-observable": "^2.13.0",
+    "light-observable": "^2.13.1",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
