@@ -8,36 +8,36 @@ import { createField } from './createField'
 import { createForm } from './createForm'
 
 describe('createForm', () => {
-  const app = createApp({
-    name: 'test',
-    modules: [loggerModule({ pattern: null }), formBase<{ test1: string }>()]
-  })
-
-  const last = (a: any[]) => a[a.length - 1]
-  const Consumer = createConsumer(app)
-  const Form = createForm(Consumer)
-  const Field = createField(Consumer)
-
-  const DummyForm = () => {
-    return (
-      <Form>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Field name="test1">
-              {({ input, meta }) => (
-                <React.Fragment>
-                  <input {...input} />
-                  {meta.touched && meta.error && <span>{meta.error}</span>}
-                </React.Fragment>
-              )}
-            </Field>
-          </form>
-        )}
-      </Form>
-    )
-  }
-
   test('Form', () => {
+    const app = createApp({
+      name: 'test',
+      modules: [loggerModule({ pattern: null }), formBase<{ test1: string }>()]
+    })
+
+    const last = (a: any[]) => a[a.length - 1]
+    const Consumer = createConsumer(app)
+    const Form = createForm(Consumer)
+    const Field = createField(Consumer)
+
+    const DummyForm = () => {
+      return (
+        <Form>
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <Field name="test1">
+                {({ input, meta }) => (
+                  <React.Fragment>
+                    <input {...input} />
+                    {meta.touched && meta.error && <span>{meta.error}</span>}
+                  </React.Fragment>
+                )}
+              </Field>
+            </form>
+          )}
+        </Form>
+      )
+    }
+
     const mounted = mount(<DummyForm />)
     const input = mounted.find('input').first()
     const form = mounted.find('form').first()
@@ -56,5 +56,33 @@ describe('createForm', () => {
     expect(last(app.getState().eventLog)).toEqual(
       expect.objectContaining(submit())
     )
+  })
+
+  it('should call preventDefault', () => {
+    const app = createApp({
+      name: 'test',
+      modules: [loggerModule({ pattern: null }), formBase<{ test1: string }>()]
+    })
+
+    const Consumer = createConsumer(app)
+    const Form = createForm(Consumer)
+
+    const event = {
+      preventDefault: jest.fn()
+    }
+
+    const Dummy = () => (
+      <Form>
+        {({ handleSubmit, handleReset }) => {
+          handleSubmit(event as any)
+          handleReset(event as any)
+          return <div />
+        }}
+      </Form>
+    )
+
+    mount(<Dummy />)
+
+    expect(event.preventDefault).toHaveBeenCalledTimes(2)
   })
 })

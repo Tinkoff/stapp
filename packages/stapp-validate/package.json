@@ -1,6 +1,6 @@
 {
   "name": "stapp-validate",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Form validation module for stapp - modular state manager",
   "keywords": [
     "state-management",
