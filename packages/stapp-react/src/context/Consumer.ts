@@ -12,7 +12,7 @@ export class Consumer<State, Api> extends Component<
   ConsumerProps<State, Api, any>
 > {
   static displayName = 'Stapp.Consumer'
-  static propTypes = consumerPropTypes as any
+  static propTypes: any = consumerPropTypes
 
   render() {
     return createElement(StappContext.Consumer, {

@@ -38,28 +38,28 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": ">=2.0.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^23.1.0",
-    "@types/node": "^10.3.3",
-    "babel-jest": "^23.2.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "jest": "^23.1.0",
-    "stapp": "^2.4.2",
-    "ts-jest": "^23.0.1",
-    "ts-node": "^7.0.0",
-    "tslib": "^1.9.0",
-    "tslint": "^5.10.0",
-    "tslint-config-prettier": "^1.10.0",
-    "tslint-config-standard": "^7.0.0",
-    "tslint-eslint-rules": "^5.3.1",
-    "tslint-react": "^3.5.1",
-    "typescript": "^3.0.1"
+    "stapp": "^2.4.2"
   },
   "dependencies": {
-    "fbjs": "^0.8.17",
+    "fbjs": "^1.0.0",
     "light-observable": "^2.13.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.3",
+    "@types/node": "^10.11.4",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "jest": "^23.6.0",
+    "stapp": "^2.4.2",
+    "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.1.1"
   }
 }
