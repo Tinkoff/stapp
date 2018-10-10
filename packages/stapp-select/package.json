@@ -1,6 +1,6 @@
 {
   "name": "stapp-select",
-  "version": "2.4.0",
+  "version": "2.4.2",
   "description": "Select module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -37,7 +37,10 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": ">=2.4.0"
+    "stapp": ">=2.4.2"
+  },
+  "dependencies": {
+    "light-observable": "^2.13.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
@@ -46,7 +49,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
-    "stapp": "^2.4.0",
+    "stapp": "^2.4.2",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
@@ -56,8 +59,5 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.1.1"
-  },
-  "dependencies": {
-    "light-observable": "^2.13.0"
   }
 }

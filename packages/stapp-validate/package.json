@@ -1,6 +1,6 @@
 {
   "name": "stapp-validate",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Form validation module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -38,12 +38,12 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": ">=2.0.0",
-    "stapp-formbase": ">=2.0.0"
+    "stapp": ">=2.4.2",
+    "stapp-formbase": ">=2.4.2"
   },
   "dependencies": {
     "reselect": "^4.0.0",
-    "light-observable": "^2.13.0"
+    "light-observable": "^2.13.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
@@ -53,8 +53,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
     "request": "^2.88.0",
-    "stapp": "^2.4.0",
-    "stapp-formbase": "^2.4.0",
+    "stapp": "^2.4.2",
+    "stapp-formbase": "^2.4.2",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",

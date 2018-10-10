@@ -18,7 +18,7 @@ const checkAge = age => {
 
 const validateName = async (username) => {
   await wait(1500)
-  return ['John', 'Paul', 'George', 'Ringo'].includes(username) ? {
+  return ['John', 'Paul', 'George', 'Ringo'].indexOf(username) >= 0 ? {
     username: 'Name already taken!'
   } : null
 }
