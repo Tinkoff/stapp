@@ -12,13 +12,18 @@ export const createConsumer = <State, Api>(
 ): ComponentClass<ConsumerProps<State, Api, any>> => {
   return class Consumer extends Component<ConsumerProps<State, Api, any>> {
     static displayName = `${name}.Consumer`
-    static propTypes = consumerPropTypes
+    static propTypes = consumerPropTypes as any
 
     render() {
-      return createElement(StappSubscription, {
-        ...this.props,
-        app
-      })
+      return createElement(
+        StappSubscription,
+        Object.assign(
+          {
+            app
+          },
+          this.props
+        )
+      )
     }
   }
 }

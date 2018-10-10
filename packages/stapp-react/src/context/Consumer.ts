@@ -22,10 +22,15 @@ export class Consumer<State, Api> extends Component<
           throw new Error(`${STAPP_REACT} error: Provider missing!`)
         }
 
-        return createElement(StappSubscription, {
-          ...this.props,
-          app
-        })
+        return createElement(
+          StappSubscription,
+          Object.assign(
+            {
+              app
+            },
+            this.props
+          )
+        )
       }
     })
   }
