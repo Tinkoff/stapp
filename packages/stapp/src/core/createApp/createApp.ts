@@ -1,4 +1,5 @@
 import { PartialObserver, Subscription } from 'light-observable/core/types.h'
+import { EMPTY } from 'light-observable/observable'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
 import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
@@ -114,36 +115,40 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const store = getStore<State>(reducers, initialState, middlewares, devtools)
 
   for (const module of modules) {
-    if (!module.epic && !module.api && !module.events) {
+    const epics = module.epic || module.epics
+    const events = module.api || module.events
+
+    if (!epics && !events) {
       continue
     }
 
     const dispatch = store.createDispatch(module.name)
 
-    const { epic } = module
-
-    if (epic) {
+    if (epics) {
+      const epicsArray = Array.isArray(epics) ? epics : [epics]
       const { fromESObservable, toESObservable } = getConfig(module)
-      const epicStream = epic(
-        fromESObservable(store.event$),
-        fromESObservable(store.state$),
-        {
-          dispatch,
-          getState: store.getState,
-          fromESObservable,
-          toESObservable
-        }
-      )
 
-      if (epicStream) {
-        subscriptions.push(toESObservable(epicStream).subscribe(dispatch))
-      }
+      epicsArray
+        .map((epic) =>
+          epic(fromESObservable(store.event$), fromESObservable(store.state$), {
+            dispatch,
+            getState: store.getState,
+            fromESObservable,
+            toESObservable
+          })
+        )
+        .filter((epicStream) => !!epicStream)
+        .forEach((epicStream) => {
+          subscriptions.push(toESObservable(epicStream).subscribe(dispatch))
+        })
     }
 
-    const moduleApi: any = bindApi(module.api || module.events || {}, dispatch)
-    Object.keys(moduleApi).forEach((apiKey) => {
-      api[apiKey] = moduleApi[apiKey]
-    })
+    if (events) {
+      const moduleApi: any = bindApi(events, dispatch)
+      Object.keys(moduleApi).forEach((apiKey) => {
+        api[apiKey] = moduleApi[apiKey]
+      })
+    }
   }
 
   const readyPromise = getReadyPromise(store.event$, store.getState, waitFor)
