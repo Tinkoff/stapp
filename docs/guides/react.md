@@ -33,7 +33,7 @@ type RenderProps<S, A = {}, State = S> = {
 * `createConsumer`: creates a Consumer component
 * `createConsume`: old-school higher order component
 * `createForm` and `createField`: creates utilities to assist with forms
-* `createApi`: creates an Api components, that provides only app's api and the app itself
+* `createApi`: creates an Api component, that provides only app's api and the app itself
 * `createComponents`: creates all of the above.
 
 ### `createComponents()`
@@ -47,10 +47,10 @@ type createComponents = (app: Stapp) => {
 }
 ```
 
-NB: `consume`, `Form` and `Field` components are created "on-demand" with corresponding getters.
+NB: `consume`, `Api`, `Form` and `Field` components are created "on-demand" with corresponding getters.
 This means that you can safely use `createComponents` without worrying about unused components.
 
-Consumer, Form and Field components follow the render-prop pattern.
+`Consumer`, `Api`, `Form` and `Field` components follow the render-prop pattern.
 See usage examples below. 
 
 ### `createConsumer()`
