@@ -1,27 +1,29 @@
 import { createSelector, createStructuredSelector } from 'reselect'
 
 // Models
-// tslint:disable-next-line
-import { Selector, OutputSelector } from 'reselect'
 import { FormBaseState } from './formBase.h'
 
-export const isValidSelector = () =>
-  createSelector(
+export const isValidSelector = () => {
+  return createSelector(
     <State extends FormBaseState>(state: State) => state.errors,
-    (errors) => Object.keys(errors).every((key) => !errors[key])
+    (errors) =>
+      errors ? Object.keys(errors).every((key) => !errors[key]) : true
   )
+}
 
-export const isReadySelector = () =>
-  createSelector(
+export const isReadySelector = () => {
+  return createSelector(
     <State extends FormBaseState>(state: State) => state.ready,
-    (ready) => Object.keys(ready).every((key) => !!ready[key])
+    (ready) => (ready ? Object.keys(ready).every((key) => !!ready[key]) : true)
   )
+}
 
-export const isDirtySelector = () =>
-  createSelector(
+export const isDirtySelector = () => {
+  return createSelector(
     <State extends FormBaseState>(state: State) => state.dirty,
-    (dirty) => Object.keys(dirty).some((key) => !!dirty[key])
+    (dirty) => (dirty ? Object.keys(dirty).some((key) => !!dirty[key]) : false)
   )
+}
 
 export const isPristineSelector = () => <
   State extends Pick<FormBaseState, 'pristine'>
@@ -39,6 +41,7 @@ export const fieldSelector = <State extends FormBaseState, Extra>(
     State,
     {
       value: any
+      meta: any
       error: any
       dirty: boolean
       touched: boolean
@@ -46,10 +49,11 @@ export const fieldSelector = <State extends FormBaseState, Extra>(
       extra: Extra
     }
   >({
-    value: (state: State) => state.values[name],
-    error: (state: State) => state.errors[name],
-    dirty: (state: State) => !!state.dirty[name],
-    touched: (state: State) => !!state.touched[name],
+    value: (state: State) => (state.values ? state.values[name] : undefined),
+    meta: (state: State) => (state.meta ? state.meta[name] : undefined),
+    error: (state: State) => (state.errors ? state.errors[name] : undefined),
+    dirty: (state: State) => (state.dirty ? !!state.dirty[name] : false),
+    touched: (state: State) => (state.touched ? !!state.touched[name] : false),
     active: (state: State) => state.active === name,
     extra: extraSelector
   })

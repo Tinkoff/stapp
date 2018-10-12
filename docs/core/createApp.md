@@ -9,6 +9,12 @@ Creates a Stapp application.
 - [Definitions](#definitions)
 - [Usage](#usage)
   - [Config](#config)
+    - [`name`](#name)
+    - [`modules`](#modules)
+    - [`dependencies`](#dependencies)
+    - [`middlewares`](#middlewares)
+    - [`rehydrate`](#rehydrate)
+    - [`devtools`](#devtools)
 - [Examples](#examples)
   - [Todos](#todos)
   - [Todo with undo](#todo-with-undo)
@@ -59,12 +65,27 @@ export const app = createApp({
 ```
 
 ### Config
+The only required field is `modules`.
 
-* **`name`**: Name is not required but recommended if you have more than one app (and you should have more than one app, in other cases, you might not need this library) and use redux-devtools. 
-* **`modules`**: See more about modules in the [corresponding section](/usage/modules.html).
-* **`dependencies`**: Any function provided as a module will be called with the value of this field.
-* **`middlewares`**: An array of any custom redux middlewares.
-* **`rehydrate`**: Value provided here, will be used as an initial state in `redux.createStore` method.
+#### `name`
+*string* - Name is not required but recommended if you have more than one app
+(and you should have more than one app, in other cases, you might not need this library) and use redux-devtools. 
+
+#### `modules`
+*array* - See more about modules in the [corresponding section](/core/modules.html).
+
+#### `dependencies`
+*object* -  Any function provided as a module will be called with the value of this field.
+
+#### `middlewares`
+*array* - An array of any custom redux middlewares.
+
+#### `rehydrate`
+*object* - Value provided here, will be used as an initial state.
+
+#### `devtools`
+*object* or *false* - you can provide your own configuration for redux-devtools here, or disable it completely.
+See [redux-devtools documentation](http://extension.remotedev.io/docs/API/Arguments.html) for more info.
 
 ## Examples
 
@@ -132,7 +153,7 @@ Well, you easily can use excellent [`redux-undo`](https://github.com/omnidan/red
 ```javascript
 // undoModule.js
 import { tap, map, mapTo, filter } from 'light-observable/operators'
-import { createEvent, combineEpics, dangerouslyReplaceState, selectArray } from 'stapp'
+import { createEvent, dangerouslyReplaceState } from 'stapp'
 
 const undo = createEvent('Undo')
 const redo = createEvent('Redo')
@@ -180,11 +201,11 @@ export const undoModule = () => {
       undo,
       redo
     },
-    epic: combineEpics([
+    epic: [
       saveStoreEpic,
       undoEpic,
       redoEpic
-    ])
+    ]
   }
 }
 

@@ -51,7 +51,8 @@ type Module<Api, State, FullState = State> = {
   reducers?: { [K: string]: Reducer<State[K]> } // alias for state
 
   // Epics
-  epic?: Epic<Partial<Full>>
+  epic?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
+  epics?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>> // alias for epic
 }
 ```
 
@@ -164,7 +165,7 @@ Here is an example of an epic:
 
 ```typescript
 import { map, filter } from 'light-observable/operators'
-import { select, combineEpics, createEvent } from 'stapp'
+import { select, createEvent } from 'stapp'
 import { setValue } from 'stapp-formbase'
 
 const handleChange = createEvent('handle input change', event => ({
@@ -179,13 +180,13 @@ const handleChangeEpic = (event$) => event$.pipe(
 const form = {
   name: 'form',
   api: { handleChange },
-  epic: combineEpics([handleChangeEpic])
+  epic: handleChangeEpic
 }
 ```
 
-Each module can provide only one epic, but you can create as many as you like - and combine them into one with `combineEpics` function.
+Module can provide a single epic or an array of epics.
 
-See more about Epics in the [Epics section](/usage/epics.html).
+See more about Epics in the [Epics section](/core/epics.html).
 
 ## Modules: module factories
 

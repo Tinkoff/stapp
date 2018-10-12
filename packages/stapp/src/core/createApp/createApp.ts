@@ -1,14 +1,22 @@
-import { PartialObserver } from 'light-observable/core/types.h'
+import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
 import $$observable from 'symbol-observable'
-import { initDone } from '../../events/initDone'
+import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
 import { isModule } from '../../helpers/is/isModule/isModule'
-import { uniqueId } from '../../helpers/uniqueId/uniqueId'
+import { uniqify } from '../../helpers/uniqueId/uniqify'
 import { bindApi } from './bindApi'
-import { AnyModule, CreateApp, Module, Stapp, WaitFor } from './createApp.h'
+import {
+  AnyModule,
+  CreateApp,
+  DevtoolsConfig,
+  Module,
+  Stapp,
+  WaitFor
+} from './createApp.h'
 import { getReadyPromise } from './getReadyPromise'
 import { getStore } from './getStore'
+import { getConfig } from './setObservableConfig'
 
 /**
  * Creates an application and returns a [[Stapp]].
@@ -35,8 +43,19 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   dependencies?: Extra
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
+  devtools?: false | DevtoolsConfig
 }): Stapp<State, Api> => {
-  const appName = config.name || `Stapp [${uniqueId()}]`
+  const appName = config.name || uniqify('Stapp')
+  const devtools =
+    config.devtools !== false
+      ? Object.assign(
+          {
+            name: appName
+          },
+          config.devtools
+        )
+      : false
+
   const anyModules = config.modules
   const dependencies = config.dependencies || {}
   const initialState = config.rehydrate || {}
@@ -49,12 +68,18 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const api: any = {}
   let waitFor: WaitFor = []
 
+  const subscriptions: Subscription[] = []
+
   for (const anyModule of anyModules) {
     const module = isModule(anyModule) ? anyModule : anyModule(dependencies)
     modules.push(module)
 
     if (!module.name) {
       throw new Error(`${APP_KEY} error: Module name is not provided`)
+    }
+
+    if (moduleNames.has(module.name)) {
+      throw new Error(`${APP_KEY} error: Module name should be unique`)
     }
 
     moduleNames.add(module.name)
@@ -86,40 +111,63 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     )
   }
 
-  const store = getStore<State>(appName, reducers, initialState, middlewares)
+  const store = getStore<State>(reducers, initialState, middlewares, devtools)
 
   for (const module of modules) {
-    if (!module.epic && !module.api && !module.events) {
+    const epics = module.epic || module.epics
+    const events = module.api || module.events
+
+    if (!epics && !events) {
       continue
     }
 
     const dispatch = store.createDispatch(module.name)
 
-    const epic = module.epic
-    if (epic) {
-      const epicStream = epic(store.event$, store.state$, {
-        dispatch,
-        getState: store.getState
-      })
+    if (epics) {
+      const epicsArray = Array.isArray(epics) ? epics : [epics]
+      const { fromESObservable, toESObservable } = getConfig(module)
 
-      if (epicStream) {
-        epicStream.subscribe(dispatch)
-      }
+      epicsArray
+        .map((epic) =>
+          epic(fromESObservable(store.event$), fromESObservable(store.state$), {
+            dispatch,
+            getState: store.getState,
+            fromESObservable,
+            toESObservable
+          })
+        )
+        .filter((epicStream) => !!epicStream)
+        .forEach((epicStream) => {
+          subscriptions.push(toESObservable(epicStream).subscribe(dispatch))
+        })
     }
 
-    const moduleApi: any = bindApi(module.api || module.events || {}, dispatch)
-    Object.keys(moduleApi).forEach((apiKey) => {
-      api[apiKey] = moduleApi[apiKey]
-    })
+    if (events) {
+      const moduleApi: any = bindApi(events, dispatch)
+      Object.keys(moduleApi).forEach((apiKey) => {
+        api[apiKey] = moduleApi[apiKey]
+      })
+    }
   }
 
   const readyPromise = getReadyPromise(store.event$, store.getState, waitFor)
   const rootDispatch = store.createDispatch('root')
 
   store.flushQueue()
-  rootDispatch(initDone())
+  rootDispatch(initEvent())
 
-  return {
+  const disconnect = () => {
+    rootDispatch(disconnectEvent())
+    store.disconnect()
+    subscriptions.forEach((subscription) => {
+      subscription.unsubscribe()
+    })
+  }
+
+  // tslint:disable-next-line no-floating-promises
+  readyPromise.then(() => rootDispatch(readyEvent()))
+
+  return Object.freeze({
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
       return store.state$.subscribe(next)
@@ -128,8 +176,9 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
     getState: store.getState,
     ready: readyPromise,
     api,
+    disconnect,
     [$$observable]() {
       return this
     }
-  }
+  })
 }

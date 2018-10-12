@@ -5,6 +5,7 @@ export { createEffect } from './core/createEffect/createEffect'
 export { createReducer } from './core/createReducer/createReducer'
 
 // Epic utils
+export { setObservableConfig } from './core/createApp/setObservableConfig'
 export { select, selectArray } from './helpers/select/select'
 export { getEventType } from './helpers/getEventType/getEventType'
 export { combineEpics } from './helpers/combineEpics/combineEpics'
@@ -14,7 +15,12 @@ export {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from './events/dangerous'
-export { initDone } from './events/initDone'
+export {
+  disconnectEvent,
+  initEvent,
+  initDone,
+  readyEvent
+} from './events/lifecycle'
 
 // Typings
 export {
@@ -23,9 +29,12 @@ export {
   EventEpic,
   Module,
   ModuleFactory,
+  ObservableConfig,
   Stapp,
   Thunk,
-  WaitFor
+  WaitFor,
+  StappApi,
+  StappState
 } from './core/createApp/createApp.h'
 export { EffectCreator } from './core/createEffect/createEffect.h'
 export {

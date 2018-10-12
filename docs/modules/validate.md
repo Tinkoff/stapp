@@ -112,7 +112,7 @@ Validation rule can return anything. Here are some rules:
   // }
   ```
 
-* promises will be awaited, and these rules will be applied to their result
+* promises will be awaited, and these rules will be applied to their result recursively
 
   ```js
   const app = createApp({
@@ -154,6 +154,19 @@ Validation rule can return anything. Here are some rules:
 ### `isValidatingSelector()`
 
 `stapp-validate` module comes with `isValidatingSelector` selector creator. Use it to create memoized selector, that will return `true` or `false` depending on validation state.
+
+### `revalidate`
+`revalidate` event can be used to cause validation. Accepts an optional array of field names to revalidate.
+```typescript
+import { revalidate } from 'stapp-validate'
+
+// Dispatch an array of field names to revalidate selectively...
+app.dispatch(revalidate(['fieldA', 'fieldB']))
+
+// or without arguments to revalidate all fields
+app.dispatch(revalidate())
+```
+
 <!--
 ## Type definitions
 

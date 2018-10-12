@@ -68,7 +68,7 @@ describe('persist module', () => {
 
       // wait until restore does its job
       await null
-      expect(storage.getParsed(defaultKey)).toEqual(null)
+      expect(storage.getParsed(defaultKey)).toEqual({ r1: '' })
 
       app.api.e1('test2')
 
@@ -250,11 +250,11 @@ describe('persist module', () => {
         modules: [
           stringModule,
           {
-            name: 'test',
+            name: 'test2',
             state: { r2: r1 }
           },
           {
-            name: 'test',
+            name: 'test3',
             state: { r3: r1 }
           },
           persist({
@@ -289,11 +289,11 @@ describe('persist module', () => {
         modules: [
           stringModule,
           {
-            name: 'test',
+            name: 'test2',
             state: { r2: r1 }
           },
           {
-            name: 'test',
+            name: 'test3',
             state: { r3: r1 }
           },
           persist({
@@ -460,7 +460,9 @@ describe('persist module', () => {
       await null
 
       app.api.e1('test')
-      expect(storage.getItem(defaultKey)).toEqual(JSON.stringify(app.getState()))
+      expect(storage.getItem(defaultKey)).toEqual(
+        JSON.stringify(app.getState())
+      )
     })
 
     it('should not use serializer if told not to', async () => {

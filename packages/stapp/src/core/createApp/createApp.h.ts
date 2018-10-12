@@ -1,6 +1,7 @@
 import { Observable, Subscribable } from 'light-observable'
 import { Middleware } from 'redux'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
+import { ReducersMap } from '../createReducer/createReducer.h'
 
 /**
  * ### Example
@@ -17,6 +18,8 @@ export type EventEpic<Payload, Meta, State> = (
   staticApi: {
     dispatch: Dispatch<State>
     getState(): State
+    fromESObservable(innerStream: Observable<any>): any
+    toESObservable(outerStream: any): Observable<any>
   }
 ) => Subscribable<any> | void
 
@@ -60,11 +63,14 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
   waitFor?: WaitFor
 
   // State
-  reducers?: { [K in keyof State]: (state: State[K], event: any) => State[K] }
-  state?: { [K in keyof State]: (state: State[K], event: any) => State[K] }
+  reducers?: ReducersMap<State>
+  state?: ReducersMap<State>
 
   // Epics
-  epic?: Epic<Partial<Full>>
+  epic?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
+  epics?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
+  useGlobalObservableConfig?: boolean
+  observableConfig?: ObservableConfig<any>
 }
 
 /**
@@ -98,7 +104,6 @@ export type AnyModule<Api, State, Full extends Partial<State>, Extra> =
 export type Dispatch<State> = <T>(
   event: T
 ) =>
-  T extends Event<any, any> ? Event<any, any> :
   T extends Subscribable<any> ? Promise<void> :
   T extends Promise<infer P> ? P :
   T extends Thunk<State, infer R> ? R : T
@@ -108,8 +113,13 @@ export type Thunk<State, Result> = (
   dispatch: Dispatch<State>
 ) => Result
 
+export type ObservableConfig<Stream> = {
+  fromESObservable?: (innerStream: Observable<any>) => Stream
+  toESObservable?: (outerStream: Stream) => Observable<any>
+}
+
 /**
- * An app, created by [[createApp]] is another core concept of Stapp. See README.md for details.
+ * An app created by [[createApp]] is another core concept of Stapp. See README.md for details.
  * @typeparam State Application state shape
  * @typeparam Api Application api interface
  */
@@ -119,6 +129,71 @@ export type Stapp<State, Api> = Subscribable<State> & {
   dispatch: Dispatch<State>
   getState: () => State
   ready: Promise<Partial<State>>
+  disconnect: () => void
+}
+
+export type StappApi<T extends Stapp<any, any>> = T extends Stapp<
+  any,
+  infer Api
+>
+  ? Api
+  : any
+
+export type StappState<T extends Stapp<any, any>> = T extends Stapp<
+  infer State,
+  any
+>
+  ? State
+  : any
+
+export type DevtoolsConfig = {
+  name?: string
+  actionCreators?:
+    | Array<() => Event<any, any>>
+    | { [K: string]: () => Event<any, any> }
+  latency?: number
+  maxAge?: number
+  serialize?: {
+    options: {
+      date?: boolean
+      regex?: boolean
+      undefined?: boolean
+      nan?: boolean
+      infinity?: boolean
+      error?: boolean
+      symbol?: boolean
+      map?: boolean
+      set?: boolean
+      function?: (fn: Function) => string // tslint:disable-line ban-types
+    }
+    replacer?: (key: string, value: any) => any
+    reviver?: (key: string, value: any) => any
+    immutable?: object
+    refs?: object[]
+  }
+  actionSanitizer?: (event: Event<any, any>) => Event<any, any>
+  stateSanitizer?: (state: any) => any
+  actionsBlacklist?: string | string[]
+  actionsWhitelist?: string | string[]
+  predicate?: (state: any, event: Event<any, any>) => true
+  shouldRecordChanges?: boolean
+  pauseActionType?: string
+  autoPause?: boolean
+  shouldStartLocked?: boolean
+  shouldHotReload?: boolean
+  shouldCatchErrors?: string
+  features?: {
+    pause?: boolean
+    lock?: boolean
+    persist?: boolean
+    export?: boolean | 'custom'
+    import?: boolean | 'custom'
+    jump?: boolean
+    skip?: boolean
+    reorder?: boolean
+    dispatch?: boolean
+    test?: boolean
+  }
 }
 
 /**
@@ -138,6 +213,7 @@ export type CreateApp = {
     dependencies?: E1
     rehydrate?: Partial<S1>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<S1, A1>
 
   <
@@ -156,6 +232,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -176,6 +253,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -197,6 +275,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -220,6 +299,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -245,6 +325,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -272,6 +353,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -301,6 +383,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -332,6 +415,7 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 
   <
@@ -366,5 +450,6 @@ export type CreateApp = {
     dependencies?: Extra
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
+    devtools?: false | DevtoolsConfig
   }): Stapp<State, Api>
 }

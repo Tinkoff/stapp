@@ -37,8 +37,10 @@ const loadersReducer = createReducer<LoadersState>({})
 
 export const isLoadingSelector = () =>
   createSelector(
-    <State extends { loaders: LoadersState }>(state: State) => state.loaders,
-    (loadersState) => Object.keys(loadersState).filter((name) => loadersState[name]).length > 0
+    <State extends { loaders?: LoadersState }>(state: State) =>
+      state.loaders || {},
+    (loadersState) =>
+      Object.keys(loadersState).filter((name) => loadersState[name]).length > 0
   )
 
 export const loaders = (): Module<{}, { loaders: LoadersState }> => ({

@@ -6,21 +6,22 @@ By contributing to Stapp, you agree to abide by the [code of conduct](https://gi
 
 These steps will guide you through contributing to this project:
 
-- Fork the repo
-- Clone it and install dependencies
+- Fork the repo.
+- Checkout the `develop` branch.
+- Install dependencies with `npm run bootstrap` command.
 
 ```bash
 git clone https://github.com/TinkoffCreditSystems/stapp
 cd stapp
 npm install
 ```
+- Create a new branch from the `develop` branch.
+- Make your changes. Make sure the commands `npm run build` and `npm run test` are passing.
 
-- Make your changes. Make sure the commands `npm run build` and `npm run test` are working.
+## Updating README
+* `README.md` in the root is copied automatically from the `./docs/` directory, so if you plan to make changes, make them in the `./docs/README.md` file.
 
-## Updating documentation
-* `README.md` in the `./docs/` directory is copied automatically from the root `README.md`, so if you plan to make changes, make them in the root `README.md` file.
-
-### Committing
+## Committing
 
 Please, commit changes with `npm run cz`. This command will run commitizen, which will protect you against commit message pain. You may also install commitizen globally and commit with `git cz`.
 

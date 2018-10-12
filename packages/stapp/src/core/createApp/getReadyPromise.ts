@@ -1,6 +1,6 @@
 // tslint:disable no-use-before-declare
 import { Observable, Subscription } from 'light-observable'
-import { initDone } from '../../events/initDone'
+import { initEvent } from '../../events/lifecycle'
 import { controlledPromise } from '../../helpers/controlledPromise/controlledPromise'
 import { getEventType } from '../../helpers/getEventType/getEventType'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
@@ -39,7 +39,7 @@ export const getReadyPromise = <State>(
         result.push(type)
         return result
       },
-      [initDone.getType()]
+      [initEvent.getType()]
     )
   )
   const removeEvent = (type: string) => {

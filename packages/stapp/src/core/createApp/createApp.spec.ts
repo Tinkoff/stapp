@@ -1,18 +1,21 @@
 import { Observable } from 'light-observable'
-import { EMPTY, of } from 'light-observable/observable'
+import { createSubject, EMPTY, of } from 'light-observable/observable'
 import { filter, map } from 'light-observable/operators'
 import { compose, Middleware } from 'redux'
 import {
   dangerouslyReplaceState,
   dangerouslyResetState
 } from '../../events/dangerous'
+import { disconnectEvent, readyEvent } from '../../events/lifecycle'
 import { SOURCE } from '../../helpers/constants'
+import { identity } from '../../helpers/identity/identity'
 import { loggerModule } from '../../helpers/testHelpers/loggerModule/loggerModule'
 import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
-import { Epic, Thunk } from './createApp.h'
+import { Epic, Module, Thunk } from './createApp.h'
+import { setObservableConfig } from './setObservableConfig'
 
 jest.useFakeTimers()
 
@@ -28,7 +31,7 @@ describe('createApp', () => {
     })
   )
 
-  describe('creation', () => {
+  describe('lifecycle', () => {
     it('should create an app', () => {
       const m1 = {
         name: 'm1',
@@ -61,6 +64,62 @@ describe('createApp', () => {
 
       expect(module).toBeCalledWith(extraValue)
     })
+
+    it('should disconnect reducers and subscribers', () => {
+      const app = createApp({
+        modules: [loggerModule({ pattern: null })]
+      })
+
+      const initialCalls = app.getState().eventLog.length
+
+      app.dispatch(fire1())
+      expect(app.getState().eventLog.length - initialCalls).toEqual(1)
+
+      app.disconnect()
+      expect(
+        app.getState().eventLog[app.getState().eventLog.length - 1]
+      ).toEqual(expect.objectContaining(disconnectEvent()))
+      expect(app.getState().eventLog.length - initialCalls).toEqual(2)
+
+      app.dispatch(fire1())
+      expect(app.getState().eventLog.length - initialCalls).toEqual(2)
+    })
+
+    it('should unsubscribe from epics', () => {
+      let eventStream: any
+      const [stream, sink] = createSubject()
+      const epic: Epic<any> = (event$) => {
+        eventStream = event$
+        return stream
+      }
+      const module = {
+        name: 't',
+        epic
+      }
+
+      const app = createApp({
+        modules: [module, loggerModule]
+      })
+
+      const observer = {
+        next: jest.fn(),
+        complete: jest.fn()
+      }
+      eventStream.subscribe(observer)
+
+      sink.next(fire1())
+      expect(observer.next).toBeCalledWith(expect.objectContaining(fire1()))
+      expect(observer.next.mock.calls).toHaveLength(1)
+      expect(app.getState().eventLog).toHaveLength(1)
+
+      app.disconnect()
+      expect(observer.next.mock.calls).toHaveLength(2)
+      expect(observer.complete).toBeCalled()
+
+      sink.next(fire1())
+      expect(observer.next.mock.calls).toHaveLength(2)
+      expect(app.getState().eventLog).toHaveLength(1)
+    })
   })
 
   describe('checking dependencies', () => {
@@ -70,6 +129,13 @@ describe('createApp', () => {
 
       expect(() => createApp({ modules: [module as any] })).toThrow()
       expect(() => createApp({ modules: [moduleFactory as any] })).toThrow()
+    })
+
+    it('should throw if two or more modules have same names', () => {
+      const module = { name: 'test' }
+      const moduleFactory = () => ({ name: 'test' })
+
+      expect(() => createApp({ modules: [module, moduleFactory] })).toThrow()
     })
 
     it('should check dependencies', () => {
@@ -290,9 +356,85 @@ describe('createApp', () => {
 
       expect(rdec.mock.calls[1][0]).toHaveProperty('name')
     })
+
+    it('should disable devtools', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: false
+      })
+
+      expect(rdec).not.toBeCalled()
+    })
+
+    it('should ignore devtools parameter if set to true', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: true as false
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp' })
+    })
+
+    it('should pass devtools config', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          maxAge: 1
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp', maxAge: 1 })
+    })
+
+    it('should overwrite name', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          name: 'test'
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'test' })
+    })
   })
 
-  describe('Epics', () => {
+  describe('epics', () => {
     it('should provide epics a stream of events and a stream of state', () => {
       const events = jest.fn()
       const state = jest.fn()
@@ -366,6 +508,110 @@ describe('createApp', () => {
         modules: [loggerModule, m1]
       })
       jest.runTimersToTime(100)
+    })
+
+    it('should use globalObservableConfig if defined', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+      setObservableConfig(config)
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
+    })
+
+    it('should use local observable config by default', () => {
+      const config = {
+        fromESObservable: jest.fn(identity),
+        toESObservable: jest.fn(identity)
+      }
+
+      let originalEventStream: any
+      let originalStateStream: any
+      const ret = EMPTY
+
+      const m1 = {
+        name: 'm1',
+        state: { r: mockReducer },
+        epic: () => ret,
+        observableConfig: config
+      }
+
+      const m2 = {
+        name: 'm2',
+        epic: ((event$, state$) => {
+          originalEventStream = event$
+          originalStateStream = state$
+
+          return EMPTY
+        }) as Epic<any>,
+        useGlobalObservableConfig: false
+      }
+
+      const app = createApp({
+        modules: [m1, m2]
+      })
+
+      expect(config.toESObservable).toBeCalledWith(ret)
+      expect(config.fromESObservable.mock.calls).toEqual([
+        [originalEventStream],
+        [originalStateStream]
+      ])
+    })
+
+    it('should accept an array of epics', () => {
+      expect.assertions(6)
+      const m1: Module<any, any> = {
+        name: 'm1',
+        state: { m: mockReducer },
+        epics: [
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          },
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          },
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          }
+        ]
+      }
+
+      createApp({
+        modules: [m1]
+      })
     })
   })
 
@@ -533,14 +779,22 @@ describe('createApp', () => {
   describe('ready promise', () => {
     it('should be resolved by default', async () => {
       const app = createApp({
-        modules: [loggerModule]
+        modules: [loggerModule({ pattern: null })]
       })
 
       let resolved = false
+      expect(app.getState().eventLog).toHaveLength(1)
       app.ready.then(() => (resolved = true))
 
       await null
       expect(resolved).toBe(true)
+
+      await null
+      expect(app.getState().eventLog).toHaveLength(2)
+
+      expect(app.getState().eventLog[1]).toEqual(
+        expect.objectContaining(readyEvent())
+      )
     })
 
     it('should wait for events', async () => {

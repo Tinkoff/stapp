@@ -10,6 +10,10 @@ Epics allow harnessing async logic with ease.
 
 - [Definition](#definition)
 - [Usage](#usage)
+  - [Filtering event stream by event type](#filtering-event-stream-by-event-type)
+    - [`select()`](#select)
+    - [`createEpic`](#createepic)
+    - [`EventCreator.epic()`](#eventcreatorepic)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -32,7 +36,7 @@ type Epic<State> = (
 Take the following as an example: search field with autosuggest.
 
 ```js
-import { createEffect, combineEpics, createEvent, createReducer } from 'stapp'
+import { createEffect, createEvent, createReducer } from 'stapp'
 import { loaderStart, loaderEnd } from 'stapp-loaders'
 import { debounceTime, mapTo, map, skipRepeats, switchMap } from 'light-observable/operators'
 
@@ -54,7 +58,7 @@ const searchModule = {
     search: createReducer([])
       .on(saveResults, (_, results) => results)
   },
-  epic: combineEpics([
+  epic: [
     // Start loader on effect run
     searchEffect.start.epic(start$ => start$.pipe(
       mapTo(loaderStart('search'))
@@ -82,11 +86,60 @@ const searchModule = {
       // switch to effect function
       switchMap(({ payload: searchValue }) => searchEffect(searchValue))
     )
-  ])
+  ]
 }
 ```
 
 Epics allow *reacting* to events and state changes *reactively*. That's fun!
+
+### Filtering event stream by event type
+#### `select()`
+```typescript
+type select = (eventCreatorOrType:
+  | AnyEventCreator
+  | string
+  | Array<AnyEventCreator | string>
+) => (event: Event) => boolean
+```
+
+```js
+import { createEvent, select } from 'stapp'
+import { filter } from 'light-observable'
+
+const myEventA = createEvent()
+const myEventB = createEvent()
+
+const epicA = (events$) => events$.pipe(
+  filter(select(myEventA))
+)
+
+const epic = (events$) => events$.pipe(
+  filter(select([myEventA, myEventB]))
+)
+
+```
+
+#### `createEpic`
+```typescript
+type createEpic = <Payload, Meta, State>(
+  events: AnyEventCreator<Payload, Meta> | string | Array<AnyEventCreator | string>,
+  fn: Epic<State>
+) => Epic<State>
+```
+
+Accepts events and an Epic and returns a filtered Epic.
+
+#### `EventCreator.epic()`
+
+Accepts an Epic and returns an Epic, filtered by this EventCreator type.
+
+```js
+const myEvent = createEvent()
+
+const epic = myEvent.epic(myEvent$ => /* other stuff */)
+```
+
+
 <!--
 ## Type definitions
 

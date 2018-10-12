@@ -7,6 +7,7 @@ import {
   resetForm,
   setActive,
   setError,
+  setMeta,
   setReady,
   setSubmitting,
   setTouched,
@@ -23,6 +24,12 @@ import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
 export const createFormBaseReducers = (initialState: any) => {
   const valuesReducer = createReducer<any>(initialState)
     .on(setValue, mergeIfChanged)
+    .on(clearFields, omit)
+    .on(pickFields, pick)
+    .reset(resetForm)
+
+  const metaReducer = createReducer<any>({})
+    .on(setMeta, mergeIfChanged)
     .on(clearFields, omit)
     .on(pickFields, pick)
     .reset(resetForm)
@@ -79,6 +86,7 @@ export const createFormBaseReducers = (initialState: any) => {
 
   return {
     values: valuesReducer,
+    meta: metaReducer,
     errors: errorsReducer,
     touched: touchedReducer,
     ready: readyReducer,

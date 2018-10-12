@@ -6,9 +6,8 @@ import {
   mergeMap,
   switchMap
 } from 'light-observable/operators'
-import { combineEpics, select } from 'stapp'
+import { combineEpics, initEvent, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
-import { initDone } from 'stapp/lib/events/initDone'
 import { VALIDATE } from './constants'
 import { revalidate } from './events'
 import { runValidation } from './helpers'
@@ -29,6 +28,7 @@ const emptyEpic = () => EMPTY
 export const validate = <State extends FormBaseState>({
   validateOnInit = true,
   setTouchedOnSubmit = true,
+  moduleName = VALIDATE,
   rules
 }: ValidateConfig<State>): Module<{}, ValidationState> => {
   const getRules = (state: State): ValidationRules<State> => {
@@ -64,13 +64,12 @@ export const validate = <State extends FormBaseState>({
           { onChange: true },
           Object.keys(event.payload)
         )
-      }),
-      filter(({ rule }) => !!rule)
+      })
     )
 
     const initDone$: Res = validateOnInit
       ? event$.pipe(
-          filter(select(initDone)),
+          filter(select(initEvent)),
           mergeMap(() => {
             return mapValues(getState(), { onInit: true })
           })
@@ -79,12 +78,13 @@ export const validate = <State extends FormBaseState>({
 
     const revalidate$: Res = event$.pipe(
       filter(select(revalidate)),
-      mergeMap(() => {
-        return mapValues(getState(), { onRevalidate: true })
+      mergeMap((event) => {
+        return mapValues(getState(), { onRevalidate: true }, event.payload)
       })
     )
 
     return merge(setValue$, revalidate$, initDone$).pipe(
+      filter(({ rule }) => !!rule),
       groupBy((res) => res.field),
       mergeMap((field$) =>
         field$.pipe(
@@ -114,11 +114,12 @@ export const validate = <State extends FormBaseState>({
     : emptyEpic
 
   return {
-    name: VALIDATE,
+    name: moduleName,
     state: {
       validating: validateReducer
     },
     epic: combineEpics([validateEpic, setTouchedOnSubmitEpic]) as any,
-    dependencies: [FORM_BASE]
+    dependencies: [FORM_BASE],
+    useGlobalObservableConfig: false
   }
 }

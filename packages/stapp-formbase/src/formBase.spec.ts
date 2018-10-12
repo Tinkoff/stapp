@@ -28,7 +28,7 @@ describe('formBase', () => {
     it('creates module with reducers and events', () => {
       const module = formBase()
 
-      expect(typeof module.reducers).toBe('object')
+      expect(typeof module.state).toBe('object')
       expect(typeof module.name).toBe('string')
     })
 
@@ -39,7 +39,7 @@ describe('formBase', () => {
         }
       })
 
-      expect(getInitialState(module.reducers!.values)).toEqual({
+      expect(getInitialState(module.state!.values)).toEqual({
         test: 123
       })
     })
@@ -61,6 +61,8 @@ describe('formBase', () => {
     test('isValidSelector', () => {
       const selector = isValidSelector()
 
+      expect(selector({})).toEqual(true)
+
       expect(
         selector({
           errors: {}
@@ -78,6 +80,8 @@ describe('formBase', () => {
 
     test('isReadySelector', () => {
       const selector = isReadySelector()
+
+      expect(selector({})).toEqual(true)
 
       expect(
         selector({
@@ -110,6 +114,8 @@ describe('formBase', () => {
           dirty: {}
         })
       ).toEqual(false)
+
+      expect(selector({})).toEqual(false)
 
       expect(
         selector({
@@ -144,11 +150,20 @@ describe('formBase', () => {
     })
 
     test('fieldSelector', () => {
+      expect(fieldSelector('test')({} as any)).toEqual({
+        value: undefined,
+        error: undefined,
+        touched: false,
+        active: false,
+        dirty: false
+      })
+
       expect(
         fieldSelector('test')({
           values: {
             test: 123
           },
+          meta: {},
           errors: {
             test: null
           },
@@ -172,6 +187,7 @@ describe('formBase', () => {
       expect(
         fieldSelector('test')({
           values: {},
+          meta: {},
           errors: {
             test: 'Some error'
           },
@@ -188,6 +204,7 @@ describe('formBase', () => {
         })
       ).toEqual({
         value: undefined,
+        meta: undefined,
         error: 'Some error',
         touched: true,
         dirty: true,
@@ -200,6 +217,7 @@ describe('formBase', () => {
           ({ extraValue }) => extraValue
         )({
           values: {},
+          meta: {},
           errors: {
             test: 'Some error'
           },
@@ -217,11 +235,38 @@ describe('formBase', () => {
         })
       ).toEqual({
         value: undefined,
+        meta: undefined,
         error: 'Some error',
         touched: true,
         dirty: true,
         active: true,
         extra: 'Some value'
+      })
+
+      expect(
+        fieldSelector<FormBaseState, string>('test')({
+          values: {
+            test: '1'
+          },
+          meta: {
+            test: 'some meta'
+          },
+          errors: {},
+          touched: {},
+          dirty: {},
+          active: 'test',
+          ready: {},
+          pristine: true,
+          submitting: false
+        })
+      ).toEqual({
+        value: '1',
+        meta: 'some meta',
+        error: undefined,
+        touched: false,
+        dirty: false,
+        active: true,
+        extra: undefined
       })
     })
 
@@ -473,6 +518,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {
           valueA: true
         },
@@ -495,6 +541,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {},
         errors: {},
         active: null,
@@ -549,6 +596,7 @@ describe('formBase', () => {
           valueB: 'Bob',
           valueC: 'Duke'
         },
+        meta: {},
         dirty: {
           valueA: true
         },
@@ -570,6 +618,7 @@ describe('formBase', () => {
         values: {
           valueA: 'Mark'
         },
+        meta: {},
         dirty: {
           valueA: true
         },

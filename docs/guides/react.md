@@ -6,6 +6,7 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Render-prop pattern](#render-prop-pattern)
 - [Binded components](#binded-components)
   - [`createComponents()`](#createcomponents)
   - [`createConsumer()`](#createconsumer)
@@ -15,11 +16,24 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
   - [Example](#example)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## Render-prop pattern
+Components created with `stapp-react` helpers (or exported as-is) follow the [render-prop pattern](https://reactjs.org/docs/render-props.html).
+```typescript
+type RenderProps<S, A = {}, State = S> = {
+  children?: (state: S, api: A, app: Stapp<State, A>) => ReactElement<any> | null
+  render?: (state: S, api: A, app: Stapp<State, A>) => ReactElement<any> | null
+  component?: ReactType<S & {
+    api: A
+    app: Stapp<State, A>
+  }>
+}
+```
 
 ## Binded components
-* `createConsumer`: creates a component following a render-prop pattern
+* `createConsumer`: creates a Consumer component
 * `createConsume`: old-school higher order component
-* `createForm` and `createField`: create render-prop utilities to assist with forms
+* `createForm` and `createField`: creates utilities to assist with forms
+* `createApi`: creates an Api component, that provides only app's api and the app itself
 * `createComponents`: creates all of the above.
 
 ### `createComponents()`
@@ -33,7 +47,11 @@ type createComponents = (app: Stapp) => {
 }
 ```
 
-See examples using Consumer, consume, Form and Field below.
+NB: `consume`, `Api`, `Form` and `Field` components are created "on-demand" with corresponding getters.
+This means that you can safely use `createComponents` without worrying about unused components.
+
+`Consumer`, `Api`, `Form` and `Field` components follow the render-prop pattern.
+See usage examples below. 
 
 ### `createConsumer()`
 
@@ -41,12 +59,8 @@ See examples using Consumer, consume, Form and Field below.
 type createConsumer = (app: Stapp) => Consumer
 
 type Consumer<State, Api, Result = State> = React.Component<{
-  map?: (state: State, api: Api) => Result,
-
-  children?: (result: Result, api: Api) => React.ReactElement | null,
-  render?: (result: Result, api: Api) => React.ReactElement | null,
-  component?: React.ReactType<Result & Api>
-}>
+  map?: (state: State, api: Api) => Result
+} & RenderProps<Result, Api, State>>
 ```
 
 `Consumer` takes an application state, transforms it with `mapState` (`identity` by default), then takes an application API, transforms it with `mapApi` (`identity` by default) and merges them into one object with `mergeProps` (`Object.assign` by default). On each state update, Consumer calls provided `children` or `render` prop with a resulting object. If `component` prop is used, the provided component will be rendered with a resulting object as props.
@@ -90,6 +104,39 @@ const List = ({ todos, handleClick }) => {
 const App = () => <Consumer component={ List } />
 ```
 
+### `createApi`
+```typescript
+type createApi = (app: Stapp) => Api
+
+type Api<State, Api> = React.Component<{
+  children?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  render?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
+  component?: ReactType<{
+    api: Api
+    app: Stapp<State, Api>
+  }>
+}>
+```
+
+`Api` provides application's api and the app itself.
+
+```jsx
+import { createApi } from 'stapp-react'
+import todoApp from '../myApps/todoApp.js'
+import ListItem from '../components'
+
+const Api = createApi(todoApp)
+
+const ListItem = ({ text, id }) => <Api>
+  {
+    ({ handleClick }) => <div>
+      {text}
+      <button onClick={() => handleClick(id)}>delete</button>
+    </div>
+  }
+</Consumer>
+```
+
 ### `createConsume()`
 
 ```typescript
@@ -98,10 +145,10 @@ type createInject = (Consumer: Consumer) => ConsumerHoc // theese are aliases
 
 type ConsumerHoc<State, Api, Result> = (
 	map?: (state: State, api: Api, props: any) => Result
-) => (WrappedComponent: React.ComponentType<Result & Api>) => React.ComponentClass
+) => (WrappedComponent: React.ComponentType<Result & { api: Api, app: Stapp<State, Api> }>) => React.ComponentClass
 ```
 
-`createConsume` creates a classic, familiar HoC, that works exactly as `react-redux` `@connect`.
+`createConsume` creates a classic, familiar HoC, that works almost exactly as `react-redux` `@connect`.
 
 ```jsx
 import { createConsume } from 'stapp-react'
@@ -131,11 +178,7 @@ const App = inject(
 type createForm = (Consumer: Consumer) => Form
 type createFiled = (Consumer: Consumer) => Field
 
-type Form = React.Component<{
-  children?: (props: FormApi) => React.ReactElement | null
-  render?: (props: FormApi) => React.ReactElement | null
-  component?: React.ReactType<FormApi>
-}>
+type Form = React.Component<RenderProps<FormApi, AppApi, AppState>>
 
 type FormApi = {
   handleSubmit: () => void
@@ -150,11 +193,7 @@ type FormApi = {
 type Field<State extends FormBaseState, Extra> = React.Component<{
   name: string // field name
   extraSelector: (state: State) => Extra
-
-  children?: (props: FieldApi) => React.ReactElement | null
-  render?: (props: FieldApi) => React.ReactElement | null
-  component?: React.ReactType<FieldApi<Extra>>
-}>
+} & RenderProps<FieldApi<Extra>, AppApi, AppState>>
 
 type FieldApi<Extra = void> = {
   input: {
@@ -213,6 +252,7 @@ const App = () => {
 * `consume`: same as `consume` created by `createConsume`, but utilizes the app provided by the `Provider`
 * `Provider`: provides an app to the sub-tree
 * `Consumer`: same as `Consumer` created by `createConsumer`, but utilizes the app provided by the `Provider`
+* `Api`: same as `Api` created by `createApi`, but utilizes the app provided by the `Provider`
 * `Form`: same as `Form` created by `createForm`, but utilizes the app provided by the `Provider`
 * `Field`: same as `Field` created by `createField`, but utilizes the app provided by the `Provider`
 
