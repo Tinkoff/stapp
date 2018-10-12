@@ -24,7 +24,7 @@ type loaders = () => Module<{}, { loaders: { [K: string]: boolean } }>
 ```js
 // myModule.js
 import { mapTo } from 'light-observable/operators'
-import { createEffect, combineEpics } from 'stapp'
+import { createEffect } from 'stapp'
 import { loaderStart, loaderEnd, LOADERS } from 'stapp-loaders'
 
 const loadData = createEffect('Load data', () => /* some async process */)
@@ -34,11 +34,11 @@ export const myModule = {
   api: {
     loadData
   },
-  epic: combineEpics([
+  epic: [
     loadData.start.epic(start$ => start$.pipe(mapTo(loaderStart('loadData')))),
    	loadData.success.epic(start$ => start$.pipe(mapTo(loaderEnd('loadData')))),
     loadData.fail.epic(start$ => start$.pipe(mapTo(loaderEnd('loadData'))))
-  ]),
+  ],
   dependencies: [LOADERS] // this is not neccesary but is recommended, so that you won't forget to use loaders module in your app.
 }
 

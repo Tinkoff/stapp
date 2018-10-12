@@ -48,32 +48,32 @@ export const createField = <State extends FormBaseState, Api>(
         api: any,
         app: Stapp<State, Api>
       ) => {
+        const result = {
+          input: {
+            name: props.name,
+            value: fieldState.value || '',
+            onChange: handleChange(api),
+            onBlur: handleBlur(api),
+            onFocus: handleFocus(api)
+          },
+          meta: {
+            error: fieldState.error,
+            touched: fieldState.touched,
+            active: fieldState.active,
+            dirty: fieldState.dirty
+          },
+          extra: fieldState.extra
+        }
+
         return renderComponent({
           name: 'Field',
           renderProps: props,
-          result: {
-            input: {
-              name: props.name,
-              value: fieldState.value || '',
-              onChange: handleChange(api),
-              onBlur: handleBlur(api),
-              onFocus: handleFocus(api)
-            },
-            meta: {
-              error: fieldState.error,
-              touched: fieldState.touched,
-              active: fieldState.active,
-              dirty: fieldState.dirty
-            },
-            extra: fieldState.extra
-          },
-          api,
-          app
+          renderArgs: [result, api, app],
+          componentProps: Object.assign({ api, app }, result)
         })
       }
     })
   }
-
   ;(Field as StatelessComponent).displayName = `${appName}.Field`
 
   return Field

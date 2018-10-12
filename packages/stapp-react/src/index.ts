@@ -1,11 +1,13 @@
 // Binded
-export { createComponents } from './createComponents/createComponents'
-export { createConsume, createInject } from './createComponents/createConsume'
+export { createApi } from './binded/createApi'
+export { createComponents } from './binded/createComponents'
+export { createConsume, createInject } from './binded/createConsume'
 export { createConsumer } from './binded/createConsumer'
-export { createField } from './createComponents/createField'
-export { createForm } from './createComponents/createForm'
+export { createField } from './binded/createField'
+export { createForm } from './binded/createForm'
 
 // Context
+export { Api } from './context/Api'
 export { consume, inject } from './context/consume'
 export { Consumer } from './context/Consumer'
 export { Field } from './context/Field'

@@ -25,15 +25,6 @@ export class StappSubscription<State, Api, Result> extends Component<
     map: identity
   }
 
-  state = {
-    app: this.props.app,
-    map: this.props.map,
-    appState: this.props.map!(this.props.app.getState(), this.props.app.api)
-  }
-
-  private unmounted: boolean = false
-  private subscription?: Subscription = undefined
-
   static getDerivedStateFromProps(
     props: StappSubscriptionProps<any, any, any>,
     state: StappSubscriptionState<any, any, any>
@@ -48,6 +39,15 @@ export class StappSubscription<State, Api, Result> extends Component<
 
     return null
   }
+
+  state = {
+    app: this.props.app,
+    map: this.props.map,
+    appState: this.props.map!(this.props.app.getState(), this.props.app.api)
+  }
+
+  private unmounted: boolean = false
+  private subscription?: Subscription = undefined
 
   componentDidMount() {
     this.subscribe()
@@ -68,13 +68,6 @@ export class StappSubscription<State, Api, Result> extends Component<
     this.unsubscribe()
   }
 
-  shouldComponentUpdate(
-    _: any,
-    nextState: StappSubscriptionState<State, Api, Result>
-  ) {
-    return !shallowEqual(this.state.appState, nextState.appState)
-  }
-
   render() {
     const app = this.props.app
     const appState = this.state.appState
@@ -82,9 +75,8 @@ export class StappSubscription<State, Api, Result> extends Component<
     return renderComponent({
       name: 'StappSubscription',
       renderProps: this.props,
-      result: appState,
-      api: app.api,
-      app
+      renderArgs: [appState, app.api, app],
+      componentProps: Object.assign({ app, api: app.api }, appState)
     })
   }
 
@@ -97,7 +89,11 @@ export class StappSubscription<State, Api, Result> extends Component<
         return
       }
 
-      this.setState({ appState: this.props.map!(state, app.api) })
+      const nextAppState = this.props.map!(state, app.api)
+
+      if (!shallowEqual(this.state.appState, nextAppState)) {
+        this.setState({ appState: nextAppState })
+      }
     })
   }
 

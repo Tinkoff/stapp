@@ -19,18 +19,21 @@ export type EventHandler<State, Payload = void, Meta = void> = (
 ) => State
 
 /**
+ * @param state Reducer's state
+ * @param event Any event
+ * @returns new state
+ */
+export type ReducerFunction<State> = (
+  state: State,
+  event: Event<any, any>
+) => State
+
+/**
  * Basically, a reducer is a function, that accepts a state and an event, and returns a new state.
  * Stapp [[createReducer]] creates a reducer on steroids. See examples below.
  * @typeparam State Reducer's state interface
  */
-export type Reducer<State> = {
-  /**
-   * @param state Reducer's state
-   * @param event Any event
-   * @returns new state
-   */
-  (state: State, event: Event<any, any>): State
-
+export type Reducer<State> = ReducerFunction<State> & {
   /**
    * Attaches EventHandler to the reducer. Adding handlers of already existing event type will override previous handlers.
    * Returns reducer.
@@ -100,4 +103,8 @@ export type Reducer<State> = {
  */
 export type EventHandlers<State, Handlers extends string> = {
   [K in Handlers]: EventHandler<State, any, any>
+}
+
+export type ReducersMap<State> = {
+  [K in keyof State]: ReducerFunction<State[K]> | ReducersMap<State[K]>
 }

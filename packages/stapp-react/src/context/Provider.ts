@@ -4,7 +4,6 @@ import {
   ReactNode,
   StatelessComponent
 } from 'react'
-
 import { Stapp } from 'stapp'
 
 export const StappContext = createContext<Stapp<any, any> | null>(null)
