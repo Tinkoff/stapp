@@ -1,6 +1,6 @@
 {
   "name": "stapp",
-  "version": "2.4.2",
+  "version": "2.5.0-0",
   "description": "Modular state manager for microapps",
   "keywords": [
     "state-management",
@@ -36,8 +36,8 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "dependencies": {
-    "redux": ">= 4",
     "light-observable": "^2.13.1",
+    "redux": ">= 4",
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
