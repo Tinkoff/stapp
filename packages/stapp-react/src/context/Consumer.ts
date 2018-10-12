@@ -17,14 +17,20 @@ export class Consumer<State, Api> extends Component<
   render() {
     return createElement(StappContext.Consumer, {
       children: (app: Stapp<State, Api>) => {
+        /* istanbul ignore next */
         if (!app) {
           throw new Error(`${STAPP_REACT} error: Provider missing!`)
         }
 
-        return createElement(StappSubscription, {
-          ...this.props,
-          app
-        })
+        return createElement(
+          StappSubscription,
+          Object.assign(
+            {
+              app
+            },
+            this.props
+          )
+        )
       }
     })
   }

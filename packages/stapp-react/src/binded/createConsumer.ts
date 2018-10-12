@@ -15,10 +15,15 @@ export const createConsumer = <State, Api>(
     static propTypes: any = consumerPropTypes
 
     render() {
-      return createElement(StappSubscription, {
-        ...this.props,
-        app
-      })
+      return createElement(
+        StappSubscription,
+        Object.assign(
+          {
+            app
+          },
+          this.props
+        )
+      )
     }
   }
 }

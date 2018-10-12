@@ -4,6 +4,7 @@ import { Subscription } from 'light-observable'
 import React from 'react'
 import { StappState } from 'stapp'
 import { getApp } from '../helpers/testApp'
+import { Api } from './Api'
 import { Consumer } from './Consumer'
 import { Provider, StappContext } from './Provider'
 
@@ -188,19 +189,24 @@ describe('context tools', () => {
         </Provider>
       )
     })
+  })
 
-    it('throws if components are not provided', () => {
-      try {
-        mount(
-          // <Catcher>
-          <Consumer>{() => <div />}</Consumer>
-          // </Catcher>
-        )
-      } catch (e) {
-        expect(e).toBeDefined()
-      }
+  describe('Api', () => {
+    it('should get api and app from context', () => {
+      expect.assertions(2)
+      const app = getApp()
 
-      // expect(cb).toBeCalled()
+      mount(
+        <Provider app={app}>
+          <Api>
+            {({ inc }, innerApp) => {
+              expect(typeof inc).toBe('function')
+              expect(innerApp).toBe(app)
+              return <div />
+            }}
+          </Api>
+        </Provider>
+      )
     })
   })
 })

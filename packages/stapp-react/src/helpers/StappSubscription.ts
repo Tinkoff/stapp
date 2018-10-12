@@ -75,9 +75,8 @@ export class StappSubscription<State, Api, Result> extends Component<
     return renderComponent({
       name: 'StappSubscription',
       renderProps: this.props,
-      result: appState,
-      api: app.api,
-      app
+      renderArgs: [appState, app.api, app],
+      componentProps: Object.assign({ app, api: app.api }, appState)
     })
   }
 

@@ -1,4 +1,4 @@
-import { createConsume } from '../createComponents/createConsume'
+import { createConsume } from '../binded/createConsume'
 import { Consumer } from './Consumer'
 
 export const consume = createConsume(Consumer)
