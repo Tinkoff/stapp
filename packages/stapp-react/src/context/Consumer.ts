@@ -12,19 +12,25 @@ export class Consumer<State, Api> extends Component<
   ConsumerProps<State, Api, any>
 > {
   static displayName = 'Stapp.Consumer'
-  static propTypes = consumerPropTypes
+  static propTypes: any = consumerPropTypes
 
   render() {
     return createElement(StappContext.Consumer, {
       children: (app: Stapp<State, Api>) => {
+        /* istanbul ignore next */
         if (!app) {
           throw new Error(`${STAPP_REACT} error: Provider missing!`)
         }
 
-        return createElement(StappSubscription, {
-          ...this.props,
-          app
-        })
+        return createElement(
+          StappSubscription,
+          Object.assign(
+            {
+              app
+            },
+            this.props
+          )
+        )
       }
     })
   }

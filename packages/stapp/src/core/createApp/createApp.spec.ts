@@ -14,7 +14,7 @@ import { createEvent } from '../createEvent/createEvent'
 import { Event } from '../createEvent/createEvent.h'
 import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
-import { Epic, Thunk } from './createApp.h'
+import { Epic, Module, Thunk } from './createApp.h'
 import { setObservableConfig } from './setObservableConfig'
 
 jest.useFakeTimers()
@@ -586,6 +586,32 @@ describe('createApp', () => {
         [originalEventStream],
         [originalStateStream]
       ])
+    })
+
+    it('should accept an array of epics', () => {
+      expect.assertions(6)
+      const m1: Module<any, any> = {
+        name: 'm1',
+        state: { m: mockReducer },
+        epics: [
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          },
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          },
+          (event$, state$) => {
+            expect(event$).toBeInstanceOf(Observable)
+            expect(state$).toBeInstanceOf(Observable)
+          }
+        ]
+      }
+
+      createApp({
+        modules: [m1]
+      })
     })
   })
 

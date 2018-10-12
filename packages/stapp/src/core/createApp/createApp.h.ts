@@ -67,7 +67,8 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
   state?: ReducersMap<State>
 
   // Epics
-  epic?: Epic<Partial<Full>>
+  epic?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
+  epics?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
   useGlobalObservableConfig?: boolean
   observableConfig?: ObservableConfig<any>
 }

@@ -153,7 +153,7 @@ Well, you easily can use excellent [`redux-undo`](https://github.com/omnidan/red
 ```javascript
 // undoModule.js
 import { tap, map, mapTo, filter } from 'light-observable/operators'
-import { createEvent, combineEpics, dangerouslyReplaceState, selectArray } from 'stapp'
+import { createEvent, dangerouslyReplaceState } from 'stapp'
 
 const undo = createEvent('Undo')
 const redo = createEvent('Redo')
@@ -201,11 +201,11 @@ export const undoModule = () => {
       undo,
       redo
     },
-    epic: combineEpics([
+    epic: [
       saveStoreEpic,
       undoEpic,
       redoEpic
-    ])
+    ]
   }
 }
 

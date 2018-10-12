@@ -1,28 +1,30 @@
 import React, { ReactElement } from 'react'
-import { Stapp } from 'stapp'
 import { RenderProps } from '../models/Props'
 import { STAPP_REACT } from './constants'
 
 export const renderComponent = (parameters: {
   name: string
   renderProps: RenderProps<any, any>
-  result: any
-  api: any
-  app: Stapp<any, any>
+  renderArgs: any[]
+  componentProps: any
 }): ReactElement<any> | null => {
-  const { name, renderProps, result, api, app } = parameters
-  const { render, children, component } = renderProps
+  const {
+    name,
+    renderProps: { render, children, component },
+    renderArgs,
+    componentProps
+  } = parameters
 
   if (component) {
-    return React.createElement(component, Object.assign({ api, app }, result))
+    return React.createElement(component, componentProps)
   }
 
   if (render) {
-    return render(result, api, app)
+    return render.apply(null, renderArgs)
   }
 
   if (typeof children === 'function') {
-    return children(result, api, app)
+    return children.apply(null, renderArgs)
   }
 
   throw new Error(

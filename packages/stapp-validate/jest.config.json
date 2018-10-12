@@ -1,7 +1,7 @@
 {
   "testURL": "http://localhost",
   "transform": {
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+    "^.+\\.tsx?$": "ts-jest",
     "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest"
   },
   "modulePaths": [
@@ -31,6 +31,9 @@
     "lcov"
   ],
   "globals": {
-    "process.env.NODE_ENV": "test"
+    "process.env.NODE_ENV": "test",
+    "ts-jest": {
+      "diagnostics": false
+    }
   }
 }
