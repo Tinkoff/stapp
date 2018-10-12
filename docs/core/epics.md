@@ -36,7 +36,7 @@ type Epic<State> = (
 Take the following as an example: search field with autosuggest.
 
 ```js
-import { createEffect, combineEpics, createEvent, createReducer } from 'stapp'
+import { createEffect, createEvent, createReducer } from 'stapp'
 import { loaderStart, loaderEnd } from 'stapp-loaders'
 import { debounceTime, mapTo, map, skipRepeats, switchMap } from 'light-observable/operators'
 
@@ -58,7 +58,7 @@ const searchModule = {
     search: createReducer([])
       .on(saveResults, (_, results) => results)
   },
-  epic: combineEpics([
+  epic: [
     // Start loader on effect run
     searchEffect.start.epic(start$ => start$.pipe(
       mapTo(loaderStart('search'))
@@ -86,7 +86,7 @@ const searchModule = {
       // switch to effect function
       switchMap(({ payload: searchValue }) => searchEffect(searchValue))
     )
-  ])
+  ]
 }
 ```
 
