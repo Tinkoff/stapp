@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "2.4.2",
+  "version": "2.5.0-0",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -38,9 +38,9 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp-formbase": ">=2.4.2",
     "react": ">=16",
-    "stapp": "^2.4.2"
+    "stapp": "^2.4.2",
+    "stapp-formbase": ">=2.4.2"
   },
   "dependencies": {
     "fbjs": ">=1.0.0",
@@ -66,8 +66,8 @@
     "redux": "^4.0.0",
     "request": "^2.88.0",
     "reselect": "^4.0.0",
-    "stapp": "^2.4.2",
-    "stapp-formbase": "^2.4.2",
+    "stapp": "^2.5.0-0",
+    "stapp-formbase": "^2.5.0-0",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
