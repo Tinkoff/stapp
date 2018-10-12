@@ -1,6 +1,7 @@
 import { Observable, Subscribable } from 'light-observable'
 import { Middleware } from 'redux'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
+import { ReducersMap } from '../createReducer/createReducer.h'
 
 /**
  * ### Example
@@ -62,8 +63,8 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
   waitFor?: WaitFor
 
   // State
-  reducers?: { [K in keyof State]: (state: State[K], event: any) => State[K] }
-  state?: { [K in keyof State]: (state: State[K], event: any) => State[K] }
+  reducers?: ReducersMap<State>
+  state?: ReducersMap<State>
 
   // Epics
   epic?: Epic<Partial<Full>> | Array<Epic<Partial<Full>>>
