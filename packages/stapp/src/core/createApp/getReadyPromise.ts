@@ -13,8 +13,9 @@ const isEvent = (ev: any): ev is AnyEventCreator | string => {
 export const getReadyPromise = <State>(
   event$: Observable<Event<any, any>>,
   getState: () => Partial<State>,
-  waitFor: WaitFor
+  waitFor: WaitFor<State>
 ): Promise<Partial<State>> => {
+  const initialState = getState()
   const [promise, resolve] = controlledPromise<Partial<State>>()
   const toWait = new Set<string>(
     waitFor.reduce(
@@ -24,7 +25,7 @@ export const getReadyPromise = <State>(
           return result
         }
 
-        if (event.condition && !event.condition()) {
+        if (event.condition && !event.condition(initialState)) {
           return result
         }
 
