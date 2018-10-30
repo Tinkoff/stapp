@@ -8,7 +8,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.1.0",
     "redux": "^4.0.0",
     "reselect": "^3.0.1",
     "stapp": "^2.5.0-0",
