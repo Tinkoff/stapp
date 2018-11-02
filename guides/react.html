@@ -446,6 +446,7 @@
 <li><a href="#binded-components">Binded components</a><ul>
 <li><a href="#createcomponents"><code>createComponents()</code></a></li>
 <li><a href="#createconsumer"><code>createConsumer()</code></a></li>
+<li><a href="#createapi"><code>createApi</code></a></li>
 <li><a href="#createconsume"><code>createConsume()</code></a></li>
 <li><a href="#createform-and-createfield"><code>createForm()</code> and <code>createField()</code></a></li>
 </ul>
@@ -472,6 +473,7 @@
 <li><code>createConsumer</code>: creates a Consumer component</li>
 <li><code>createConsume</code>: old-school higher order component</li>
 <li><code>createForm</code> and <code>createField</code>: creates utilities to assist with forms</li>
+<li><code>createApi</code>: creates an Api component, that provides only app&apos;s api and the app itself</li>
 <li><code>createComponents</code>: creates all of the above.</li>
 </ul>
 <h3 id="createcomponents"><code>createComponents()</code></h3>
@@ -482,16 +484,16 @@
   Field: Field
 }
 </code></pre>
-<p>NB: <code>consume</code>, <code>Form</code> and <code>Field</code> components are created &quot;on-demand&quot; with corresponding getters.
+<p>NB: <code>consume</code>, <code>Api</code>, <code>Form</code> and <code>Field</code> components are created &quot;on-demand&quot; with corresponding getters.
 This means that you can safely use <code>createComponents</code> without worrying about unused components.</p>
-<p>Consumer, Form and Field components follow the 
+<p><code>Consumer</code>, <code>Api</code>, <code>Form</code> and <code>Field</code> components follow the render-prop pattern.
 See usage examples below. </p>
 <h3 id="createconsumer"><code>createConsumer()</code></h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createConsumer = (app: Stapp) =&gt; Consumer
 
 <span class="hljs-keyword">type</span> Consumer&lt;State, Api, Result = State&gt; = React.Component&lt;{
   map?: (state: State, api: Api) =&gt; Result
-} &amp; RenderProps&lt;Result, Api, State&gt;
+} &amp; RenderProps&lt;Result, Api, State&gt;&gt;
 </code></pre>
 <p><code>Consumer</code> takes an application state, transforms it with <code>mapState</code> (<code>identity</code> by default), then takes an application API, transforms it with <code>mapApi</code> (<code>identity</code> by default) and merges them into one object with <code>mergeProps</code> (<code>Object.assign</code> by default). On each state update, Consumer calls provided <code>children</code> or <code>render</code> prop with a resulting object. If <code>component</code> prop is used, the provided component will be rendered with a resulting object as props.</p>
 <p>Most basic example as possible:</p>
@@ -526,6 +528,34 @@ See usage examples below. </p>
   /&gt;
 }
 const App = () =&gt; &lt;Consumer component={ List } /&gt;
+</code></pre>
+<h3 id="createapi"><code>createApi</code></h3>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createApi = (app: Stapp) =&gt; Api
+
+<span class="hljs-keyword">type</span> Api&lt;State, Api&gt; = React.Component&lt;{
+  children?: (api: Api, app: Stapp&lt;State, Api&gt;) =&gt; ReactElement&lt;<span class="hljs-built_in">any</span>&gt; | <span class="hljs-literal">null</span>
+  render?: (api: Api, app: Stapp&lt;State, Api&gt;) =&gt; ReactElement&lt;<span class="hljs-built_in">any</span>&gt; | <span class="hljs-literal">null</span>
+  component?: ReactType&lt;{
+    api: Api
+    app: Stapp&lt;State, Api&gt;
+  }&gt;
+}&gt;
+</code></pre>
+<p><code>Api</code> provides application&apos;s api and the app itself.</p>
+<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> { createApi } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-react&apos;</span>
+<span class="hljs-keyword">import</span> todoApp <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../myApps/todoApp.js&apos;</span>
+<span class="hljs-keyword">import</span> ListItem <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../components&apos;</span>
+
+<span class="hljs-keyword">const</span> Api = createApi(todoApp)
+
+<span class="hljs-keyword">const</span> ListItem = ({ text, id }) =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Api</span>&gt;</span>
+  {
+    ({ handleClick }) =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      {text}
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> handleClick(id)}&gt;delete<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  }
+<span class="hljs-tag">&lt;/<span class="hljs-name">Consumer</span>&gt;</span></span>
 </code></pre>
 <h3 id="createconsume"><code>createConsume()</code></h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">type</span> createConsume = (Consumer: Consumer) =&gt; ConsumerHoc
@@ -630,6 +660,7 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
 <li><code>consume</code>: same as <code>consume</code> created by <code>createConsume</code>, but utilizes the app provided by the <code>Provider</code></li>
 <li><code>Provider</code>: provides an app to the sub-tree</li>
 <li><code>Consumer</code>: same as <code>Consumer</code> created by <code>createConsumer</code>, but utilizes the app provided by the <code>Provider</code></li>
+<li><code>Api</code>: same as <code>Api</code> created by <code>createApi</code>, but utilizes the app provided by the <code>Provider</code></li>
 <li><code>Form</code>: same as <code>Form</code> created by <code>createForm</code>, but utilizes the app provided by the <code>Provider</code></li>
 <li><code>Field</code>: same as <code>Field</code> created by <code>createField</code>, but utilizes the app provided by the <code>Provider</code></li>
 </ul>
@@ -744,7 +775,7 @@ const App = () =&gt; &lt;Consumer component={ List } /&gt;
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"React","level":"3.1","depth":1,"next":{"title":"SSR","level":"3.2","depth":1,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},"previous":{"title":"Epics","level":"2.6","depth":1,"path":"core/epics.md","ref":"core/epics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/react.md","mtime":"2018-10-09T08:02:54.484Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-09T08:03:01.294Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"React","level":"3.1","depth":1,"next":{"title":"SSR","level":"3.2","depth":1,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},"previous":{"title":"Epics","level":"2.6","depth":1,"path":"core/epics.md","ref":"core/epics.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/react.md","mtime":"2018-11-02T14:45:07.814Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-02T14:45:14.662Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
