@@ -11,6 +11,7 @@ Debouncing, throttling and other time-controlling mechanisms are up to you.
 - [Definition](#definition)
 - [Usage](#usage)
   - [`isValidatingSelector()`](#isvalidatingselector)
+  - [`revalidate`](#revalidate)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
