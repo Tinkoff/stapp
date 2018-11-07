@@ -45,8 +45,8 @@
     "light-observable": "^2.13.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.8",
-    "@types/node": "^10.12.1",
+    "@types/jest": "^23.3.9",
+    "@types/node": "^10.12.2",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -60,6 +60,6 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.1.4"
+    "typescript": "^3.1.6"
   }
 }
