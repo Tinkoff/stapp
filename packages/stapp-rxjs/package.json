@@ -39,9 +39,7 @@
     "rxjs": ">=6.2",
     "stapp": ">=2.5.0"
   },
-  "dependencies": {
-    "light-observable": "^2.13.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.9",
@@ -49,7 +47,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
-    "rxjs": "^6.3.3",
+    "rxjs": "6.3.3",
     "stapp": "^2.5.0",
     "symbol-observable": "^1.2.0",
     "ts-jest": "^23.10.4",
