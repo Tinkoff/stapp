@@ -39,13 +39,13 @@
   },
   "peerDependencies": {
     "react": ">=16",
-    "stapp": "^2.4.2",
-    "stapp-formbase": ">=2.4.2"
+    "stapp": "^2.5.0",
+    "stapp-formbase": ">=2.5.0"
   },
   "dependencies": {
     "fbjs": ">=1.0.0",
-    "light-observable": "^2.13.1",
-    "prop-types": ">=15.6"
+    "prop-types": ">=15.6",
+    "rxjs": ">= 6"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.15",

@@ -38,7 +38,7 @@ Take the following as an example: search field with autosuggest.
 ```js
 import { createEffect, createEvent, createReducer } from 'stapp'
 import { loaderStart, loaderEnd } from 'stapp-loaders'
-import { debounceTime, mapTo, map, skipRepeats, switchMap } from 'light-observable/operators'
+import { debounceTime, mapTo, map, distinctUntilChanged, switchMap } from 'rxjs/operators'
 
 const saveResults = createEvent('Save search results')
 
@@ -81,7 +81,7 @@ const searchModule = {
 
       // debounce and distinct value changes
       debounceTime(500),
-      skipRepeats(),
+      distinctUntilChanged(),
 
       // switch to effect function
       switchMap(({ payload: searchValue }) => searchEffect(searchValue))
@@ -104,7 +104,7 @@ type select = (eventCreatorOrType:
 
 ```js
 import { createEvent, select } from 'stapp'
-import { filter } from 'light-observable'
+import { filter } from 'rxjs/operators'
 
 const myEventA = createEvent()
 const myEventB = createEvent()

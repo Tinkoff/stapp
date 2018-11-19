@@ -152,7 +152,7 @@ Well, you easily can use excellent [`redux-undo`](https://github.com/omnidan/red
 
 ```javascript
 // undoModule.js
-import { tap, map, mapTo, filter } from 'light-observable/operators'
+import { tap, map, mapTo, filter } from 'rxjs/operators'
 import { createEvent, dangerouslyReplaceState } from 'stapp'
 
 const undo = createEvent('Undo')

@@ -1,5 +1,5 @@
-import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
+import { PartialObserver, Subscription } from 'rxjs'
 import $$observable from 'symbol-observable'
 import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'
@@ -170,7 +170,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   return Object.freeze({
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
-      return store.state$.subscribe(next)
+      return store.state$.subscribe(next as PartialObserver<State>)
     },
     dispatch: rootDispatch,
     getState: store.getState,

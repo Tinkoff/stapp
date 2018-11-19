@@ -36,8 +36,8 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "dependencies": {
-    "light-observable": "^2.13.1",
     "redux": ">= 4",
+    "rxjs": ">= 6",
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {

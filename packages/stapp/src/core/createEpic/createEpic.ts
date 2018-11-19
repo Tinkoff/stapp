@@ -1,7 +1,8 @@
-import { filter } from 'light-observable/observable'
-import { Epic } from '../../core/createApp/createApp.h'
-import { AnyEventCreator } from '../../core/createEvent/createEvent.h'
+import { from } from 'rxjs'
+import { filter } from 'rxjs/operators'
 import { select } from '../../helpers/select/select'
+import { Epic } from '../createApp/createApp.h'
+import { AnyEventCreator } from '../createEvent/createEvent.h'
 
 export const createEpic = <Payload, Meta, State>(
   events:
@@ -13,10 +14,10 @@ export const createEpic = <Payload, Meta, State>(
   const selector = select(events)
 
   return (events$, state$, staticApi) => {
-    const filtered = staticApi.fromESObservable(
-      filter(selector, staticApi.toESObservable(events$))
+    const filtered$ = staticApi.fromESObservable(
+      from(staticApi.toESObservable(events$)).pipe(filter(selector))
     )
 
-    return fn(filtered, state$, staticApi)
+    return fn(filtered$, state$, staticApi)
   }
 }

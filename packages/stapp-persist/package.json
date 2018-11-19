@@ -38,11 +38,11 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": "^2.4.2"
+    "stapp": "^2.5.0"
   },
   "dependencies": {
     "fbjs": "^1.0.0",
-    "light-observable": "^2.13.1"
+    "rxjs": ">= 6"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",

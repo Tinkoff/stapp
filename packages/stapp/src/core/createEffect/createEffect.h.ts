@@ -1,4 +1,4 @@
-import { Observable } from 'light-observable'
+import { Observable } from 'rxjs'
 import {
   EmptyEventCreator,
   Event,

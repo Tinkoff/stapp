@@ -1,7 +1,7 @@
 // tslint:disable jsx-no-lambda no-shadowed-variable max-classes-per-file
 import { mount } from 'enzyme'
-import { Subscription } from 'light-observable'
 import React from 'react'
+import { Subscription } from 'rxjs'
 import { StappState } from 'stapp'
 import { getApp } from '../helpers/testApp'
 import { Api } from './Api'
@@ -80,7 +80,7 @@ describe('context tools', () => {
       const mockApp: any = {
         getState: app.getState,
         subscribe: (subscriber: any) => {
-          subscription = app.subscribe(subscriber)
+          subscription = app.subscribe(subscriber) as any
 
           return subscription
         }
