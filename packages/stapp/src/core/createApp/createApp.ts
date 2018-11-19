@@ -1,5 +1,5 @@
-import { PartialObserver, Subscription } from 'light-observable/core/types.h'
 import { Middleware } from 'redux'
+import { PartialObserver, Subscription } from 'rxjs'
 import $$observable from 'symbol-observable'
 import { disconnectEvent, initEvent, readyEvent } from '../../events/lifecycle'
 import { APP_KEY } from '../../helpers/constants'

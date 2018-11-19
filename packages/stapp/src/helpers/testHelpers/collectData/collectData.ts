@@ -1,17 +1,21 @@
-import { EMPTY } from 'light-observable/observable'
-import { forEach } from 'light-observable/operators'
-
-// Models
-import { Subscribable } from 'light-observable'
+import { EMPTY, Subscribable } from 'rxjs'
 import { Thunk } from '../../../core/createApp/createApp.h'
 
 /**
  * @private
  */
-export async function collectData<T>(stream: Subscribable<T> | void): Promise<T[]> {
+export async function collectData<T>(
+  stream: Subscribable<T> = EMPTY
+): Promise<T[]> {
   const result: T[] = []
 
-  return forEach((x: T) => result.push(x))(stream || EMPTY).then(() => result)
+  return new Promise((res, rej) =>
+    stream.subscribe({
+      next: (x: T) => result.push(x),
+      complete: res,
+      error: rej
+    })
+  ).then(() => result)
 }
 
 /**
