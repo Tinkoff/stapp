@@ -42,8 +42,8 @@
     "stapp-formbase": ">=2.5.0"
   },
   "dependencies": {
-    "light-observable": "^2.13.1",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "rxjs": "6.3.3"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",

@@ -1,6 +1,5 @@
-import { Observable } from 'light-observable'
-import { concat, fromPromise, of } from 'light-observable/observable'
-import { catchError, switchMap } from 'light-observable/operators'
+import { concat, from, Observable, of } from 'rxjs'
+import { catchError, switchMap } from 'rxjs/operators'
 import { setError, setReady } from 'stapp-formbase'
 import { isPromise } from 'stapp/lib/helpers/is/isPromise/isPromise'
 import { asyncValidationEnd, asyncValidationStart } from './events'
@@ -13,10 +12,13 @@ import { ValidationFlags, ValidationRule } from './validate.h'
 /**
  * @private
  */
-export const normalizeResult = (fieldName: string, result: any): Observable<Event<any, any>> => {
+export const normalizeResult = (
+  fieldName: string,
+  result: any
+): Observable<Event<any, any>> => {
   // if it's a promise, unwrap
   if (isPromise(result)) {
-    return fromPromise(result).pipe(
+    return from(result).pipe(
       switchMap((promiseResult) => normalizeResult(fieldName, promiseResult)),
       catchError((error) => of(setError({ [fieldName]: error })))
     )
