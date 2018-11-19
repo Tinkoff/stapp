@@ -39,8 +39,8 @@
   },
   "peerDependencies": {
     "react": ">=16",
-    "stapp": "^2.4.2",
-    "stapp-formbase": ">=2.4.2"
+    "stapp": "^2.5.0",
+    "stapp-formbase": ">=2.5.0"
   },
   "dependencies": {
     "fbjs": ">=1.0.0",
