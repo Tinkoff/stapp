@@ -170,7 +170,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   return Object.freeze({
     name: appName,
     subscribe(next?: PartialObserver<State> | ((value: State) => void)) {
-      return store.state$.subscribe(next)
+      return store.state$.subscribe(next as PartialObserver<State>)
     },
     dispatch: rootDispatch,
     getState: store.getState,

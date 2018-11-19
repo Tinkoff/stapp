@@ -1,15 +1,15 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { defer, EMPTY } from 'light-observable/observable'
+import { defer, EMPTY } from 'rxjs'
 import {
   auditTime,
   catchError,
+  distinctUntilChanged,
   filter,
   map,
-  skipRepeats,
   tap,
   timeout
-} from 'light-observable/operators'
-import { combineEpics, dangerouslyReplaceState } from 'stapp'
+} from 'rxjs/operators'
+import { dangerouslyReplaceState } from 'stapp'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { logError } from 'stapp/lib/helpers/logError/logError'
 import { DEFAULT_TIMEOUT, PERSIST } from './constants'
@@ -67,7 +67,7 @@ export const persist = <State>({
       filter(() => loaded),
       throttle > 0 ? auditTime(throttle) : identity,
       map(pick(blackList, whiteList)),
-      skipRepeats(shallowEqual),
+      distinctUntilChanged(shallowEqual),
       map(mapTransform(transforms)),
       tap((state) => {
         storage
@@ -100,7 +100,7 @@ export const persist = <State>({
     api: {
       clearStorage
     },
-    epic: combineEpics([setEpic, getEpic]),
+    epic: [setEpic, getEpic],
     useGlobalObservableConfig: false
   }
 }
