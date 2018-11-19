@@ -1,5 +1,5 @@
-import { from } from 'light-observable/observable'
-import { filter, map, mergeMap } from 'light-observable/operators'
+import { from } from 'rxjs'
+import { filter, map, mergeMap } from 'rxjs/operators'
 import {
   createEvent,
   createReducer,
