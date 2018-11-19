@@ -1,8 +1,8 @@
 import {
   createContext,
   createElement,
-  ReactNode,
-  StatelessComponent
+  FunctionComponent,
+  ReactNode
 } from 'react'
 import { Stapp } from 'stapp'
 
@@ -19,4 +19,4 @@ export const Provider = <State, Api>({
     value: app,
     children
   })
-;(Provider as StatelessComponent<any>).displayName = 'Stapp.Provider'
+;(Provider as FunctionComponent<any>).displayName = 'Stapp.Provider'
