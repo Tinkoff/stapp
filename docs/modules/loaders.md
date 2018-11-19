@@ -23,7 +23,7 @@ type loaders = () => Module<{}, { loaders: { [K: string]: boolean } }>
 
 ```js
 // myModule.js
-import { mapTo } from 'light-observable/operators'
+import { mapTo } from 'rxjs/operators'
 import { createEffect } from 'stapp'
 import { loaderStart, loaderEnd, LOADERS } from 'stapp-loaders'
 

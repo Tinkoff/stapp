@@ -164,7 +164,7 @@ The only difference between redux-observable epics and Stapp epics is that the l
 Here is an example of an epic:
 
 ```typescript
-import { map, filter } from 'light-observable/operators'
+import { map, filter } from 'rxjs/operators'
 import { select, createEvent } from 'stapp'
 import { setValue } from 'stapp-formbase'
 
@@ -199,7 +199,7 @@ Every function passed to the `modules` field will be called with a value provide
 ```typescript
 // moduleA.js
 import { select } from 'stapp'
-import { switchMap, map, filter } from 'light-observable/operators'
+import { switchMap, map, filter } from 'rxjs/operators'
 
 import { request } from 'my-services'
 

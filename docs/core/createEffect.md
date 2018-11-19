@@ -49,7 +49,7 @@ Creates an EffectCreator. Accepts a description, a side effect function (optiona
 
 ```js
 import { createEffect } from 'stapp'
-import { switchMap } from 'light-observable'
+import { switchMap } from 'rxjs'
 
 const payEffect = createEffect(
   // Effect descriptioo=n
