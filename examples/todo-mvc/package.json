@@ -1,23 +1,29 @@
 {
   "name": "todo-mvc",
-  "version": "2.5.0-0",
+  "version": "2.5.0",
   "private": true,
   "dependencies": {
     "light-observable": "^2.13.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.4",
-    "redux": "^4.0.0",
-    "reselect": "^3.0.1",
-    "stapp": "^2.5.0-0",
-    "stapp-formbase": "^2.5.0-0",
-    "stapp-persist": "^2.5.0-0",
-    "stapp-react": "^2.5.0-0",
-    "todomvc-app-css": "^2.0.0",
-    "todomvc-common": "^1.0.0"
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1",
+    "redux": "^4.0.1",
+    "reselect": "^4.0.0",
+    "stapp": "^2.5.0",
+    "stapp-formbase": "^2.5.0",
+    "stapp-persist": "^2.5.0",
+    "stapp-react": "^2.5.0",
+    "todomvc-app-css": "^2.1.2",
+    "todomvc-common": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

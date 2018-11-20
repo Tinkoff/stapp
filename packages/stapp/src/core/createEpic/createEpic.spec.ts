@@ -1,5 +1,4 @@
-import { Observable } from 'light-observable'
-import { EMPTY } from 'light-observable/observable'
+import { EMPTY, of } from 'rxjs'
 import { identity } from '../../helpers/identity/identity'
 import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { createEvent } from '../createEvent/createEvent'
@@ -10,7 +9,7 @@ describe('createEpic', () => {
     const a = createEvent()
     const b = createEvent()
     const aEpic = createEpic(a, (event$) => event$)
-    const events$ = Observable.of(a(), b())
+    const events$ = of(a(), b())
     const result = await collectData(
       aEpic(events$, EMPTY, {
         getState: () => ({}),
@@ -28,7 +27,7 @@ describe('createEpic', () => {
     const b = createEvent()
     const c = createEvent()
     const aEpic = createEpic([a, b], (event$) => event$)
-    const events$ = Observable.of(a(), b(), c())
+    const events$ = of(a(), b(), c())
     const result = await collectData(
       aEpic(events$, EMPTY, {
         getState: () => ({}),

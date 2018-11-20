@@ -1,4 +1,4 @@
-import { tap } from 'light-observable/operators'
+import { tap } from 'rxjs/operators'
 import { createApp, createEvent } from 'stapp'
 import { EventCreator1 } from 'stapp/lib/core/createEvent/createEvent.h'
 import { loggerModule } from 'stapp/lib/helpers/testHelpers/loggerModule/loggerModule'

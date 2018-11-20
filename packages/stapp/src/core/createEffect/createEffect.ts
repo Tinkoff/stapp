@@ -1,4 +1,4 @@
-import { concat, EMPTY, fromPromise, of } from 'light-observable/observable'
+import { concat, EMPTY, from, of } from 'rxjs'
 import { APP_KEY } from '../../helpers/constants'
 import { isPromise } from '../../helpers/is/isPromise/isPromise'
 import { createEvent } from '../createEvent/createEvent'
@@ -63,7 +63,7 @@ export const createEffect = <Payload, Result, Error = any>(
 
     return concat(
       of(start(payload)),
-      fromPromise(
+      from(
         run(payload, _effect)
           .then((result) => success(result))
           .catch((error) => fail(error))

@@ -1,4 +1,4 @@
-import { createElement, StatelessComponent } from 'react'
+import { createElement, FunctionComponent } from 'react'
 import { STAPP_REACT } from '../helpers/constants'
 import { renderPropType } from '../helpers/propTypes'
 import { renderComponent } from '../helpers/renderComponent'
@@ -25,8 +25,8 @@ export const Api = <A>(props: ApiProps<A, any>) => {
     }
   })
 }
-;(Api as StatelessComponent<any>).displayName = 'Stapp.Provider'
-;(Api as StatelessComponent<any>).propTypes = {
+;(Api as FunctionComponent<any>).displayName = 'Stapp.Provider'
+;(Api as FunctionComponent<any>).propTypes = {
   render: renderPropType,
   children: renderPropType,
   component: renderPropType

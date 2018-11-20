@@ -1,7 +1,6 @@
-import { Observable } from 'light-observable'
-import { createSubject, EMPTY, of } from 'light-observable/observable'
-import { filter, map } from 'light-observable/operators'
 import { compose, Middleware } from 'redux'
+import { EMPTY, from, Observable, of, Subject } from 'rxjs'
+import { filter, map } from 'rxjs/operators'
 import {
   dangerouslyReplaceState,
   dangerouslyResetState
@@ -87,7 +86,7 @@ describe('createApp', () => {
 
     it('should unsubscribe from epics', () => {
       let eventStream: any
-      const [stream, sink] = createSubject()
+      const stream = new Subject()
       const epic: Epic<any> = (event$) => {
         eventStream = event$
         return stream
@@ -107,7 +106,7 @@ describe('createApp', () => {
       }
       eventStream.subscribe(observer)
 
-      sink.next(fire1())
+      stream.next(fire1())
       expect(observer.next).toBeCalledWith(expect.objectContaining(fire1()))
       expect(observer.next.mock.calls).toHaveLength(1)
       expect(app.getState().eventLog).toHaveLength(1)
@@ -116,7 +115,7 @@ describe('createApp', () => {
       expect(observer.next.mock.calls).toHaveLength(2)
       expect(observer.complete).toBeCalled()
 
-      sink.next(fire1())
+      stream.next(fire1())
       expect(observer.next.mock.calls).toHaveLength(2)
       expect(app.getState().eventLog).toHaveLength(1)
     })
@@ -632,7 +631,7 @@ describe('createApp', () => {
         modules: [loggerModule]
       })
 
-      await app.dispatch(Observable.of(fire1(), fire2()))
+      await app.dispatch(of(fire1(), fire2()))
 
       expect(app.getState().eventLog).toEqual([
         expect.objectContaining(fire1()),
@@ -652,7 +651,7 @@ describe('createApp', () => {
         dispatch(fire1())
         expect(getState().eventLog).toEqual([expect.objectContaining(fire1())])
 
-        dispatch(Observable.of(fire2()))
+        dispatch(of(fire2()))
         expect(app.getState().eventLog).toEqual([
           expect.objectContaining(fire1()),
           expect.objectContaining(fire2())
@@ -943,7 +942,7 @@ describe('createApp', () => {
         modules: [loggerModule]
       })
 
-      const stream = Observable.from(app)
+      const stream = from(app)
       let state: any
       stream.subscribe((x) => (state = x))
 

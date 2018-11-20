@@ -1,6 +1,6 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { Subscription } from 'light-observable'
 import { Component } from 'react'
+import { Unsubscribable } from 'rxjs'
 import { Stapp } from 'stapp'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { renderComponent } from './renderComponent'
@@ -47,7 +47,7 @@ export class StappSubscription<State, Api, Result> extends Component<
   }
 
   private unmounted: boolean = false
-  private subscription?: Subscription = undefined
+  private subscription?: Unsubscribable = undefined
 
   componentDidMount() {
     this.subscribe()

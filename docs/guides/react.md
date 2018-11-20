@@ -10,6 +10,7 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
 - [Binded components](#binded-components)
   - [`createComponents()`](#createcomponents)
   - [`createConsumer()`](#createconsumer)
+  - [`createApi`](#createapi)
   - [`createConsume()`](#createconsume)
   - [`createForm()` and `createField()`](#createform-and-createfield)
 - [Context-based components](#context-based-components)

@@ -3,7 +3,7 @@
 
 [![Build status](https://img.shields.io/travis/TinkoffCreditSystems/stapp/master.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Coveralls github](https://img.shields.io/coveralls/github/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://coveralls.io/github/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) [![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)](https://github.com/TinkoffCreditSystems/stapp)
 
-Stapp is a modular state and side-effects management tool based on redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
+Stapp is a modular state and side-effects management tool based on rxjs and redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
 Includes:
 

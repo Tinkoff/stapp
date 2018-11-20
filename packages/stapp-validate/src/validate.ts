@@ -1,11 +1,5 @@
-import { EMPTY, from, merge } from 'light-observable/observable'
-import {
-  filter,
-  groupBy,
-  map,
-  mergeMap,
-  switchMap
-} from 'light-observable/operators'
+import { EMPTY, from, merge } from 'rxjs'
+import { filter, groupBy, map, mergeMap, switchMap } from 'rxjs/operators'
 import { combineEpics, initEvent, select } from 'stapp'
 import { FORM_BASE, setTouched, setValue, submit } from 'stapp-formbase'
 import { VALIDATE } from './constants'

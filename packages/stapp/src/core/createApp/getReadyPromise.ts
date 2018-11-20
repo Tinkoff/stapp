@@ -1,5 +1,5 @@
 // tslint:disable no-use-before-declare
-import { Observable, Subscription } from 'light-observable'
+import { Observable, Subscription } from 'rxjs'
 import { initEvent } from '../../events/lifecycle'
 import { controlledPromise } from '../../helpers/controlledPromise/controlledPromise'
 import { getEventType } from '../../helpers/getEventType/getEventType'
@@ -60,12 +60,7 @@ export const getReadyPromise = <State>(
   }
 
   let ready = false
-  let subscription: Subscription
-
-  event$.subscribe({
-    start(s) {
-      subscription = s
-    },
+  const subscription = event$.subscribe({
     next(event) {
       removeEvent(event.type)
     }

@@ -1,6 +1,5 @@
 import { FluxStandardAction } from 'flux-standard-action'
-import { Observable } from 'light-observable'
-import { EMPTY } from 'light-observable/observable'
+import { EMPTY, of } from 'rxjs'
 import { identity } from '../../helpers/identity/identity'
 import { collectData } from '../../helpers/testHelpers/collectData/collectData'
 import { createEvent } from './createEvent'
@@ -152,7 +151,7 @@ describe('createEvent', () => {
     const a = createEvent()
     const b = createEvent()
     const aEpic = a.epic((event$) => event$)
-    const events$ = Observable.of(a(), b(), {})
+    const events$ = of(a(), b(), {} as any)
     const result = await collectData(
       aEpic(events$, EMPTY, {
         getState: () => ({}),

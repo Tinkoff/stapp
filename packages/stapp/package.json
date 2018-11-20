@@ -1,6 +1,6 @@
 {
   "name": "stapp",
-  "version": "2.5.0-0",
+  "version": "2.5.0",
   "description": "Modular state manager for microapps",
   "keywords": [
     "state-management",
@@ -36,13 +36,13 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "dependencies": {
-    "light-observable": "^2.13.1",
     "redux": ">= 4",
+    "rxjs": ">= 6",
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.3",
-    "@types/node": "^10.11.4",
+    "@types/jest": "^23.3.9",
+    "@types/node": "^10.12.9",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
@@ -52,10 +52,10 @@
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
     "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-prettier": "^1.16.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.6"
   }
 }
