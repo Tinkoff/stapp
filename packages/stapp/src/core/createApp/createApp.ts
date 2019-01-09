@@ -44,6 +44,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   rehydrate?: Partial<State>
   middlewares?: Middleware[]
   devtools?: false | DevtoolsConfig
+  handleEpicsErrors?: (errorCb: (error: any) => void) => void
 }): Stapp<State, Api> => {
   const appName = config.name || uniqify('Stapp')
   const devtools =
@@ -60,6 +61,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const dependencies = config.dependencies || {}
   const initialState = config.rehydrate || {}
   const middlewares = config.middlewares || []
+  const handleEpicsErrors = config.handleEpicsErrors
 
   const modules: Array<Module<Partial<Api>, Partial<State>, State>> = []
   const moduleNames = new Set<string>()
@@ -138,7 +140,9 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
         )
         .filter((epicStream) => !!epicStream)
         .forEach((epicStream) => {
-          subscriptions.push(toESObservable(epicStream).subscribe(dispatch))
+          subscriptions.push(
+            toESObservable(epicStream).subscribe(dispatch, handleEpicsErrors)
+          )
         })
     }
 
