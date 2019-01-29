@@ -11,7 +11,10 @@ describe('createForm', () => {
   test('Form', () => {
     const app = createApp({
       name: 'test',
-      modules: [loggerModule({ pattern: null }), formBase<{ test1: string }>()]
+      modules: [
+        loggerModule({ pattern: null }),
+        formBase<{ test1: string; test2: string }>()
+      ]
     })
 
     const last = (a: any[]) => a[a.length - 1]
@@ -32,6 +35,15 @@ describe('createForm', () => {
                   </React.Fragment>
                 )}
               </Field>
+
+              <Field name="test2">
+                {({ input, meta }) => (
+                  <React.Fragment>
+                    <input {...input} />
+                    {meta.touched && meta.error && <span>{meta.error}</span>}
+                  </React.Fragment>
+                )}
+              </Field>
             </form>
           )}
         </Form>
@@ -39,17 +51,21 @@ describe('createForm', () => {
     }
 
     const mounted = mount(<DummyForm />)
-    const input = mounted.find('input').first()
+    const firstInput = mounted.find('input').first()
+    const secondInput = mounted.find('input').last()
     const form = mounted.find('form').first()
 
-    input.simulate('focus')
+    firstInput.simulate('focus')
     expect(app.getState().active).toEqual('test1')
 
-    input.simulate('blur')
+    secondInput.simulate('blur')
+    expect(app.getState().active).toEqual('test1')
+
+    firstInput.simulate('blur')
     expect(app.getState().active).toEqual(null)
     expect(app.getState().touched.test1).toEqual(true)
-    ;(input.instance() as any).value = 'test'
-    input.simulate('change')
+    ;(firstInput.instance() as any).value = 'test'
+    firstInput.simulate('change')
     expect(app.getState().values.test1).toEqual('test')
 
     form.simulate('submit')
