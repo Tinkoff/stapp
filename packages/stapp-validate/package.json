@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "reselect": "^4.0.0",
-    "rxjs": "6.3.3"
+    "rxjs": ">= 6"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",
