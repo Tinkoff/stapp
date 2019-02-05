@@ -1,6 +1,6 @@
 {
   "name": "form-async-validation",
-  "version": "2.6.0-1",
+  "version": "2.6.0-2",
   "private": true,
   "dependencies": {
     "fbjs": "^1.0.0",
@@ -11,12 +11,12 @@
     "react-scripts": "2.1.2",
     "redux": "^4.0.1",
     "reselect": "^4.0.0",
-    "stapp": "^2.6.0-1",
-    "stapp-formbase": "^2.6.0-1",
-    "stapp-loaders": "^2.6.0-1",
-    "stapp-persist": "^2.6.0-1",
-    "stapp-react": "^2.6.0-1",
-    "stapp-validate": "^2.6.0-1",
+    "stapp": "^2.6.0-2",
+    "stapp-formbase": "^2.6.0-2",
+    "stapp-loaders": "^2.6.0-2",
+    "stapp-persist": "^2.6.0-2",
+    "stapp-react": "^2.6.0-2",
+    "stapp-validate": "^2.6.0-2",
     "styled-components": "^4.1.1"
   },
   "scripts": {
