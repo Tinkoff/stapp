@@ -6,7 +6,8 @@ import { StappState } from 'stapp'
 import { getApp } from '../helpers/testApp'
 import { Api } from './Api'
 import { Consumer } from './Consumer'
-import { Provider, StappContext } from './Provider'
+import { Provider } from './Provider'
+import { StappContext } from '../shared/StappContext'
 
 describe('context tools', () => {
   describe('Provider', () => {

@@ -1,7 +1,7 @@
-import { hello } from './'
+import { identity } from 'stapp/lib/helpers/identity/identity'
 
 describe('template', () => {
   it('should work', () => {
-    expect(hello('World')).toBe('hello, World!')
+    expect(identity('World')).toBe('World!')
   })
 })

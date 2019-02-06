@@ -1,6 +1,6 @@
 {
   "name": "stapp-react-hooks",
-  "version": "2.5.0",
+  "version": "2.6.0-3",
   "description": "React hook-based bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -40,16 +40,21 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": ">=2.4.2"
+    "react": ">=16.8",
+    "stapp": ">=2.5.0",
+    "stapp-formbase": ">=2.5.0"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.9",
+    "@types/jest": "^24.0.0",
     "@types/node": "^10.12.2",
+    "@types/react": "^16.8.2",
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
+    "react": "^16.8.0",
     "stapp": "^2.5.0",
+    "stapp-formbase": "^2.6.0-3",
     "ts-jest": "^23.10.4",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
@@ -59,5 +64,9 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "fbjs": "^1.0.0",
+    "stapp-react": ">=2.6.0-3"
   }
 }
