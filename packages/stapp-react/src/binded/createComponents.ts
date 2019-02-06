@@ -4,7 +4,7 @@ import { createField } from './createField'
 import { createForm } from './createForm'
 
 // Models
-import { StatelessComponent } from 'react'
+import { FunctionComponent } from 'react'
 import { Stapp } from 'stapp'
 import { FormBaseState } from 'stapp-formbase'
 import { ConsumeHoc } from '../models/ConsumeHoc'
@@ -17,9 +17,9 @@ export const createComponents = <State extends FormBaseState, Api>(
 ) => {
   const Consumer = createConsumer(app, app.name)
   let consume: ConsumeHoc<State, Api>
-  let Api: StatelessComponent<ApiProps<State, Api>>
-  let Form: StatelessComponent<RenderProps<FormApi>>
-  let Field: StatelessComponent<FieldProps<State>>
+  let Api: FunctionComponent<ApiProps<State, Api>>
+  let Form: FunctionComponent<RenderProps<FormApi>>
+  let Field: FunctionComponent<FieldProps<State>>
 
   return {
     Consumer,

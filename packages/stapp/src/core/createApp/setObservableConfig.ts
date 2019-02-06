@@ -1,4 +1,4 @@
-import { Observable } from 'light-observable'
+import { Observable } from 'rxjs'
 import { identity } from '../../helpers/identity/identity'
 import { Module, ObservableConfig } from './createApp.h'
 
@@ -18,8 +18,8 @@ export const getConfig = ({
   const config = observableConfig
     ? observableConfig
     : useGlobalObservableConfig
-      ? globalObservableConfig
-      : {}
+    ? globalObservableConfig
+    : {}
 
   return {
     fromESObservable: config.fromESObservable || identity,

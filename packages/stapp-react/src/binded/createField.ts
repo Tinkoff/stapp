@@ -2,7 +2,7 @@
 import React, {
   ComponentClass,
   createElement,
-  StatelessComponent,
+  FunctionComponent,
   SyntheticEvent
 } from 'react'
 import { fieldSelector, FormBaseState } from 'stapp-formbase'
@@ -20,7 +20,7 @@ import { ConsumerProps, FieldProps } from '../models/Props'
 export const createField = <State extends FormBaseState, Api>(
   Consumer: ComponentClass<ConsumerProps<State, Api, any>>,
   appName: string = 'Stapp'
-): StatelessComponent<FieldProps<State>> => {
+): FunctionComponent<FieldProps<State>> => {
   const Field = (props: FieldProps<State>) => {
     const selector = fieldSelector(props.name, props.extraSelector)
 
@@ -32,8 +32,8 @@ export const createField = <State extends FormBaseState, Api>(
       })
     }
 
-    const handleBlur = (api: any) => () => {
-      api.formBase.setActive(null)
+    const handleBlur = (api: any, active: boolean) => () => {
+      active && api.formBase.setActive(null)
       api.formBase.setTouched({ [props.name]: true })
     }
 
@@ -53,7 +53,7 @@ export const createField = <State extends FormBaseState, Api>(
             name: props.name,
             value: fieldState.value || '',
             onChange: handleChange(api),
-            onBlur: handleBlur(api),
+            onBlur: handleBlur(api, fieldState.active),
             onFocus: handleFocus(api)
           },
           meta: {
@@ -74,7 +74,7 @@ export const createField = <State extends FormBaseState, Api>(
       }
     })
   }
-  ;(Field as StatelessComponent).displayName = `${appName}.Field`
+  ;(Field as FunctionComponent).displayName = `${appName}.Field`
 
   return Field
 }

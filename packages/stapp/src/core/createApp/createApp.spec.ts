@@ -1,7 +1,6 @@
-import { Observable } from 'light-observable'
-import { createSubject, EMPTY, of } from 'light-observable/observable'
-import { filter, map } from 'light-observable/operators'
 import { compose, Middleware } from 'redux'
+import { EMPTY, from, Observable, of, Subject } from 'rxjs'
+import { filter, map } from 'rxjs/operators'
 import {
   dangerouslyReplaceState,
   dangerouslyResetState
@@ -16,6 +15,8 @@ import { createReducer } from '../createReducer/createReducer'
 import { createApp } from './createApp'
 import { Epic, Module, Thunk } from './createApp.h'
 import { setObservableConfig } from './setObservableConfig'
+import { createEpic } from '../createEpic/createEpic'
+import { controlledPromise } from '../../helpers/controlledPromise/controlledPromise'
 
 jest.useFakeTimers()
 
@@ -87,7 +88,7 @@ describe('createApp', () => {
 
     it('should unsubscribe from epics', () => {
       let eventStream: any
-      const [stream, sink] = createSubject()
+      const stream = new Subject()
       const epic: Epic<any> = (event$) => {
         eventStream = event$
         return stream
@@ -107,7 +108,7 @@ describe('createApp', () => {
       }
       eventStream.subscribe(observer)
 
-      sink.next(fire1())
+      stream.next(fire1())
       expect(observer.next).toBeCalledWith(expect.objectContaining(fire1()))
       expect(observer.next.mock.calls).toHaveLength(1)
       expect(app.getState().eventLog).toHaveLength(1)
@@ -116,7 +117,7 @@ describe('createApp', () => {
       expect(observer.next.mock.calls).toHaveLength(2)
       expect(observer.complete).toBeCalled()
 
-      sink.next(fire1())
+      stream.next(fire1())
       expect(observer.next.mock.calls).toHaveLength(2)
       expect(app.getState().eventLog).toHaveLength(1)
     })
@@ -333,107 +334,6 @@ describe('createApp', () => {
     })
   })
 
-  describe('devtools', () => {
-    it('should use __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ if available', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1]
-      })
-
-      expect(rdec).toBeCalledWith({ name: 'testApp' })
-
-      createApp({
-        modules: [m1]
-      } as any)
-
-      expect(rdec.mock.calls[1][0]).toHaveProperty('name')
-    })
-
-    it('should disable devtools', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1],
-        devtools: false
-      })
-
-      expect(rdec).not.toBeCalled()
-    })
-
-    it('should ignore devtools parameter if set to true', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1],
-        devtools: true as false
-      })
-
-      expect(rdec).toBeCalledWith({ name: 'testApp' })
-    })
-
-    it('should pass devtools config', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1],
-        devtools: {
-          maxAge: 1
-        }
-      })
-
-      expect(rdec).toBeCalledWith({ name: 'testApp', maxAge: 1 })
-    })
-
-    it('should overwrite name', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1],
-        devtools: {
-          name: 'test'
-        }
-      })
-
-      expect(rdec).toBeCalledWith({ name: 'test' })
-    })
-  })
-
   describe('epics', () => {
     it('should provide epics a stream of events and a stream of state', () => {
       const events = jest.fn()
@@ -632,7 +532,7 @@ describe('createApp', () => {
         modules: [loggerModule]
       })
 
-      await app.dispatch(Observable.of(fire1(), fire2()))
+      await app.dispatch(of(fire1(), fire2()))
 
       expect(app.getState().eventLog).toEqual([
         expect.objectContaining(fire1()),
@@ -652,7 +552,7 @@ describe('createApp', () => {
         dispatch(fire1())
         expect(getState().eventLog).toEqual([expect.objectContaining(fire1())])
 
-        dispatch(Observable.of(fire2()))
+        dispatch(of(fire2()))
         expect(app.getState().eventLog).toEqual([
           expect.objectContaining(fire1()),
           expect.objectContaining(fire2())
@@ -909,13 +809,13 @@ describe('createApp', () => {
   })
 
   describe('app compatibility', () => {
-    it('should be compatible with Observables', () => {
+    test('ES Observables compat test', () => {
       const app = createApp({
         name: 'testApp',
         modules: [loggerModule]
       })
 
-      const stream = Observable.from(app)
+      const stream = from(app)
       let state: any
       stream.subscribe((x) => (state = x))
 
@@ -927,7 +827,108 @@ describe('createApp', () => {
     })
   })
 
-  it('should support custom middleware', () => {
+  describe('Redux: devtools', () => {
+    it('should use __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ if available', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1]
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp' })
+
+      createApp({
+        modules: [m1]
+      } as any)
+
+      expect(rdec.mock.calls[1][0]).toHaveProperty('name')
+    })
+
+    it('should disable devtools', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: false
+      })
+
+      expect(rdec).not.toBeCalled()
+    })
+
+    it('should ignore devtools parameter if set to true', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: true as false
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp' })
+    })
+
+    it('should pass devtools config', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          maxAge: 1
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'testApp', maxAge: 1 })
+    })
+
+    it('should overwrite name', () => {
+      const rdec = jest.fn().mockImplementation(() => compose)
+      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
+
+      const m1 = {
+        name: 'm1',
+        reducers: { mockReducer }
+      }
+
+      createApp({
+        name: 'testApp',
+        modules: [m1],
+        devtools: {
+          name: 'test'
+        }
+      })
+
+      expect(rdec).toBeCalledWith({ name: 'test' })
+    })
+  })
+
+  test('Redux: custom middleware support', () => {
     let mock: any
     const middleware: Middleware = () => (next) => {
       mock = jest.fn((action: any) => {
@@ -950,5 +951,39 @@ describe('createApp', () => {
 
     expect(mock).toBeDefined()
     expect(mock).toBeCalled()
+  })
+
+  test('Tests: handle async errors', async () => {
+    const failEvent = createEvent<any>()
+    const failingEpic: Epic<any> = createEpic(failEvent, (event$) => {
+      return event$.pipe(
+        map(({ payload }) => {
+          throw payload
+        })
+      )
+    })
+
+    const [promise, resolve] = controlledPromise()
+
+    const handleEpicsErrors = jest.fn(resolve)
+
+    const app = createApp({
+      modules: [
+        {
+          name: 'Failing module',
+          epic: failingEpic
+        },
+        loggerModule
+      ],
+      handleEpicsErrors
+    })
+
+    expect(handleEpicsErrors).not.toBeCalled()
+
+    app.dispatch(failEvent(1))
+
+    await promise
+
+    expect(handleEpicsErrors).toBeCalledWith(1)
   })
 })

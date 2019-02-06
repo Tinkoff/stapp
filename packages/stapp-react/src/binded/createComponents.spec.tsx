@@ -116,7 +116,7 @@ describe('createComponents', () => {
       mount(<Dummy test3={true} />)
     })
 
-    it('should work with stateless components', (done) => {
+    it('should work with function components', (done) => {
       expect.assertions(3)
 
       const app = getApp()

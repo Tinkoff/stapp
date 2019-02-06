@@ -1,6 +1,5 @@
-import { Observable } from 'light-observable'
-import { createSubject, forEach } from 'light-observable/observable'
 import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux'
+import { from, Observable, Subject } from 'rxjs'
 import { SOURCE } from '../../helpers/constants'
 import { isEvent } from '../../helpers/is/isEvent/isEvent'
 import { isSubscribable } from '../../helpers/is/isSubscribable/isSubscribable'
@@ -58,8 +57,9 @@ export const getStore = <State>(
     getReduxEnhancer(devtools)(applyMiddleware(...middlewares))
   )
 
-  const state$ = Observable.from<State>(store as any)
-  const [event$, eventInput$] = createSubject<Event<any, any>>()
+  const state$ = from<State>(store as any)
+  const eventInput$ = new Subject<Event<any, any>>()
+  const event$ = from(eventInput$)
 
   const createDispatch = (moduleName: string) => {
     const dispatch: Dispatch<State> = (event?: any) => {
@@ -84,7 +84,13 @@ export const getStore = <State>(
       }
 
       if (isSubscribable(event)) {
-        return forEach(dispatch, event)
+        return new Promise((resolve, reject) =>
+          event.subscribe({
+            next: dispatch,
+            complete: resolve,
+            error: reject
+          })
+        )
       }
 
       // tslint:disable-next-line strict-type-predicates

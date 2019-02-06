@@ -1,5 +1,5 @@
-import { Observable, Subscribable } from 'light-observable'
 import { Middleware } from 'redux'
+import { Observable, Subscribable } from 'rxjs'
 import { AnyEventCreator, Event } from '../createEvent/createEvent.h'
 import { ReducersMap } from '../createReducer/createReducer.h'
 
@@ -19,7 +19,7 @@ export type EventEpic<Payload, Meta, State> = (
     dispatch: Dispatch<State>
     getState(): State
     fromESObservable(innerStream: Observable<any>): any
-    toESObservable(outerStream: any): Observable<any>
+    toESObservable(outerStream: any): Subscribable<any>
   }
 ) => Subscribable<any> | void
 
@@ -214,6 +214,7 @@ export type CreateApp = {
     rehydrate?: Partial<S1>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<S1, A1>
 
   <
@@ -233,6 +234,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -254,6 +256,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -276,6 +279,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -300,6 +304,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -326,6 +331,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -354,6 +360,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -384,6 +391,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -416,6 +424,7 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 
   <
@@ -451,5 +460,6 @@ export type CreateApp = {
     rehydrate?: Partial<State>
     middlewares?: Middleware[]
     devtools?: false | DevtoolsConfig
+    handleEpicsErrors?: (errorCb: (error: any) => void) => void
   }): Stapp<State, Api>
 }

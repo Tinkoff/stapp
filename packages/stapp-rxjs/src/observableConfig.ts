@@ -1,8 +1,8 @@
-import { Observable } from 'light-observable'
-import { from as rxFrom, Observable as rxObservable } from 'rxjs'
+import { Observable } from 'rxjs'
 import { ObservableConfig } from 'stapp'
+import { identity } from 'stapp/lib/helpers/identity/identity'
 
-export const observableConfig: ObservableConfig<rxObservable<any>> = {
-  fromESObservable: rxFrom,
-  toESObservable: Observable.from
+export const observableConfig: ObservableConfig<Observable<any>> = {
+  fromESObservable: identity,
+  toESObservable: identity
 }

@@ -1,7 +1,7 @@
 // tslint:disable max-classes-per-file jsx-no-lambda no-shadowed-variable
 import { mount } from 'enzyme'
-import { Subscription } from 'light-observable'
 import React from 'react'
+import { Subscription } from 'rxjs'
 import { getApp } from '../helpers/testApp'
 import { createConsumer } from './createConsumer'
 
@@ -64,7 +64,7 @@ describe('createConsumer', () => {
     const mockApp: any = {
       getState: app.getState,
       subscribe: (subscriber: any) => {
-        subscription = app.subscribe(subscriber)
+        subscription = app.subscribe(subscriber) as any
 
         return subscription
       }

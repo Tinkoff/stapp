@@ -2,7 +2,7 @@
 import React, {
   ComponentClass,
   createElement,
-  StatelessComponent,
+  FunctionComponent,
   SyntheticEvent
 } from 'react'
 import { formSelector } from 'stapp-formbase'
@@ -20,7 +20,7 @@ import { ConsumerProps, RenderProps } from '../models/Props'
 export const createForm = <State, Api>(
   Consumer: ComponentClass<ConsumerProps<State, Api, any>>,
   name: string = 'Stapp'
-): StatelessComponent<RenderProps<FormApi>> => {
+): FunctionComponent<RenderProps<FormApi>> => {
   const formDataSelector = formSelector()
 
   const handle = simpleMemoize(
@@ -66,7 +66,7 @@ export const createForm = <State, Api>(
       }
     })
   }
-  ;(Form as StatelessComponent<any>).displayName = `${name}.Form`
+  ;(Form as FunctionComponent<any>).displayName = `${name}.Form`
 
   return Form
 }
