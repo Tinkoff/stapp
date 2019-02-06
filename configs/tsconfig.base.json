@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "strict": true,
+    "strictFunctionTypes": false,
+    "sourceMap": true,
+    "declaration": true,
+    "stripInternal": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "importHelpers": false,
+    "jsx": "react"
+  }
+}
