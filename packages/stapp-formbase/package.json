@@ -1,6 +1,6 @@
 {
   "name": "stapp-formbase",
-  "version": "2.6.0-2",
+  "version": "2.6.0-3",
   "description": "Base form module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -37,8 +37,8 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
   },
   "peerDependencies": {
-    "stapp": "^2.5.0",
-    "reselect": ">=4"
+    "reselect": ">=4",
+    "stapp": "^2.5.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.9",
@@ -47,10 +47,10 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
-    "stapp": "^2.6.0-2",
+    "reselect": "^4.0.0",
+    "stapp": "^2.6.0-3",
     "ts-jest": "^23.10.4",
     "ts-node": "^8.0.2",
-    "reselect": "^4.0.0",
     "tslib": "^1.9.3",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.16.0",
