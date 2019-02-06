@@ -32,8 +32,8 @@ export const createField = <State extends FormBaseState, Api>(
       })
     }
 
-    const handleBlur = (api: any) => () => {
-      api.formBase.setActive(null)
+    const handleBlur = (api: any, active: boolean) => () => {
+      active && api.formBase.setActive(null)
       api.formBase.setTouched({ [props.name]: true })
     }
 
@@ -53,7 +53,7 @@ export const createField = <State extends FormBaseState, Api>(
             name: props.name,
             value: fieldState.value || '',
             onChange: handleChange(api),
-            onBlur: handleBlur(api),
+            onBlur: handleBlur(api, fieldState.active),
             onFocus: handleFocus(api)
           },
           meta: {
