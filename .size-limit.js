@@ -24,6 +24,10 @@ module.exports = [
     path: './packages/stapp-react/lib/index.js'
   },
   {
+    name: 'stapp-react-hooks',
+    path: './packages/stapp-react/lib/index.js'
+  },
+  {
     name: 'stapp-rxjs',
     path: './packages/stapp-rxjs/lib/index.js'
   },
