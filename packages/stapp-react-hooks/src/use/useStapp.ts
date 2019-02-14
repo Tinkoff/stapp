@@ -1,10 +1,9 @@
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { useState, useEffect, useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Stapp } from 'stapp'
-import { identity } from 'stapp/lib/helpers/identity/identity'
 import { StappContext } from 'stapp-react/lib/shared/StappContext'
-import { StappApi } from 'stapp/lib/core/createApp/createApp.h'
-import { StappState } from 'stapp/lib/core/createApp/createApp.h'
+import { StappApi, StappState } from 'stapp/lib/core/createApp/createApp.h'
+import { identity } from 'stapp/lib/helpers/identity/identity'
 import { STAPP_REACT_HOOKS } from '../helpers/constants'
 
 type Selector<T extends Stapp<any, any>, Result> = (

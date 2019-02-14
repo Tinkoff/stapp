@@ -1,10 +1,17 @@
+import { SyntheticEvent } from 'react'
+import { Stapp, StappApi } from 'stapp'
 import { formSelector } from 'stapp-formbase'
+import { FormApi } from 'stapp-react'
 import { useStapp } from './useStapp'
 
-export const useForm = () => {
+export const useForm = <App extends Stapp<any, any>>(): [
+  FormApi,
+  StappApi<App>,
+  App
+] => {
   const [formData, api, app] = useStapp(formSelector())
 
-  const handleSubmit = (syntheticEvent) => {
+  const handleSubmit = (syntheticEvent: SyntheticEvent<HTMLFormElement>) => {
     if (
       syntheticEvent &&
       // tslint:disable-next-line strict-type-predicates

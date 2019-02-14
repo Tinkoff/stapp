@@ -1,10 +1,16 @@
+import { SyntheticEvent } from 'react'
+import { Stapp, StappApi, StappState } from 'stapp'
 import { fieldSelector } from 'stapp-formbase'
+import { FieldApi } from 'stapp-react'
 import { useStapp } from './useStapp'
 
-export const useField = (name, extraSelector) => {
+export const useField = <App extends Stapp<any, any>, Extra = any>(
+  name: string,
+  extraSelector?: (state: StappState<App>) => Extra
+): [FieldApi, StappApi<App>, App] => {
   const [fieldState, api, app] = useStapp(fieldSelector(name, extraSelector))
 
-  const onChange = (event) => {
+  const onChange = (event: SyntheticEvent<HTMLInputElement>) => {
     api.formBase.setValue({
       [name]: event.currentTarget.value
     })
@@ -22,7 +28,7 @@ export const useField = (name, extraSelector) => {
   return [
     {
       input: {
-        name: name,
+        name,
         value: fieldState.value || '',
         onChange,
         onBlur,
