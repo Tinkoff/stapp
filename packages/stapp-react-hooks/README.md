@@ -1,13 +1,18 @@
-# Package name
+# Stapp React Hooks
 
-Description. Please, mention [Stapp](https://github.com/TinkoffCreditSystems/stapp) here.
+React hooks for [Stapp](https://github.com/TinkoffCreditSystems/stapp) here.
 
-Add link to the docs, e.g.: [documentation](https://stapp.js.org).
+See [documentation](https://stapp.js.org/guides/react.html) for more info.
 
 ## Installation
 ```bash
-npm install package-name
+npm install stapp-react-hooks
 ```
+
+## Peer dependencies
+* **react**: >= 16.8
+* **stapp**: >= 2.6.0
+* **stapp-formbase**: >= 2.6.0
 
 ## License
 
