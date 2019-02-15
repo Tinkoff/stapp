@@ -3,10 +3,10 @@ import { filter, map, mergeMap } from 'rxjs/operators'
 import {
   createEvent,
   createReducer,
-  initEvent,
-  select as selectEvents,
   Epic,
-  Module
+  initEvent,
+  Module,
+  select as selectEvents
 } from 'stapp'
 import { SELECT } from './constants'
 

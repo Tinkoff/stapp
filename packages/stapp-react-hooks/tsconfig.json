@@ -1,0 +1,18 @@
+{
+  "extends": "../../configs/tsconfig.base",
+  "compilerOptions": {
+    "declarationDir": "./lib",
+    "outDir": "./lib",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/models/global.d.ts"
+    ]
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+  "include": [
+    "./src"
+  ]
+}
