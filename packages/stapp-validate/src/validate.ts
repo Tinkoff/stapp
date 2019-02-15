@@ -1,12 +1,12 @@
 import { EMPTY, from, merge } from 'rxjs'
 import { filter, groupBy, map, mergeMap, switchMap } from 'rxjs/operators'
-import { combineEpics, initEvent, select, Epic, Module } from 'stapp'
+import { combineEpics, Epic, initEvent, Module, select } from 'stapp'
 import {
   FORM_BASE,
+  FormBaseState,
   setTouched,
   setValue,
-  submit,
-  FormBaseState
+  submit
 } from 'stapp-formbase'
 import { VALIDATE } from './constants'
 import { revalidate } from './events'

@@ -1,6 +1,6 @@
 import { concat, from, Observable, of } from 'rxjs'
 import { catchError, switchMap } from 'rxjs/operators'
-import { setError, setReady, FormBaseState } from 'stapp-formbase'
+import { FormBaseState, setError, setReady } from 'stapp-formbase'
 import { isPromise } from 'stapp/lib/helpers/is/isPromise/isPromise'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
