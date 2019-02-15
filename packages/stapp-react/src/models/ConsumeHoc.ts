@@ -1,5 +1,5 @@
 import { ComponentClass, ComponentType } from 'react'
-import { Omit } from 'stapp/src/types/omit'
+import { Omit } from 'stapp/lib/types/omit'
 
 /**
  * @hidden

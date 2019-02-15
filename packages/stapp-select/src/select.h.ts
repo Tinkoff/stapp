@@ -1,7 +1,4 @@
-import {
-  AnyEventCreator,
-  EventCreator1
-} from 'stapp/lib/core/createEvent/createEvent.h'
+import { AnyEventCreator, EventCreator1 } from 'stapp'
 
 export type SelectConfig<State, Result, Name extends string> = {
   name: Name
