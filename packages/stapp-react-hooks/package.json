@@ -1,0 +1,74 @@
+{
+  "name": "stapp-react-hooks",
+  "version": "2.6.0-3",
+  "description": "React hook-based bindings for stapp - modular state manager",
+  "keywords": [
+    "state-management",
+    "stapp",
+    "state",
+    "reactive",
+    "microservice",
+    "epics",
+    "redux",
+    "react",
+    "hooks"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
+  },
+  "homepage": "https://stapp.js.org/modules/persist.html",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-persist",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "npm run build:module",
+    "build:module": "tsc",
+    "prebuild": "rimraf lib",
+    "update-all": "lernaupdate",
+    "test": "npm run test:lint && npm run test:jest",
+    "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
+    "test:jest": "jest --config ./jest.config.json",
+    "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov | coveralls"
+  },
+  "peerDependencies": {
+    "react": ">=16.8",
+    "stapp": ">=2.5.0",
+    "stapp-formbase": ">=2.5.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.0",
+    "@types/node": "^10.12.2",
+    "@types/react": "^16.8.2",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "jest": "^23.6.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-testing-library": "^5.5.3",
+    "stapp": "^2.6.0-3",
+    "stapp-formbase": "^2.6.0-3",
+    "ts-jest": "^23.10.4",
+    "ts-node": "^7.0.1",
+    "tslib": "^1.9.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "fbjs": "^1.0.0",
+    "stapp-react": ">=2.6.0-3"
+  }
+}

@@ -1,6 +1,6 @@
 # React
 
-Stapp comes with a bunch of helpers that allows using stapp application with react easily. There are two types of these helpers: 
+Stapp comes with a bunch of helpers that integrate stapp and React seamlessly. There are two types of these helpers: 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -17,7 +17,8 @@ Stapp comes with a bunch of helpers that allows using stapp application with rea
   - [Example](#example)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-## Render-prop pattern
+
+## Render-prop components
 Components created with `stapp-react` helpers (or exported as-is) follow the [render-prop pattern](https://reactjs.org/docs/render-props.html).
 ```typescript
 type RenderProps<S, A = {}, State = S> = {
@@ -30,14 +31,14 @@ type RenderProps<S, A = {}, State = S> = {
 }
 ```
 
-## Binded components
+### Binded components
 * `createConsumer`: creates a Consumer component
 * `createConsume`: old-school higher order component
 * `createForm` and `createField`: creates utilities to assist with forms
 * `createApi`: creates an Api component, that provides only app's api and the app itself
 * `createComponents`: creates all of the above.
 
-### `createComponents()`
+#### `createComponents()`
 
 ```typescript
 type createComponents = (app: Stapp) => {
@@ -54,7 +55,7 @@ This means that you can safely use `createComponents` without worrying about unu
 `Consumer`, `Api`, `Form` and `Field` components follow the render-prop pattern.
 See usage examples below. 
 
-### `createConsumer()`
+#### `createConsumer()`
 
 ```typescript
 type createConsumer = (app: Stapp) => Consumer
@@ -105,7 +106,7 @@ const List = ({ todos, handleClick }) => {
 const App = () => <Consumer component={ List } />
 ```
 
-### `createApi`
+#### `createApi`
 ```typescript
 type createApi = (app: Stapp) => Api
 
@@ -138,7 +139,7 @@ const ListItem = ({ text, id }) => <Api>
 </Consumer>
 ```
 
-### `createConsume()`
+#### `createConsume()`
 
 ```typescript
 type createConsume = (Consumer: Consumer) => ConsumerHoc
@@ -173,7 +174,7 @@ const App = inject(
 })
 ```
 
-### `createForm()` and `createField()`
+#### `createForm()` and `createField()`
 
 ```typescript
 type createForm = (Consumer: Consumer) => Form
@@ -249,7 +250,7 @@ const App = () => {
 }
 ```
 
-## Context-based components
+### Context-based components
 * `consume`: same as `consume` created by `createConsume`, but utilizes the app provided by the `Provider`
 * `Provider`: provides an app to the sub-tree
 * `Consumer`: same as `Consumer` created by `createConsumer`, but utilizes the app provided by the `Provider`
@@ -259,7 +260,7 @@ const App = () => {
 
 Context based versions of react helpers is useful when you need reusable components that utilize different apps.
 
-### Example
+#### Example
 [![Edit 8yvv75r050](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/8yvv75r050)
 
 ```js
@@ -317,6 +318,83 @@ const App = () => {
       <Buttons />
     </Provider>
   </>
+}
+```
+
+## Hooks
+Hooks are a new feature in React 16.8. See more about hooks [here](https://reactjs.org/docs/hooks-intro.html).
+
+First of all, all hooks are context-based. We are still exploring the benefits of using binded hooks, and they may be released some time later. 
+Context-based means that you have to use the Provider:
+```js
+import React, { render } from 'react'
+import { Provider, useStapp } from 'stapp-react-hooks'
+import { counterApp } from './counterApp'
+
+const Counter = () => {
+  const [counter, api] = useStapp(state => state.counter)
+  
+  return <button onClick={api.counter.increment}>Times you clicked: { counter }</button>
+}
+
+const App = () => <Provider app={counterApp}>
+  <Counter />
+</Provider>
+
+render(App, rootNode)
+```
+
+### `useStapp()`
+Returns a tuple of a state, an application API and an application itself.
+Accepts an optional selector, which will be applied to an application state.
+
+```typescript
+type Selector<T extends Stapp<any, any>, Result> = (state: StappState<T>, api: StappApi<T>, app: T) => Result;
+
+type useStapp = <T extends Stapp<any, any>, Result = StappState<T>>(
+  selector?: Selector<T, Result>
+) => [Result, StappApi<T>, T];
+```
+
+See usage example above.
+
+### `useApi()`
+Returns an application API.
+
+```typescript
+type useApi = <T extends Stapp<any, any>>() => StappApi<T>
+```
+
+```js
+import React from 'react'
+import { useApi } from 'stapp-react-hooks'
+
+const Increment = () => {
+  const api = useApi()
+  
+  return <button onClick={api.counter.increment}>Increment</button>
+}
+```
+
+### `useForm()` and `useField()`
+Theese hooks work just as Form and Field components. `useForm` returns a tuple of `FormApi`, an application API and an application itself.
+`useField` accepts a field name as the only argument and returns a tuple of `FieldApi`, an application API and an application.
+
+```js
+import React from 'react'
+import { useForm, useField } from 'stapp-react-hooks'
+
+const MyForm = () => {
+  const [form] = useForm()
+  const [name] = useField('name')
+  const [age] = useField('age')
+  
+  return <form onSubmit={form.handleSubmit}>
+    <input type='text' {...name.input } />
+    <input type='text' {...age.input } />
+    <button onClick={form.handleReset} disabled={form.submitting}>Reset form</button>
+    <input type='submit' disabled={form.submitting} value='Submit'/>
+  </form>
 }
 ```
 <!--

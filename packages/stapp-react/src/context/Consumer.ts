@@ -3,10 +3,10 @@ import { Stapp } from 'stapp'
 import { STAPP_REACT } from '../helpers/constants'
 import { consumerPropTypes } from '../helpers/propTypes'
 import { StappSubscription } from '../helpers/StappSubscription'
-import { StappContext } from './Provider'
 
 // Models
 import { ConsumerProps } from '../models/Props'
+import { StappContext } from '../shared/StappContext'
 
 export class Consumer<State, Api> extends Component<
   ConsumerProps<State, Api, any>

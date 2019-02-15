@@ -25,3 +25,50 @@ export const loggerModule = ({
     }
   }
 })
+
+export const logger = ({
+  ignoreRedux = true,
+  ignoreInternal = true,
+  ignorePattern
+}: {
+  ignoreInternal?: boolean
+  ignoreRedux?: boolean
+  ignorePattern?: RegExp
+}): Module<
+  {},
+  {
+    logger: {
+      events: Array<Event<any, any>>
+      allEvents: Array<Event<any, any>>
+      last: Event<any, any>
+    }
+  }
+> => ({
+  name: 'logger',
+  state: {
+    logger: {
+      events: (state: Array<Event<any, any>> = [], event: Event<any, any>) => {
+        if (ignoreRedux && event.type.startsWith('@@redux')) {
+          return state
+        }
+
+        if (ignoreInternal && event.type.startsWith(APP_KEY)) {
+          return state
+        }
+
+        if (ignorePattern && ignorePattern.test(event.type)) {
+          return state
+        }
+
+        return state.concat(event)
+      },
+      allEvents: (
+        state: Array<Event<any, any>> = [],
+        event: Event<any, any>
+      ) => {
+        return state.concat(event)
+      },
+      last: (_, event: Event<any, any>) => event
+    }
+  }
+})

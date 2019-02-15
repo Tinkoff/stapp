@@ -1,12 +1,6 @@
-import {
-  createContext,
-  createElement,
-  FunctionComponent,
-  ReactNode
-} from 'react'
+import { createElement, FunctionComponent, ReactNode } from 'react'
 import { Stapp } from 'stapp'
-
-export const StappContext = createContext<Stapp<any, any> | null>(null)
+import { StappContext } from '../shared/StappContext'
 
 export const Provider = <State, Api>({
   app,
