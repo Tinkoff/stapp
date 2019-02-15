@@ -1,12 +1,6 @@
 import { createEvent } from 'stapp'
 import { VALIDATE } from './constants'
 
-// tslint:disable-next-line
-import {
-  EmptyEventCreator,
-  EventCreator1
-} from 'stapp/lib/core/createEvent/createEvent.h'
-
 /**
  * @private
  */

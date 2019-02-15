@@ -2,9 +2,6 @@ import { createReducer } from 'stapp'
 import { resetForm } from 'stapp-formbase'
 import { asyncValidationEnd, asyncValidationStart } from './events'
 
-// tslint:disable-next-line
-import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
-
 /**
  * @private
  */

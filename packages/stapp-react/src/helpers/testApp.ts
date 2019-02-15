@@ -17,6 +17,9 @@ const testModule = {
   }
 }
 
+/**
+ * @private
+ */
 export const getApp = () =>
   createApp({
     name: 'test',

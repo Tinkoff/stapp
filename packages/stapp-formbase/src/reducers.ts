@@ -16,7 +16,7 @@ import {
 import { mapObject, mergeIfChanged, replace } from './helpers'
 
 // tslint:disable-next-line
-import { Reducer } from 'stapp/lib/core/createReducer/createReducer.h'
+import { Reducer } from 'stapp'
 
 /**
  * @private
@@ -66,13 +66,11 @@ export const createFormBaseReducers = (initialState: any) => {
 
   const activeReducer = createReducer<any>(null)
     .on(setActive, replace)
-    .on(
-      clearFields,
-      (state, payload) => (payload.includes(state as string) ? null : state)
+    .on(clearFields, (state, payload) =>
+      payload.includes(state as string) ? null : state
     )
-    .on(
-      pickFields,
-      (state, payload) => (payload.includes(state as string) ? state : null)
+    .on(pickFields, (state, payload) =>
+      payload.includes(state as string) ? state : null
     )
     .reset(resetForm)
 

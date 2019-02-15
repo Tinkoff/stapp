@@ -9,7 +9,7 @@ import {
   tap,
   timeout
 } from 'rxjs/operators'
-import { dangerouslyReplaceState } from 'stapp'
+import { dangerouslyReplaceState, Epic, Module } from 'stapp'
 import { identity } from 'stapp/lib/helpers/identity/identity'
 import { logError } from 'stapp/lib/helpers/logError/logError'
 import { DEFAULT_TIMEOUT, PERSIST } from './constants'
@@ -23,7 +23,6 @@ import {
 } from './helpers'
 
 // Models
-import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
 import { PersistConfig } from './persist.h'
 
 /**

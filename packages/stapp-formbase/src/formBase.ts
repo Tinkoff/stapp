@@ -16,7 +16,7 @@ import { FormBaseConfig, FormBaseState } from './formBase.h'
 import { createFormBaseReducers } from './reducers'
 
 // Models
-import { Module } from 'stapp/lib/core/createApp/createApp.h'
+import { Module } from 'stapp'
 
 /**
  * Base form module

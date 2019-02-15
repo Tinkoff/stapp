@@ -38,6 +38,7 @@ export {
 } from './core/createApp/createApp.h'
 export { EffectCreator } from './core/createEffect/createEffect.h'
 export {
+  AnyEventCreator,
   BaseEventCreator,
   EmptyEventCreator,
   Event,

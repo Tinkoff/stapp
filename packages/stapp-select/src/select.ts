@@ -4,12 +4,13 @@ import {
   createEvent,
   createReducer,
   initEvent,
-  select as selectEvents
+  select as selectEvents,
+  Epic,
+  Module
 } from 'stapp'
 import { SELECT } from './constants'
 
 // Models
-import { Epic, Module } from 'stapp/lib/core/createApp/createApp.h'
 import { SelectConfig } from './select.h'
 
 export const select = <State, Result, Name extends string>({
