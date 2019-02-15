@@ -52,7 +52,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^23.6.0",
-    "react": "^16.8.0",
+    "react": "^16.8.2",
     "react-dom": "^16.8.0",
     "react-testing-library": "^5.5.3",
     "stapp": "^2.6.0-3",
