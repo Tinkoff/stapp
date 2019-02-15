@@ -28,7 +28,7 @@ export class Consumer<State, Api> extends Component<
             {
               app
             },
-            this.props
+            this.props as any
           )
         )
       }

@@ -30,7 +30,7 @@ export const createConsume = <State, Api>(
           map: this.mapState,
           render: (result: Result, api: Api, app: Stapp<State, Api>) => {
             return createElement(
-              WrappedComponent,
+              WrappedComponent as any,
               Object.assign({}, this.props, { api, app }, result)
             )
           }

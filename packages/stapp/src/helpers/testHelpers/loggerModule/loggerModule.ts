@@ -68,7 +68,7 @@ export const logger = ({
       ) => {
         return state.concat(event)
       },
-      last: (_, event: Event<any, any>) => event
+      last: (_: any, event: Event<any, any>) => event
     }
   }
 })

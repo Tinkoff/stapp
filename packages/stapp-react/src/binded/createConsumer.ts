@@ -21,7 +21,7 @@ export const createConsumer = <State, Api>(
           {
             app
           },
-          this.props
+          this.props as any
         )
       )
     }

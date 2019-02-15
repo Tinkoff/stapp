@@ -1,9 +1,11 @@
-import { createSelector } from 'reselect'
+import { createSelector, Selector } from 'reselect'
 
 // Models
 import { ValidationState } from './validate.h'
 
-export const isValidatingSelector = () => {
+export const isValidatingSelector: <
+  State extends ValidationState
+>() => Selector<State, boolean> = () => {
   return createSelector(
     <State extends ValidationState>(state: State) => state.validating,
     (validating) =>
