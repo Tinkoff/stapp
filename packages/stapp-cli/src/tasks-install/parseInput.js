@@ -3,11 +3,11 @@ const validPackages = require('../stapp-packages')
 
 const getName = (name) => name.startsWith('stapp') ? name : `stapp-${name}`
 
-module.exports = async (context, task) => {
-  context.program.args.forEach(arg => {
+const parseInput = async (context) => {
+  context.packages.forEach(arg => {
     const parsed = parseName(arg)
     const name = getName(parsed.name)
-    const version = parsed.version || context.program.next ? 'next' : 'latest'
+    const version = parsed.version || (context.next ? 'next' : 'latest')
     let skipNotice
 
     if (name === 'stapp-rxjs') {
@@ -15,13 +15,15 @@ module.exports = async (context, task) => {
     }
 
     if (!validPackages.includes(name)) {
-      skipNotice = `Package "${name}" is not supported by stapp-cli yet`
+      skipNotice = `Package "${name}" does not exist or is not supported by stapp-cli yet`
     }
 
-    context.packages.set(name, {
+    context.dependencies.set(name, {
       name,
       version,
       skip: skipNotice
     })
   })
 }
+
+module.exports = parseInput

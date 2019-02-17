@@ -8,5 +8,5 @@ program
   .version(version)
   .description('Stapp command line utilities')
   .command('install [name]', 'install one or more stapp packages and related dependencies').alias('i')
-  .command('test', 'test').alias('t')
+  .command('update', 'update existing stapp packages').alias('u')
   .parse(process.argv)

@@ -1,9 +1,9 @@
 const packageJson = require('package-json')
 
-module.exports = async (context) => {
+const fetchInitialMeta = async (context) => {
   const promises = []
 
-  context.packages.forEach(({ name, version, skip }) => {
+  context.dependencies.forEach(({ name, version, skip }) => {
     if (skip) {
       return
     }
@@ -11,7 +11,7 @@ module.exports = async (context) => {
     promises.push(async () => {
       const meta = await packageJson(name, { version })
 
-      context.packages.set(name, {
+      context.dependencies.set(name, {
         name,
         version: meta.version,
         peerDependencies: meta.peerDependencies ? Object.entries(meta.peerDependencies) : null
@@ -21,3 +21,5 @@ module.exports = async (context) => {
 
   return Promise.all(promises.map(p => p()))
 }
+
+module.exports = fetchInitialMeta

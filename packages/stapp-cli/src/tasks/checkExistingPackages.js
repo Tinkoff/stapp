@@ -4,12 +4,9 @@ const readFile = promisify(require('fs').readFile)
 
 // Utils
 const has = require('../utils/has')
+const removeCaret = require('../utils/removeCaret')
 
-module.exports = async (context) => {
-  if (context.program.reinstall) {
-    return
-  }
-
+const checkExistingPackages = async (context) => {
   const { dependencies } = JSON.parse(await readFile('./package.json', 'utf-8'))
 
   context.dependencies.forEach(({ name, version, skip }) => {
@@ -21,16 +18,22 @@ module.exports = async (context) => {
       return
     }
 
-    const currentVersion = dependencies[name]
+    const currentVersion = removeCaret(dependencies[name])
 
-    if (semver.satisfies(semver.coerce(currentVersion).version, version)) {
-      context.dependencies.set(name, {
-        name,
-        version,
-        skip: 'Package already exists'
-      })
+    if (currentVersion !== version) {
+      return
     }
-  })
 
-  context.deps = dependencies
+    if (context.reinstall) {
+      return
+    }
+
+    context.dependencies.set(name, {
+      name,
+      version,
+      skip: `Package ${name}@${version} already installed and is up to date`
+    })
+  })
 }
+
+module.exports = checkExistingPackages

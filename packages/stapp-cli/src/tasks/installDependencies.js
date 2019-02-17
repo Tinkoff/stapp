@@ -13,11 +13,11 @@ module.exports = (context) => {
       task: (_, task) => {
         const arguments = ['install', `${name}@${version}`]
 
-        if (!context.program.save) {
+        if (!context.save) {
           arguments.push('--no-save')
         }
 
-        if (context.program.saveExact) {
+        if (context.saveExact) {
           arguments.push('--save-exact')
         }
 

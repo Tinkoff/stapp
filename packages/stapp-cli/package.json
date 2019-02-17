@@ -25,7 +25,8 @@
   "scripts": {},
   "bin": {
     "stapp": "./src/index.js",
-    "stapp-install": "./src/index-install.js"
+    "stapp-install": "./src/index-install.js",
+    "stapp-update": "./src/index-update.js"
   },
   "dependencies": {
     "chalk": "^2.4.2",

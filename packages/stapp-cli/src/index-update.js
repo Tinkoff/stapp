@@ -6,8 +6,8 @@ const minDelay = require('p-min-delay')
 const program = require('commander')
 
 // Tasks
-const parseInput = require('./tasks-install/parseInput')
-const fetchPackages = require('./tasks/fetchInitialMeta')
+const getPackages = require('./tasks-update/getPackages')
+const fetchInitialMeta = require('./tasks/fetchInitialMeta')
 const collectPeerDependencies = require('./tasks/collectPeerDependencies')
 const checkExistingPackages = require('./tasks/checkExistingPackages')
 const installDependencies = require('./tasks/installDependencies')
@@ -26,30 +26,29 @@ program
   .description('Install one or more stapp packages and related dependencies')
   .option('--no-peer', 'Skip peer dependencies installation')
   .option('--no-save', 'Prevents saving to dependencies')
-  .option('--no-reinstall', 'Do not reinstall existing packages if they satisfy corresponding ranges')
   .option('-E, --save-exact', 'Saved dependencies will be configured with an exact version')
   .option('-n, --next', 'Use @next tag instead of @latest as a default version')
   .parse(process.argv)
 
 const tasks = new Listr([
   {
-    title: 'Parsing packages',
-    task: delay(parseInput, 250)
+    title: 'Checking packages',
+    task: delay(getPackages, 250)
   },
   {
     title: 'Fetching packages meta',
-    task: delay(fetchPackages, 250)
+    task: delay(fetchInitialMeta, 250)
   },
   {
     title: 'Collecting peer dependencies',
-    task: delay(collectPeerDependencies, 250),
+    task: delay(collectPeerDependencies, 250)
   },
   {
     title: 'Checking existing packages',
     task: delay(checkExistingPackages, 250)
   },
   {
-    title: 'Installing dependencies',
+    title: 'Installing and updating dependencies',
     task: installDependencies
   }
 ], {
@@ -58,20 +57,19 @@ const tasks = new Listr([
 
 tasks
   .run({
-    type: 'install',
-    packages: program.args,
+    type: 'update',
     peer: program.peer,
     save: program.save,
-    reinstall: program.reinstall,
-    saveExact: program.saveExact,
-    next: program.next,
+    reinstall: false,
+    saveExact: !!program.saveExact,
+    next: !!program.next,
     dependencies: new Map()
   })
   .then(({ dependencies }) => {
     const [installed, skipped] = filterSkipped(dependencies)
 
     console.log()
-    info(`Successfully installed packages: ${[...installed.keys()].sort().join(', ')}`)
+    info(`Successfully installed and/or updated packages: ${[...installed.keys()].sort().join(', ')}`)
 
     if (skipped.size) {
       console.log('Installation of some packages was skipped, see details above.')
