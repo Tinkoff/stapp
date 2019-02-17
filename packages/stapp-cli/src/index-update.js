@@ -13,9 +13,8 @@ const checkExistingPackages = require('./tasks/checkExistingPackages')
 const installDependencies = require('./tasks/installDependencies')
 
 // Utils
-const filterSkipped = require('./utils/filterSkipped')
+const installationLog = require('./utils/installationLog')
 const delay = (fn, ms) => (context, task) => minDelay(fn(context, task), ms)
-const info = (message) => console.log(chalk`{green ${message}}`)
 
 if (!exists('./package.json')) {
   console.log(chalk.red('Stapp-cli is intended to be used inside node package directory.'))
@@ -65,24 +64,7 @@ tasks
     next: !!program.next,
     dependencies: new Map()
   })
-  .then(({ dependencies }) => {
-    const [installed, skipped] = filterSkipped(dependencies)
-
-    console.log()
-    info(`Successfully installed and/or updated packages: ${[...installed.keys()].sort().join(', ')}`)
-
-    if (skipped.size) {
-      console.log('Installation of some packages was skipped, see details above.')
-    }
-
-    if (!program.peer) {
-      console.log('Peer dependencies were not installed.')
-    }
-
-    if (!program.save) {
-      console.log('Installed packages were not saved to package.json.')
-    }
-  })
+  .then(installationLog)
   .catch(error => {
     console.error(error)
   })
