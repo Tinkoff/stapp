@@ -33,10 +33,14 @@
     "commander": "^2.19.0",
     "dedent": "^0.7.0",
     "execa": "^1.0.0",
+    "inquirer": "^6.2.2",
     "listr": "^0.14.3",
     "p-min-delay": "^2.0.0",
     "package-json": "^6.0.0",
     "parse-package-name": "^0.1.0",
-    "semver": "^5.6.0"
+    "rxjs": "^6.4.0",
+    "semver": "^5.6.0",
+    "string-similarity": "^3.0.0",
+    "through": "^2.3.8"
   }
 }

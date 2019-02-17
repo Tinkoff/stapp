@@ -33,7 +33,7 @@ program
 const tasks = new Listr([
   {
     title: 'Parsing packages',
-    task: delay(parseInput, 250)
+    task: parseInput
   },
   {
     title: 'Fetching packages meta',
