@@ -1,10 +1,13 @@
 {
-  "name": "stapp-cli",
+  "name": "stapp-cli-tools",
   "version": "2.6.0-3",
   "description": "Command line utilities for Stapp",
   "keywords": [
     "stapp",
-    "cli"
+    "cli",
+    "utility",
+    "tool",
+    "generator"
   ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
