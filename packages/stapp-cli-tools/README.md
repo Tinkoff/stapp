@@ -1,12 +1,12 @@
-# Stapp CLI
+# Stapp CLI Tools
 
 CLI for [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
-See [documentation](https://stapp.js.org) for more info.
+See [documentation](https://stapp.js.org/guides/cli.html) for more info.
 
 ## Installation
 ```bash
-npm install -g stapp-cli
+npm install -g stapp-cli-tools
 ```
 
 ## License

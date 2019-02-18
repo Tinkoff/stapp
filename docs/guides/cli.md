@@ -9,11 +9,11 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-`stapp-cli` can be used to install and update stapp packages and theirs peer dependencies.
+`stapp-cli-tools` can be used to install and update stapp packages and theirs peer dependencies.
 
 ## Installation and usage
 ```text
-npm install stapp-cli -g
+npm install stapp-cli-tools -g
 ```
 
 ### `stapp-update`
