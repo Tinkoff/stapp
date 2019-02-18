@@ -1,4 +1,5 @@
 const parseName = require('parse-package-name')
+const semver = require('semver')
 const { findBestMatch } = require('string-similarity')
 const { Observable } = require('rxjs')
 const through = require('through')
@@ -21,7 +22,10 @@ const parseInput = (context) => {
       const name = parsed.name
       const version = parsed.version || (context.next ? 'next' : 'latest')
 
-      if (name === 'stapp-rxjs' || name === 'rxjs') {
+      if (
+        (name === 'stapp-rxjs' || name === 'rxjs')
+        && (version === 'latest' || version === 'next' || semver.gte(version, '2.6.0'))
+      ) {
         context.dependencies.set('stapp-rxjs', {
           name,
           version,

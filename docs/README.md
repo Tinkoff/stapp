@@ -8,10 +8,11 @@ Stapp is a modular state and side-effects management tool based on rxjs and redu
 Includes:
 
 * tools for creating reactive applications
-* full compatibility with redux tooling (e.g. middlewares)
+* full compatibility with redux tooling (e.g. custom middlewares)
 * SSR support
 * bunch of drop-in modules which handle common scenarios
-* React utilities (`stapp-react`)
+* React utilities (`stapp-react` and `stapp-react-hooks`)
+* CLI helpers
 
 ### Table of contents
 
@@ -154,9 +155,10 @@ A basic module is an object or a function, returning an object. You've already s
 
 Stapp comes shipped with a bunch of modules covering most common problems (see Modules section in the docs).
 
-## Peer dependencies
+## Stapp CLI
 
-Stapp core package is peer dependent on redux. Other `stapp-*` packages have their own peer dependencies.
+`stapp-cli` can be used to install and update stapp packages and theirs peer dependencies.
+See more [in the corresponding section](guides/cli.md)  of this documentation.
 
 ## License
 

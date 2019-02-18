@@ -6,6 +6,7 @@
   "stapp-persist",
   "stapp-react",
   "stapp-react-hooks",
+  "stapp-rxjs",
   "stapp-select",
   "stapp-validate"
 ]

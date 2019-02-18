@@ -1,27 +1,36 @@
 const chalk = require('chalk')
+const { success, info, warning } = require('log-symbols')
 const filterSkipped = require('./filterSkipped')
-const info = (message) => console.log(chalk`{green ${message}}`)
 
 const installationLog = ({ dependencies, peer, save }) => {
   const [installed, skipped] = filterSkipped(dependencies)
 
   console.log()
   if (installed.size) {
-    info(`Successfully installed and/or updated packages: ${[...installed.keys()].sort().join(', ')}.`)
+    console.log(chalk.green('Successfully installed and/or updated packages:'))
+    for (let [name, { version }] of installed) {
+      console.log(' ', success, `${name}@${version}`)
+    }
   } else {
-    info(`Nothing was installed nor updated.`)
+    console.log(info, chalk.green('Nothing was installed nor updated.'))
   }
 
   if (skipped.size) {
-    console.log('Installation of some packages was skipped, see details above.')
+    console.log()
+    console.log('Installation of some packages was skipped, see details below.')
+    for (let [name, { version, skip }] of skipped) {
+      console.log(' ', info, `${name}@${version}: `, chalk.gray(skip))
+    }
   }
 
+  console.log()
+
   if (!peer) {
-    console.log('Peer dependencies were not installed.')
+    console.log(warning, chalk.yellow('Peer dependencies check was skipped.'))
   }
 
   if (!save) {
-    console.log('Installed packages were not saved to package.json.')
+    console.log(warning, chalk.yellow('Installed packages were not saved to package.json.'))
   }
 }
 

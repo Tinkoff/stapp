@@ -1,33 +1,34 @@
 const execa = require('execa')
-const Listr = require('listr')
+const { Observable } = require('rxjs')
 
 module.exports = (context) => {
-  const tasks = []
+  const tasks = ['install']
+  const deps = []
 
   context.dependencies.forEach(({ name, version, skip }) => {
-    tasks.push({
-      title: `${name}@${version}`,
-      skip: () => {
-        return skip
-      },
-      task: (_, task) => {
-        const arguments = ['install', `${name}@${version}`]
+    if (skip) {
+      return
+    }
 
-        if (!context.save) {
-          arguments.push('--no-save')
-        }
-
-        if (context.saveExact) {
-          arguments.push('--save-exact')
-        }
-
-        return execa('npm', arguments)
-          .then(({ stdout }) => {
-            task.title = `Installed ${stdout.split('\n')[0].slice(2)}`
-          })
-      }
-    })
+    deps.push(`${name}@${version}`)
   })
 
-  return new Listr(tasks, { concurrent: true })
+  if (!context.save) {
+    tasks.push('--no-save')
+  }
+
+  if (context.saveExact) {
+    tasks.push('--save-exact')
+  }
+
+  return new Observable((observer) => {
+    observer.next(`${deps.join(', ')}`)
+
+    execa('npm', [...tasks, ...deps])
+      .then(() => {
+        observer.next()
+        observer.complete()
+      })
+      .catch((error) => observer.error(error))
+  })
 }
