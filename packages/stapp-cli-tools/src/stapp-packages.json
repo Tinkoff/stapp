@@ -1,0 +1,12 @@
+[
+  "stapp",
+  "stapp-cli",
+  "stapp-formbase",
+  "stapp-loaders",
+  "stapp-persist",
+  "stapp-react",
+  "stapp-react-hooks",
+  "stapp-rxjs",
+  "stapp-select",
+  "stapp-validate"
+]

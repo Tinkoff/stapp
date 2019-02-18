@@ -18,6 +18,7 @@
 * [SSR](/guides/ssr.md)
 * [RxJS and other reactive libs](/guides/interop.md)
 * [Application lifecycle](/guides/lifecycle.md)
+* [Stapp CLI](/guides/cli.md)
 
 ### Modules
 * [persist](/modules/persist.md)

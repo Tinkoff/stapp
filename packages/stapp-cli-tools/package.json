@@ -1,0 +1,51 @@
+{
+  "name": "stapp-cli-tools",
+  "version": "2.6.0-3",
+  "description": "Command line utilities for Stapp",
+  "keywords": [
+    "stapp",
+    "cli",
+    "utility",
+    "tool",
+    "generator"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TinkoffCreditSystems/stapp/"
+  },
+  "homepage": "https://stapp.js.org/",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-cli",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "license": "Apache-2.0",
+  "scripts": {},
+  "bin": {
+    "stapp": "./src/index.js",
+    "stapp-install": "./src/index-install.js",
+    "stapp-update": "./src/index-update.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0",
+    "dedent": "^0.7.0",
+    "execa": "^1.0.0",
+    "inquirer": "^6.2.2",
+    "listr": "^0.14.3",
+    "log-symbols": "^2.2.0",
+    "node-notifier": "^5.4.0",
+    "p-min-delay": "^2.0.0",
+    "package-json": "^6.0.0",
+    "parse-package-name": "^0.1.0",
+    "rxjs": "^6.4.0",
+    "semver": "^5.6.0",
+    "string-similarity": "^3.0.0",
+    "through": "^2.3.8"
+  }
+}
