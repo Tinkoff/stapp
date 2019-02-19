@@ -1,6 +1,6 @@
 {
   "name": "stapp-validate",
-  "version": "2.6.0-3",
+  "version": "2.6.0-beta.4",
   "description": "Form validation module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -53,8 +53,8 @@
     "request": "^2.88.0",
     "reselect": "^4.0.0",
     "rxjs": ">= 6",
-    "stapp": "^2.6.0-3",
-    "stapp-formbase": "^2.6.0-3",
+    "stapp": "^2.6.0-beta.4",
+    "stapp-formbase": "^2.6.0-beta.4",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslib": "^1.9.3",

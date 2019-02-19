@@ -1,6 +1,6 @@
 {
   "name": "stapp-react-hooks",
-  "version": "2.6.0-3",
+  "version": "2.6.0-beta.4",
   "description": "React hook-based bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -55,8 +55,8 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-testing-library": "^5.9.0",
-    "stapp": "^2.6.0-3",
-    "stapp-formbase": "^2.6.0-3",
+    "stapp": "^2.6.0-beta.4",
+    "stapp-formbase": "^2.6.0-beta.4",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslib": "^1.9.3",
@@ -69,6 +69,6 @@
   },
   "dependencies": {
     "fbjs": "^1.0.0",
-    "stapp-react": ">=2.6.0-3"
+    "stapp-react": "^2.6.0-beta.4"
   }
 }

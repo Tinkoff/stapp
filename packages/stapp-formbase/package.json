@@ -1,6 +1,6 @@
 {
   "name": "stapp-formbase",
-  "version": "2.6.0-3",
+  "version": "2.6.0-beta.4",
   "description": "Base form module for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -48,7 +48,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^24.1.0",
     "reselect": "^4.0.0",
-    "stapp": "^2.6.0-3",
+    "stapp": "^2.6.0-beta.4",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslib": "^1.9.3",
