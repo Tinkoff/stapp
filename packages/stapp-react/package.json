@@ -40,8 +40,8 @@
   "peerDependencies": {
     "react": ">=16",
     "rxjs": ">=6",
-    "stapp": ">=2.5",
-    "stapp-formbase": ">=2.5"
+    "stapp": ">=2.6",
+    "stapp-formbase": ">=2.6"
   },
   "dependencies": {
     "fbjs": ">=1.0.0",

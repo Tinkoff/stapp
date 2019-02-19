@@ -1,13 +1,21 @@
-# Stapp
+# Stapp Validate
 
-Core part of [Stapp](https://github.com/TinkoffCreditSystems/stapp).
+Validation module for [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
 See [documentation](https://stapp.js.org/modules/validate.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-validate
+npm install stapp-`validate` stapp stapp-formbase rxjs reselect
+# OR using stapp-cli-tools
+stapp install stapp-validate
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
+* **reselect**: >= 4
+* **rxjs**: >= 6
 
 ## License
 

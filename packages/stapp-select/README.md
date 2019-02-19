@@ -1,12 +1,21 @@
 # Stapp Select
-Simple module which provides a way to pick some data from app state when some events was dispatched and dispatch some events in response.
+
+Provides a way to pick some data from app state when some events was dispatched and dispatch some events in response.
+
+Part of [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
 See [documentation](https://stapp.js.org/modules/select.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-select
+npm install stapp-select stapp rxjs
+# OR using stapp-cli-tools
+stapp install stapp-select
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **rxjs**: >= 6
 
 ## License
 

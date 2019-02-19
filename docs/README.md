@@ -12,7 +12,7 @@ Includes:
 * SSR support
 * bunch of drop-in modules which handle common scenarios
 * React utilities (`stapp-react` and `stapp-react-hooks`)
-* CLI helpers
+* CLI helpers (`stapp-cli-tools`)
 
 ### Table of contents
 
@@ -33,10 +33,14 @@ Includes:
 ## Installation
 
 ```bash
-npm install stapp
-# or
-yarn add stapp
+npm install stapp redux rxjs
+# OR using stapp-cli-tools
+stapp install stapp
 ```
+
+### Peer dependencies
+* **rxjs**: >= 6
+* **redux**: >= 4
 
 ## Motivation
 

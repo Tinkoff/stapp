@@ -6,8 +6,14 @@ See [documentation](https://stapp.js.org/modules/formbase.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-formbase
+npm install stapp-formbase stapp reselect
+# OR using stapp-cli-tools
+stapp install stapp-formbase
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **reselect**: >= 4
 
 ## License
 

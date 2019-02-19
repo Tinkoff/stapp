@@ -6,8 +6,14 @@ See [documentation](https://stapp.js.org/modules/persist.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-persist
+npm install stapp-persist stapp rxjs
+# OR using stapp-cli-tools
+stapp install stapp-persist
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **rxjs**: >= 6
 
 ## License
 

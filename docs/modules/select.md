@@ -15,6 +15,17 @@ stores the result at the provided field `name` in the app state and dispatches `
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation
+```bash
+npm install stapp-select stapp rxjs
+# OR using stapp-cli-tools
+stapp install stapp-select
+```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **rxjs**: >= 6
+
 ## Definition
 
 ```typescript

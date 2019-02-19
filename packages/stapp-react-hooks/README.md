@@ -6,13 +6,15 @@ See [documentation](https://stapp.js.org/guides/react.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-react-hooks
+npm install stapp-react-hooks stapp react stapp-formbase
+# OR using stapp-cli-tools
+stapp install stapp-cli-tools
 ```
 
-## Peer dependencies
+### Peer dependencies
 * **react**: >= 16.8
-* **stapp**: >= 2.6.0
-* **stapp-formbase**: >= 2.6.0
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
 
 ## License
 

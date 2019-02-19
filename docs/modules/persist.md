@@ -16,6 +16,17 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation
+```bash
+npm install stapp-persist stapp rxjs
+# OR using stapp-cli-tools
+stapp install stapp-persist
+```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **rxjs**: >= 6
+
 ## Definition
 
 ```typescript

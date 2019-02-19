@@ -11,6 +11,17 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation
+```bash
+npm install stapp-loaders stapp reselect
+# OR using stapp-cli-tools
+stapp install stapp-loaders
+```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **reselect**: >= 4
+
 ## Definition
 
 ```typescript

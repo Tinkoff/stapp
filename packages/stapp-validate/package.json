@@ -40,8 +40,8 @@
   "peerDependencies": {
     "reselect": ">=4",
     "rxjs": ">=6",
-    "stapp": ">=2.5",
-    "stapp-formbase": ">=2.5"
+    "stapp": ">=2.6",
+    "stapp-formbase": ">=2.6"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",

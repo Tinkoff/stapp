@@ -6,8 +6,13 @@ Add link to the docs, e.g.: [documentation](https://stapp.js.org).
 
 ## Installation
 ```bash
-npm install package-name
+npm install package-name stapp
+# OR using stapp-cli-tools
+stapp install package-name
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
 
 ## License
 

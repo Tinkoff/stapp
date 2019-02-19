@@ -15,6 +15,19 @@ Debouncing, throttling and other time-controlling mechanisms are up to you.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation
+```bash
+npm install stapp-`validate` stapp stapp-formbase rxjs reselect
+# OR using stapp-cli-tools
+stapp install stapp-validate
+```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
+* **reselect**: >= 4
+* **rxjs**: >= 6
+
 ## Definition
 
 ```typescript

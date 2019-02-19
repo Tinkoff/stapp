@@ -10,6 +10,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 `stapp-cli-tools` can be used to install and update stapp packages and theirs peer dependencies.
+Also, we definitely plan to implement various code generation features. 
 
 ## Installation and usage
 ```text

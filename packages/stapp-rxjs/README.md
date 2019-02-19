@@ -1,13 +1,21 @@
+# This package is DEPRECATED since 2.6.0
+
 # Stapp RxJS
 
-RxJS utilities for [Stapp](https://github.com/TinkoffCreditSystems/stapp).
+RxJS config for [Stapp](https://github.com/TinkoffCreditSystems/stapp).
 
 See [documentation](https://stapp.js.org/guides/interop.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-rxjs
+npm install stapp-rxjs rxjs stapp
+# OR using stapp-cli-tools
+stapp install stapp-rxjs
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **rxjs**: >= 6
 
 ## License
 

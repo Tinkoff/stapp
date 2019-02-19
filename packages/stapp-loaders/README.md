@@ -6,8 +6,14 @@ See [documentation](https://stapp.js.org/modules/loaders.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-loaders
+npm install stapp-loaders stapp reselect
+# OR using stapp-cli-tools
+stapp install stapp-loaders
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **reselect**: >= 4
 
 ## License
 

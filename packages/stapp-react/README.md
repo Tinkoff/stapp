@@ -6,8 +6,16 @@ See [documentation](https://stapp.js.org/guides/react.html) for more info.
 
 ## Installation
 ```bash
-npm install stapp-react
+npm install stapp-react stapp stapp-formbase react rxjs
+# OR using stapp-cli-tools
+stapp install stapp-react
 ```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
+* **react**: >= 16
+* **rxjs**: >= 6
 
 ## License
 

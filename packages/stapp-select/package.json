@@ -38,7 +38,7 @@
   },
   "peerDependencies": {
     "rxjs": ">=6",
-    "stapp": ">=2.5"
+    "stapp": ">=2.6"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",

@@ -6,8 +6,14 @@ See [documentation](https://stapp.js.org/) for more info.
 
 ## Installation
 ```bash
-npm install stapp
+npm install stapp redux rxjs
+# OR using stapp-cli-tools
+stapp install stapp
 ```
+
+### Peer dependencies
+* **rxjs**: >= 6
+* **redux**: >= 4
 
 ## License
 

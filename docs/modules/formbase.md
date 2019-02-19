@@ -14,6 +14,17 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation
+```bash
+npm install stapp-formbase stapp reselect
+# OR using stapp-cli-tools
+stapp install stapp-formbase
+```
+
+### Peer dependencies
+* **stapp**: >= 2.6
+* **reselect**: >= 4
+
 ## Definition
 
 ```typescript

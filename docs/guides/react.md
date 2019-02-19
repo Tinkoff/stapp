@@ -31,6 +31,20 @@ type RenderProps<S, A = {}, State = S> = {
 }
 ```
 
+### Installation
+```bash
+npm install stapp-react stapp stapp-formbase react rxjs
+# OR using stapp-cli-tools
+stapp install stapp-react
+```
+
+#### Peer dependencies
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
+* **react**: >= 16
+* **rxjs**: >= 6
+
+
 ### Binded components
 * `createConsumer`: creates a Consumer component
 * `createConsume`: old-school higher order component
@@ -343,6 +357,19 @@ const App = () => <Provider app={counterApp}>
 
 render(App, rootNode)
 ```
+
+### Installation
+```bash
+npm install stapp-react-hooks stapp react stapp-formbase
+# OR using stapp-cli-tools
+stapp install stapp-cli-tools
+```
+
+#### Peer dependencies
+* **react**: >= 16.8
+* **stapp**: >= 2.6
+* **stapp-formbase**: >= 2.6
+
 
 ### `useStapp()`
 Returns a tuple of a state, an application API and an application itself.
