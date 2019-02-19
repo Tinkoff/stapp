@@ -36,7 +36,7 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov"
   },
   "peerDependencies": {
-    "stapp": ">=2.5.0"
+    "stapp": ">=2.5"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",

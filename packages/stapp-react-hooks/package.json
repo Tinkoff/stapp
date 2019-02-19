@@ -41,8 +41,8 @@
   },
   "peerDependencies": {
     "react": ">=16.8",
-    "stapp": ">=2.5.0",
-    "stapp-formbase": ">=2.5.0"
+    "stapp": ">=2.5",
+    "stapp-formbase": ">=2.5"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
