@@ -1,6 +1,6 @@
 {
   "name": "stapp-cli-tools",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "description": "Command line utilities for Stapp",
   "keywords": [
     "stapp",
@@ -12,7 +12,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
-    "lib"
+    "src"
   ],
   "author": "Dmitry Korolev <dmitry@korolev.dk> (https://korolev.dk)",
   "repository": {

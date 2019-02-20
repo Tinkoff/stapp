@@ -38,7 +38,5 @@ compiled
 .npmrc
 
 # Other
-tsconfig.json
 testSetup.ts
-src/
 examples/
