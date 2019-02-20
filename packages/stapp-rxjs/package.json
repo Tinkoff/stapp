@@ -1,6 +1,6 @@
 {
   "name": "stapp-rxjs",
-  "version": "2.6.0-beta.4",
+  "version": "2.6.0",
   "description": "RxJS tools for Stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -36,8 +36,8 @@
     "test:ci": "npm run test:lint && jest --config ./jest.config.json --runInBand --coverage --coverageReporters=text-lcov"
   },
   "peerDependencies": {
-    "stapp": ">=2.6",
-    "rxjs": ">=6"
+    "rxjs": ">=6",
+    "stapp": ">=2.6"
   },
   "devDependencies": {
     "@types/jest": "^24.0.6",
@@ -47,7 +47,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^24.1.0",
     "rxjs": "^6.4.0",
-    "stapp": "^2.6.0-beta.4",
+    "stapp": "^2.6.0",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslib": "^1.9.3",
