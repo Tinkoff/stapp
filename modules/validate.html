@@ -287,6 +287,19 @@
             
         </li>
     
+        <li class="chapter " data-level="3.5" data-path="../guides/cli.html">
+            
+                <a href="../guides/cli.html">
+            
+                    
+                    Stapp CLI
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -443,6 +456,10 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#peer-dependencies">Peer dependencies</a></li>
+</ul>
+</li>
 <li><a href="#definition">Definition</a></li>
 <li><a href="#usage">Usage</a><ul>
 <li><a href="#isvalidatingselector"><code>isValidatingSelector()</code></a></li>
@@ -451,6 +468,18 @@
 </li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h2 id="installation">Installation</h2>
+<pre><code class="lang-bash">npm install stapp-`validate` stapp stapp-formbase rxjs reselect
+<span class="hljs-comment"># OR using stapp-cli-tools</span>
+stapp install stapp-validate
+</code></pre>
+<h3 id="peer-dependencies">Peer dependencies</h3>
+<ul>
+<li><strong>stapp</strong>: &gt;= 2.6</li>
+<li><strong>stapp-formbase</strong>: &gt;= 2.6</li>
+<li><strong>reselect</strong>: &gt;= 4</li>
+<li><strong>rxjs</strong>: &gt;= 6</li>
+</ul>
 <h2 id="definition">Definition</h2>
 <pre><code class="lang-typescript"><span class="hljs-keyword">type</span> validate = (config: {
   rules: { [K: <span class="hljs-built_in">string</span>]: ValidationRule },
@@ -644,7 +673,7 @@ app.dispatch(revalidate())
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"validate","level":"4.4","depth":1,"next":{"title":"select","level":"4.5","depth":1,"path":"modules/select.md","ref":"modules/select.md","articles":[]},"previous":{"title":"formbase","level":"4.3","depth":1,"path":"modules/formbase.md","ref":"modules/formbase.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"modules/validate.md","mtime":"2018-11-02T14:47:07.624Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-02T14:47:13.049Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"validate","level":"4.4","depth":1,"next":{"title":"select","level":"4.5","depth":1,"path":"modules/select.md","ref":"modules/select.md","articles":[]},"previous":{"title":"formbase","level":"4.3","depth":1,"path":"modules/formbase.md","ref":"modules/formbase.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"modules/validate.md","mtime":"2019-02-20T14:32:04.454Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-20T14:32:10.600Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

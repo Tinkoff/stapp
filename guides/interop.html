@@ -287,6 +287,19 @@
             
         </li>
     
+        <li class="chapter " data-level="3.5" data-path="cli.html">
+            
+                <a href="cli.html">
+            
+                    
+                    Stapp CLI
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -443,11 +456,6 @@
 <ul>
 <li><a href="#global-config-setobservableconfig">Global config: <code>setObservableConfig()</code></a><ul>
 <li><a href="#example">Example</a></li>
-<li><a href="#prepacked-configurations">Prepacked configurations</a><ul>
-<li><a href="#rxjs">RxJS:</a></li>
-<li><a href="#notice-on-interoperability-with-rxjs-6">Notice on interoperability with RxJS 6</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a href="#local-module-config">Local module config</a></li>
@@ -455,8 +463,8 @@
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <p>Stapp uses a reactive approach to business logic handling. Observables, streams, and epics are the core parts of Stapp.</p>
-<p>Observables in Stapp conform to the <a href="https://github.com/tc39/proposal-observable" target="_blank">Observable proposal</a>. See <a href="http://light-observable.js.org/" target="_blank"><code>light-observable</code></a> for more details.</p>
-<p>This means that those streams are fully compatible with any ECMAScript compatible reactive library, including <strong>RxJS</strong>, <strong>most</strong>, <strong>kefir</strong>, <strong>bacon</strong> and so on.</p>
+<p>Stapp uses RxJS as an observable library.</p>
+<p>This means that those streams are fully compatible with any ECMAScript compatible reactive library, including, <strong>most</strong>, <strong>kefir</strong>, <strong>bacon</strong> and so on.</p>
 <p>There are several ways to use these streams with a preferable reactive library.</p>
 <h2 id="global-config-setobservableconfig">Global config: <code>setObservableConfig()</code></h2>
 <pre><code class="lang-typescript"><span class="hljs-keyword">type</span> setObservableConfig&lt;Stream&gt; = ({
@@ -466,49 +474,40 @@
 </code></pre>
 <p><strong>Note: setObservableConfig() uses global state, and could break apps if used inside a package intended to be shared.</strong></p>
 <h3 id="example">Example</h3>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { <span class="hljs-keyword">from</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs&apos;</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> most <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;most&apos;</span>
 <span class="hljs-keyword">import</span> { setObservableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
 
 setObservableConfig({
-  <span class="hljs-comment">// Converts a plain ES observable to an RxJS observable</span>
-  fromESObservable: <span class="hljs-keyword">from</span>
+  <span class="hljs-comment">// Converts a plain ES observable to an RxJS observable </span>
+  <span class="hljs-comment">// If you are using an Observable-compatible library, you won&apos;t have to setup toESObservable</span>
+  fromESObservable: most.from
 })
 </code></pre>
-<h3 id="prepacked-configurations">Prepacked configurations</h3>
-<h4 id="rxjs">RxJS:</h4>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { setObservableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp&apos;</span>
-<span class="hljs-keyword">import</span> { observableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-rxjs&apos;</span>
-
-setObservableConfig(observableConfig)
-</code></pre>
-<h4 id="notice-on-interoperability-with-rxjs-6">Notice on interoperability with RxJS 6</h4>
-<p>RxJS 6 doesn&apos;t use &apos;symbol-observable&apos; polyfill, and this may cause some weird issues with interop depending on the import order. It is recommended to install and import symbol-observable polyfill somewhere at the top of your JS bundle.</p>
 <h2 id="local-module-config">Local module config</h2>
 <p>Every module can expose its local observable configuration which takes precedence over the global config.</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { observableConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;stapp-rxjs&apos;</span>
-<span class="hljs-keyword">import</span> { switchMap, filter } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs/operators&apos;</span>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> most <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;most&apos;</span>
 
 <span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = {
   name: <span class="hljs-string">&apos;my module&apos;</span>,
-  epic: (event$) =&gt; event$.pipe( <span class="hljs-comment">// event$ here is an RxJS observable</span>
-    filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>),
-    switchMap(({ payload }) =&gt; myEffect(payload))
-  ),
-  observableConfig
+  epic: (event$) =&gt; event$ <span class="hljs-comment">// event$ here is a most stream</span>
+    .filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>)
+    .map(({ payload }) =&gt; most.from(myEffect(payload)))
+    .switchLatest(),
+  observableConfig: { 
+    fromESObservable: most.from
+  }
 }
 </code></pre>
 <h2 id="direct-transformation">Direct transformation</h2>
 <p>Finally, streams can be transformed in place. If you want to make sure that your module ignores global observable configuration and receives the standard Observable stream, set <code>useGlobalObservableConfig</code> to <code>false</code>.</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-keyword">from</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs&apos;</span>
-<span class="hljs-keyword">import</span> { switchMap, filter } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;rxjs/operators&apos;</span>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> most <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;most&apos;</span>
 
 <span class="hljs-keyword">const</span> <span class="hljs-built_in">module</span> = {
   name: <span class="hljs-string">&apos;my module&apos;</span>,
-  epic: (event$) =&gt; event$.pipe( <span class="hljs-comment">// event$ here is a standard Observable having only one non-standard method, `pipe`.</span>
-    <span class="hljs-keyword">from</span>, <span class="hljs-comment">// &lt;-- it&apos;s here!</span>
-    filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>),
-    switchMap(({ payload }) =&gt; myEffect(payload))
-  ),
+  epic: (event$) =&gt; most.from(event$)
+    .filter(({ type }) =&gt; type === <span class="hljs-string">&apos;some event&apos;</span>)
+    .map(({ payload }) =&gt; most.from(myEffect(payload)))
+        .switchLatest(),
   useGlobalObservableConfig: <span class="hljs-literal">false</span> <span class="hljs-comment">// This is necessary if you plan to publish your module elsewhere</span>
 }
 </code></pre>
@@ -555,7 +554,7 @@ setObservableConfig(observableConfig)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"RxJS and other reactive libs","level":"3.3","depth":1,"next":{"title":"Application lifecycle","level":"3.4","depth":1,"path":"guides/lifecycle.md","ref":"guides/lifecycle.md","articles":[]},"previous":{"title":"SSR","level":"3.2","depth":1,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/interop.md","mtime":"2018-11-02T14:47:07.506Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-02T14:47:13.049Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"RxJS and other reactive libs","level":"3.3","depth":1,"next":{"title":"Application lifecycle","level":"3.4","depth":1,"path":"guides/lifecycle.md","ref":"guides/lifecycle.md","articles":[]},"previous":{"title":"SSR","level":"3.2","depth":1,"path":"guides/ssr.md","ref":"guides/ssr.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/interop.md","mtime":"2019-02-20T14:32:04.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-20T14:32:10.600Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

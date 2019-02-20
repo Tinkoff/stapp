@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Application lifecycle · GitBook</title>
+        <title>Stapp CLI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="cli.html" />
+    <link rel="next" href="../modules/persist.html" />
     
     
-    <link rel="prev" href="interop.html" />
+    <link rel="prev" href="lifecycle.html" />
     
 
     </head>
@@ -274,7 +274,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.4" data-path="lifecycle.html">
+        <li class="chapter " data-level="3.4" data-path="lifecycle.html">
             
                 <a href="lifecycle.html">
             
@@ -287,7 +287,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.5" data-path="cli.html">
+        <li class="chapter active" data-level="3.5" data-path="cli.html">
             
                 <a href="cli.html">
             
@@ -435,7 +435,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Application lifecycle</a>
+        <a href=".." >Stapp CLI</a>
     </h1>
 </div>
 
@@ -450,25 +450,189 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="application-lifecycle">Application lifecycle</h1>
+                                <h1 id="stapp-cli">Stapp CLI</h1>
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 <ul>
-<li><a href="#init"><code>init</code></a></li>
-<li><a href="#ready"><code>ready</code></a></li>
-<li><a href="#disconnect"><code>disconnect</code></a></li>
+<li><a href="#installation-and-usage">Installation and usage</a><ul>
+<li><a href="#stapp-update"><code>stapp-update</code></a></li>
+<li><a href="#stapp-install"><code>stapp-install</code></a></li>
+</ul>
+</li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<p>Stapp applications have two major events in their lifecycle.</p>
-<h2 id="init"><code>init</code></h2>
-<p>The initiation process starts when <code>createApp</code> is called. The completion of the process is indicated by the <code>initEvent</code>.</p>
-<h2 id="ready"><code>ready</code></h2>
-<p><code>readyEvent</code> is emitted after the <code>ready</code> promise resolves. See <a href="SSR.html">SSR section</a> for more info.</p>
-<h2 id="disconnect"><code>disconnect</code></h2>
-<p>The disconnection process starts when <code>Stapp.disconnect</code> is called. It starts with the <code>disconnectEvent</code>.
-After that the application disables all dispatch functions and unsubscribes from epics.
-Note, that currently the application can&apos;t be restarted after the disconnection process completes.</p>
+<p><code>stapp-cli-tools</code> can be used to install and update stapp packages and theirs peer dependencies.
+Also, we definitely plan to implement various code generation features. </p>
+<h2 id="installation-and-usage">Installation and usage</h2>
+<pre><code class="lang-text">npm install stapp-cli-tools -g
+</code></pre>
+<h3 id="stapp-update"><code>stapp-update</code></h3>
+<pre><code>$ stapp update --help
 
+  Usage: stapp-update [options]
+
+  Update existing stapp packages.
+
+  Options:
+    --no-peer         Skip peer dependencies installation.
+    --no-save         Prevents saving to dependencies. Same as --no-save for npm-install.
+    -E, --save-exact  Saved dependencies will be configured with an exact version. Same as --save-exact for npm-install.
+    -n, --next        Use @next instead of @latest as a default tag.
+    -h, --help        output usage information
+
+  Examples:
+
+    01. Automatically updates existing stapp packages and it&apos;s peer dependencies:
+    $ stapp update
+      &#x2714; Checking packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing and updating dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.6.0
+      &#x2714; redux@4.0.1
+
+    Installation of some packages was skipped, see details below.
+      &#x2139; rxjs@6.4.0:  Package rxjs@6.4.0 already installed and is up to date
+
+    02. Skipping peer dependencies with --no-peer:
+    $ stapp update --no-peer
+      &#x2714; Checking packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing and updating dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.6.0
+
+    &#x26A0; Peer dependencies check was skipped.
+
+    03. Using @next tag with --next:
+    $ stapp update --next
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.7.0-beta.3
+      &#x2714; redux@4.0.1
+
+    Installation of some packages was skipped, see details below.
+      &#x2139; rxjs@6.4.0:  Package rxjs@6.4.0 already installed and is up to date
+</code></pre><h3 id="stapp-install"><code>stapp-install</code></h3>
+<pre><code>$ stapp install --help
+
+  Usage: stapp-install [options]
+
+  Install one or more stapp packages and related dependencies.
+
+  Automatically handles tags, versions and peerDependencies.
+
+  Options:
+    --no-peer         Skip peer dependencies installation.
+    --no-save         Prevents saving to dependencies. Same as --no-save for npm-install.
+    --no-reinstall    Do not reinstall existing packages if they satisfy corresponding ranges.
+    -E, --save-exact  Saved dependencies will be configured with an exact version. Same as --save-exact for npm-install.
+    -n, --next        Use @next instead of @latest as a default tag.
+    -h, --help        output usage information
+
+  Examples:
+
+    01. Automatically installs latest versions of provided packages and it&apos;s peer dependencies:
+    $ stapp install stapp stapp-validate
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.6.0-3
+      &#x2714; stapp-validate@2.6.0
+      &#x2714; redux@4.0.1
+      &#x2714; rxjs@6.4.0
+      &#x2714; stapp-formbase@2.6.0
+
+    02. Accepts shortnames:
+    $ stapp install formbase
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp-formbase@2.6.0
+      &#x2714; reselect@4.0.0
+      &#x2714; stapp@2.6.0
+
+    03. Fixes typos (if answer is not &quot;y&quot;/&quot;yes&quot;, package installation will be skipped):
+    $ stapp install stap
+      &#x2826; Parsing packages
+        &#x2192; ? &quot;stap&quot; does not exist. Did you mean stapp? (Y)
+        Fetching packages meta
+        Collecting peer dependencies
+        Checking existing packages
+        Installing dependencies
+
+    04. Skipping peer dependencies with --no-peer:
+    $ stapp install stapp --no-peer
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.6.0
+
+    &#x26A0; Peer dependencies check was skipped.
+
+    05. Skipping already installed packages with --no-reinstall:
+    $ stapp install stapp --no-reinstall
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    &#x2139; Nothing was installed nor updated.
+
+    Installation of some packages was skipped, see details below.
+      &#x2139; stapp@2.6.0:  Package stapp@2.6.0 already installed and is up to date
+      &#x2139; redux@4.0.1:  Package redux@4.0.1 already installed and is up to date
+      &#x2139; rxjs@6.4.0:  Package rxjs@6.4.0 already installed and is up to date
+
+    06. Providing package versions:
+    $ stapp install stapp@2.4.2
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.4.2
+      &#x2714; redux@3.7.2
+
+    07. Using @next tag as default with --next:
+    $ stapp install stapp --next
+      &#x2714; Parsing packages
+      &#x2714; Fetching packages meta
+      &#x2714; Collecting peer dependencies
+      &#x2714; Checking existing packages
+      &#x2714; Installing dependencies
+
+    Successfully installed and/or updated packages:
+      &#x2714; stapp@2.7.0-beta.3
+      &#x2714; redux@4.0.1
+      &#x2714; rxjs@6.4.0
+</code></pre>
                                 
                                 </section>
                             
@@ -495,12 +659,12 @@ Note, that currently the application can&apos;t be restarted after the disconnec
 
             
                 
-                <a href="interop.html" class="navigation navigation-prev " aria-label="Previous page: RxJS and other reactive libs">
+                <a href="lifecycle.html" class="navigation navigation-prev " aria-label="Previous page: Application lifecycle">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="cli.html" class="navigation navigation-next " aria-label="Next page: Stapp CLI">
+                <a href="../modules/persist.html" class="navigation navigation-next " aria-label="Next page: persist">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -511,7 +675,7 @@ Note, that currently the application can&apos;t be restarted after the disconnec
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Application lifecycle","level":"3.4","depth":1,"next":{"title":"Stapp CLI","level":"3.5","depth":1,"path":"guides/cli.md","ref":"guides/cli.md","articles":[]},"previous":{"title":"RxJS and other reactive libs","level":"3.3","depth":1,"path":"guides/interop.md","ref":"guides/interop.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/lifecycle.md","mtime":"2019-02-20T14:32:04.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-20T14:32:10.600Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Stapp CLI","level":"3.5","depth":1,"next":{"title":"persist","level":"4.1","depth":1,"path":"modules/persist.md","ref":"modules/persist.md","articles":[]},"previous":{"title":"Application lifecycle","level":"3.4","depth":1,"path":"guides/lifecycle.md","ref":"guides/lifecycle.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"guides/cli.md","mtime":"2019-02-20T14:32:04.329Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-20T14:32:10.600Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

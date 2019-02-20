@@ -287,6 +287,19 @@
             
         </li>
     
+        <li class="chapter " data-level="3.5" data-path="../guides/cli.html">
+            
+                <a href="../guides/cli.html">
+            
+                    
+                    Stapp CLI
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -567,7 +580,7 @@ app.api.formBase.setError(<span class="hljs-comment">/* */</span>)
 <p>Epic is a function, that receives a stream of events and a stream of state, and must return a stream of events. The concept of epics is well explained <a href="https://redux-observable.js.org/docs/basics/Epics.html" target="_blank">here</a>.</p>
 <p>The only difference between redux-observable epics and Stapp epics is that the latter accepts a stream of a state as the last argument.</p>
 <p>Here is an example of an epic:</p>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { map, filter } from <span class="hljs-string">&apos;light-observable/operators&apos;</span>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { map, filter } from <span class="hljs-string">&apos;rxjs/operators&apos;</span>
 <span class="hljs-keyword">import</span> { select, createEvent } from <span class="hljs-string">&apos;stapp&apos;</span>
 <span class="hljs-keyword">import</span> { setValue } from <span class="hljs-string">&apos;stapp-formbase&apos;</span>
 
@@ -594,7 +607,7 @@ app.api.formBase.setError(<span class="hljs-comment">/* */</span>)
 <p>Every function passed to the <code>modules</code> field will be called with a value provided to the <code>dependencies</code> field.</p>
 <pre><code class="lang-typescript"><span class="hljs-comment">// moduleA.js</span>
 <span class="hljs-keyword">import</span> { select } from <span class="hljs-string">&apos;stapp&apos;</span>
-<span class="hljs-keyword">import</span> { switchMap, map, filter } from <span class="hljs-string">&apos;light-observable/operators&apos;</span>
+<span class="hljs-keyword">import</span> { switchMap, map, filter } from <span class="hljs-string">&apos;rxjs/operators&apos;</span>
 
 <span class="hljs-keyword">import</span> { request } from <span class="hljs-string">&apos;my-services&apos;</span>
 
@@ -667,7 +680,7 @@ app.api.formBase.setError(<span class="hljs-comment">/* */</span>)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Modules","level":"2.5","depth":1,"next":{"title":"Epics","level":"2.6","depth":1,"path":"core/epics.md","ref":"core/epics.md","articles":[]},"previous":{"title":"createReducer","level":"2.4","depth":1,"path":"core/createReducer.md","ref":"core/createReducer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/modules.md","mtime":"2018-11-02T14:47:07.565Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-11-02T14:47:13.049Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Modules","level":"2.5","depth":1,"next":{"title":"Epics","level":"2.6","depth":1,"path":"core/epics.md","ref":"core/epics.md","articles":[]},"previous":{"title":"createReducer","level":"2.4","depth":1,"path":"core/createReducer.md","ref":"core/createReducer.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","my-toolbar"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"my-toolbar":{"buttons":[{"label":"GitHub","text":" ","icon":"fa fa-github","url":"https://github.com/TinkoffCreditSystems/stapp/"},{"label":"Share link on Facebook","text":" ","icon":"fa fa-facebook","url":"http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{url}}"},{"label":"Share link on Twitter","text":" ","icon":"fa fa-twitter","url":"http://twitter.com/share?text=Stapp:%20modular%20state%20and%20side-effects%20manager&url=https://stapp.js.org/&hashtags=stapp"},{"label":"Edit this page on github","text":"Edit this page","icon":"fa fa-pencil-square-o","position":"left","url":"https://github.com/TinkoffCreditSystems/stapp/blob/master/docs/{{filepath_lang}}"}]},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"core/modules.md","mtime":"2019-02-20T14:32:04.388Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-20T14:32:10.600Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
