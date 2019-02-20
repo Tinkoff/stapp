@@ -6,6 +6,8 @@ stores the result at the provided field `name` in the app state and dispatches `
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Installation](#installation)
+  - [Peer dependencies](#peer-dependencies)
 - [Definition](#definition)
 - [Usage](#usage)
   - [`name`](#name)

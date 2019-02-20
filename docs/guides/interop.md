@@ -6,9 +6,6 @@
 
 - [Global config: `setObservableConfig()`](#global-config-setobservableconfig)
   - [Example](#example)
-  - [Prepacked configurations](#prepacked-configurations)
-    - [RxJS:](#rxjs)
-    - [Notice on interoperability with RxJS 6](#notice-on-interoperability-with-rxjs-6)
 - [Local module config](#local-module-config)
 - [Direct transformation](#direct-transformation)
 

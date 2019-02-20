@@ -6,15 +6,23 @@ Stapp comes with a bunch of helpers that integrate stapp and React seamlessly. T
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Render-prop pattern](#render-prop-pattern)
-- [Binded components](#binded-components)
-  - [`createComponents()`](#createcomponents)
-  - [`createConsumer()`](#createconsumer)
-  - [`createApi`](#createapi)
-  - [`createConsume()`](#createconsume)
-  - [`createForm()` and `createField()`](#createform-and-createfield)
-- [Context-based components](#context-based-components)
-  - [Example](#example)
+- [Render-prop components](#render-prop-components)
+  - [Installation](#installation)
+    - [Peer dependencies](#peer-dependencies)
+  - [Binded components](#binded-components)
+    - [`createComponents()`](#createcomponents)
+    - [`createConsumer()`](#createconsumer)
+    - [`createApi`](#createapi)
+    - [`createConsume()`](#createconsume)
+    - [`createForm()` and `createField()`](#createform-and-createfield)
+  - [Context-based components](#context-based-components)
+    - [Example](#example)
+- [Hooks](#hooks)
+  - [Installation](#installation-1)
+    - [Peer dependencies](#peer-dependencies-1)
+  - [`useStapp()`](#usestapp)
+  - [`useApi()`](#useapi)
+  - [`useForm()` and `useField()`](#useform-and-usefield)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

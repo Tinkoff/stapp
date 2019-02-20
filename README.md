@@ -3,15 +3,16 @@
 
 [![Build status](https://img.shields.io/travis/TinkoffCreditSystems/stapp/master.svg?style=flat-square)](https://travis-ci.org/TinkoffCreditSystems/stapp) [![Coveralls github](https://img.shields.io/coveralls/github/TinkoffCreditSystems/stapp.svg?style=flat-square)](https://coveralls.io/github/TinkoffCreditSystems/stapp) [![Written in typescript](https://img.shields.io/badge/written_in-typescript-blue.svg?style=flat-square)](https://www.typescriptlang.org/) [![npm](https://img.shields.io/npm/v/stapp.svg?style=flat-square)](https://www.npmjs.com/package/stapp) [![GitHub stars](https://img.shields.io/github/stars/TinkoffCreditSystems/stapp.svg?style=flat-square&label=Stars)](https://github.com/TinkoffCreditSystems/stapp)
 
-Stapp is a modular state and side-effects management tool based on redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
+Stapp is a modular state and side-effects management tool based on rxjs and redux. The primary goal of Stapp is to provide an easy way to create simple, robust and reusable applications.
 
 Includes:
 
 * tools for creating reactive applications
-* full compatibility with redux tooling (e.g. middlewares)
+* full compatibility with redux tooling (e.g. custom middlewares)
 * SSR support
 * bunch of drop-in modules which handle common scenarios
-* React utilities (`stapp-react`)
+* React utilities (`stapp-react` and `stapp-react-hooks`)
+* CLI helpers (`stapp-cli-tools`)
 
 ### Table of contents
 
@@ -20,11 +21,12 @@ Includes:
 
 
 - [Installation](#installation)
+  - [Peer dependencies](#peer-dependencies)
 - [Motivation](#motivation)
 - [Stapp core concepts](#stapp-core-concepts)
 - [Quick start](#quick-start)
 - [Modules](#modules)
-- [Peer dependencies](#peer-dependencies)
+- [Stapp CLI](#stapp-cli)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -32,10 +34,14 @@ Includes:
 ## Installation
 
 ```bash
-npm install stapp
-# or
-yarn add stapp
+npm install stapp redux rxjs
+# OR using stapp-cli-tools
+stapp install stapp
 ```
+
+### Peer dependencies
+* **rxjs**: >= 6
+* **redux**: >= 4
 
 ## Motivation
 
@@ -154,9 +160,10 @@ A basic module is an object or a function, returning an object. You've already s
 
 Stapp comes shipped with a bunch of modules covering most common problems (see Modules section in the docs).
 
-## Peer dependencies
+## Stapp CLI
 
-Stapp core package is peer dependent on redux. Other `stapp-*` packages have their own peer dependencies.
+`stapp-cli` can be used to install and update stapp packages and theirs peer dependencies.
+See more [in the corresponding section](guides/cli.md)  of this documentation.
 
 ## License
 

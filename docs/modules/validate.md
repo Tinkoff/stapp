@@ -8,6 +8,8 @@ Debouncing, throttling and other time-controlling mechanisms are up to you.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Installation](#installation)
+  - [Peer dependencies](#peer-dependencies)
 - [Definition](#definition)
 - [Usage](#usage)
   - [`isValidatingSelector()`](#isvalidatingselector)

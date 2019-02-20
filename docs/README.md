@@ -21,11 +21,12 @@ Includes:
 
 
 - [Installation](#installation)
+  - [Peer dependencies](#peer-dependencies)
 - [Motivation](#motivation)
 - [Stapp core concepts](#stapp-core-concepts)
 - [Quick start](#quick-start)
 - [Modules](#modules)
-- [Peer dependencies](#peer-dependencies)
+- [Stapp CLI](#stapp-cli)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

@@ -3,9 +3,10 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [`init`](#init)
-- [`ready`](#ready)
-- [`disconnect`](#disconnect)
+
+- [Installation and usage](#installation-and-usage)
+  - [`stapp-update`](#stapp-update)
+  - [`stapp-install`](#stapp-install)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
