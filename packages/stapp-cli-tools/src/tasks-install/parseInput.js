@@ -7,12 +7,16 @@ const inquirer = require('inquirer')
 const validPackages = require('../stapp-packages')
 
 const getBestMatch = (name) => {
-  const ratingsA = findBestMatch(name, validPackages).ratings
-  const ratingsB = findBestMatch(`stapp-${name}`, validPackages).ratings
+  const { ratings } = findBestMatch(name, Object.keys(validPackages))
 
-  return ratingsA.concat(ratingsB).sort((a, b) => {
+  const { rating, target } = ratings.sort((a, b) => {
     return b.rating - a.rating
   })[0]
+
+  return {
+    rating,
+    target: validPackages[target]
+  }
 }
 
 const parseInput = (context) => {
@@ -34,16 +38,8 @@ const parseInput = (context) => {
       }
 
       if (validPackages.includes(name)) {
-        context.dependencies.set(name, {
-          name,
-          version
-        })
-        continue
-      }
-
-      if (validPackages.includes(`stapp-${name}`)) {
-        context.dependencies.set(`stapp-${name}`, {
-          name: `stapp-${name}`,
+        context.dependencies.set(validPackages[name], {
+          name: validPackages[name],
           version
         })
         continue
@@ -55,7 +51,7 @@ const parseInput = (context) => {
         context.dependencies.set(name, {
           name,
           version,
-          skip: `Package "${name}" does not exist or is not supported by stapp-cli yet.`
+          skip: `Package "${name}" does not exist or is not supported by stapp-cli-tools yet.`
         })
         continue
       }
@@ -98,7 +94,7 @@ const parseInput = (context) => {
       context.dependencies.set(name, {
         name,
         version,
-        skip: `Package "${name}" does not exist or is not supported by stapp-cli yet.`
+        skip: `Package "${name}" does not exist or is not supported by stapp-cli-tools yet.`
       })
     }
 

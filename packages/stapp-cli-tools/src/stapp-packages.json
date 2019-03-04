@@ -1,12 +1,21 @@
-[
-  "stapp",
-  "stapp-cli",
-  "stapp-formbase",
-  "stapp-loaders",
-  "stapp-persist",
-  "stapp-react",
-  "stapp-react-hooks",
-  "stapp-rxjs",
-  "stapp-select",
-  "stapp-validate"
-]
+{
+  "stapp": "stapp",
+  "stapp-cli-tools": "stapp-cli-tools",
+  "cli-tools": "stapp-cli-tools",
+  "stapp-formbase": "stapp-formbase",
+  "formbase": "stapp-formbase",
+  "stapp-loaders": "stapp-loaders",
+  "loaders": "stapp-loaders",
+  "stapp-persist": "stapp-persist",
+  "persist": "stapp-persist",
+  "stapp-react": "stapp-react",
+  "react": "stapp-react",
+  "stapp-react-hooks": "stapp-react-hooks",
+  "react-hooks": "stapp-react-hooks",
+  "stapp-rxjs": "stapp-rxjs",
+  "rxjs": "stapp-rxjs",
+  "stapp-select": "stapp-select",
+  "select": "stapp-select",
+  "stapp-validate": "stapp-validate",
+  "validate": "stapp-validate"
+}

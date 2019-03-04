@@ -20,7 +20,7 @@
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
   "homepage": "https://stapp.js.org/",
-  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-cli",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:stapp-cli-tools",
   "engines": {
     "node": ">=8.0.0"
   },
