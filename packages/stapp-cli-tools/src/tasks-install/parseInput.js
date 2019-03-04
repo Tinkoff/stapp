@@ -28,7 +28,6 @@ const parseInput = (context) => {
       ) {
         context.dependencies.set('stapp-rxjs', {
           name,
-          version,
           skip: 'Package "stapp-rxjs" is deprecated since 2.6.0.'
         })
         continue
