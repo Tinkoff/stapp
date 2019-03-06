@@ -17,15 +17,16 @@
     "type": "git",
     "url": "https://github.com/TinkoffCreditSystems/stapp/"
   },
+  "homepage": "LINK TO DOCS",
+  "bugs": "https://github.com/TinkoffCreditSystems/stapp/issues?q=is:issue+label:TAG",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=6.0.0"
   },
   "license": "Apache-2.0",
   "scripts": {
     "build": "npm run build:module",
     "build:module": "tsc",
     "prebuild": "rimraf lib",
-    "update-all": "lernaupdate",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "tslint -t verbose './src/**/*.ts' './src/**/*.tsx' -p ./tsconfig.json -c ./tslint.json",
     "test:jest": "jest --config ./jest.config.json",
