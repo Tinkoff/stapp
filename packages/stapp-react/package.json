@@ -1,6 +1,6 @@
 {
   "name": "stapp-react",
-  "version": "2.6.0",
+  "version": "2.7.0-0",
   "description": "React bindings for stapp - modular state manager",
   "keywords": [
     "state-management",
@@ -67,8 +67,8 @@
     "request": "^2.88.0",
     "reselect": "^4.0.0",
     "rxjs": ">=6",
-    "stapp": "^2.6.0",
-    "stapp-formbase": "^2.6.0",
+    "stapp": "^2.7.0-0",
+    "stapp-formbase": "^2.7.0-0",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslib": "^1.9.3",
