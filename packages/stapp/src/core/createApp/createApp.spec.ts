@@ -868,25 +868,7 @@ describe('createApp', () => {
 
       expect(rdec).not.toBeCalled()
     })
-
-    it('should enable devtools with config', () => {
-      const rdec = jest.fn().mockImplementation(() => compose)
-      ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
-
-      const m1 = {
-        name: 'm1',
-        reducers: { mockReducer }
-      }
-
-      createApp({
-        name: 'testApp',
-        modules: [m1],
-        devtools: { enableDevTools: () => true }
-      })
-
-      expect(rdec)
-    })
-
+    
     it('should disable devtools with config', () => {
       const rdec = jest.fn().mockImplementation(() => compose)
       ;(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = rdec
