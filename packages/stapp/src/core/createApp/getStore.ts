@@ -10,10 +10,17 @@ import { getRootReducer } from './getRootReducer'
 /**
  * @private
  */
+const defaultEnableDevTools = () => process.env.NODE_ENV !== 'production'
+
 const getReduxEnhancer = (config: false | DevtoolsConfig) => {
+  if (!config) {
+    return compose
+  }
+
+  const { enableDevTools = defaultEnableDevTools } = config
+
   if (
-    config &&
-    process.env.NODE_ENV !== 'production' &&
+    enableDevTools() &&
     typeof window === 'object' && // tslint:disable-line strict-type-predicates
     typeof (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function'
   ) {

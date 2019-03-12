@@ -194,6 +194,7 @@ export type DevtoolsConfig = {
     dispatch?: boolean
     test?: boolean
   }
+  enableDevTools?: () => boolean
 }
 
 /**
