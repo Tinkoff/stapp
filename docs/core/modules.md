@@ -186,7 +186,7 @@ const form = {
 
 Module can provide a single epic or an array of epics.
 
-See more about Epics in the [Epics section](/core/epics.html).
+See more about Epics in the [Epics section](https://stapp.js.org/core/epics.html).
 
 ## Modules: module factories
 
