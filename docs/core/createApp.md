@@ -72,7 +72,7 @@ The only required field is `modules`.
 (and you should have more than one app, in other cases, you might not need this library) and use redux-devtools. 
 
 #### `modules`
-*array* - See more about modules in the [corresponding section](/core/modules.html).
+*array* - See more about modules in the [corresponding section](https://stapp.js.org/core/modules.html).
 
 #### `dependencies`
 *object* -  Any function provided as a module will be called with the value of this field.
