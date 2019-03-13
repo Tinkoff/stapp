@@ -47,7 +47,7 @@
     "lerna": "^3.4.3",
     "lerna-update-wizard": "^0.11.1",
     "lint-staged": "^8.0.5",
-    "npm-check-updates": "^2.14.3",
+    "npm-check-updates": "^3.0.5",
     "p-series": "^1.1.0",
     "prettier": "^1.15.2",
     "rimraf": "^2.6.2",
