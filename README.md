@@ -168,7 +168,7 @@ See more [in the corresponding section](https://stapp.js.org/guides/cli.html)  o
 ## License
 
 ```
-Copyright 2018 Tinkoff Bank
+Copyright 2019 Tinkoff Bank
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
