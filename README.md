@@ -162,7 +162,7 @@ Stapp comes shipped with a bunch of modules covering most common problems (see M
 
 ## Stapp CLI
 
-`stapp-cli` can be used to install and update stapp packages and theirs peer dependencies.
+`stapp-cli-tools` can be used to install and update stapp packages and theirs peer dependencies.
 See more [in the corresponding section](https://stapp.js.org/guides/cli.html)  of this documentation.
 
 ## License
