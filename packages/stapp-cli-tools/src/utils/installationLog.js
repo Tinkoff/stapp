@@ -6,6 +6,7 @@ const installationLog = ({ dependencies, peer, save }) => {
   const [installed, skipped] = filterSkipped(dependencies)
 
   console.log()
+
   if (installed.size) {
     console.log(chalk.green('Successfully installed and/or updated packages:'))
     for (let [name, { version }] of installed) {

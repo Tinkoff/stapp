@@ -28,6 +28,7 @@
   "scripts": {},
   "bin": {
     "stapp": "./src/index.js",
+    "stapp-check": "./src/index-check.js",
     "stapp-install": "./src/index-install.js",
     "stapp-update": "./src/index-update.js"
   },

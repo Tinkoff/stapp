@@ -17,7 +17,7 @@ const getPackages = async (context) => {
       return
     }
 
-    if (validPackages.includes(name)) {
+    if (name === validPackages[name]) {
       context.dependencies.set(name, {
         name,
         version: context.next ? 'next' : 'latest'
