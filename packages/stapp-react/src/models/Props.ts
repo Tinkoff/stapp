@@ -1,4 +1,4 @@
-import { ReactElement, ReactType } from 'react'
+import { ElementType, ReactElement } from 'react'
 import { Stapp } from 'stapp'
 import { FormBaseState } from 'stapp-formbase'
 import { FieldApi } from './Form'
@@ -10,7 +10,7 @@ export type RenderProps<S, A = {}, State = S> = {
     app: Stapp<State, A>
   ) => ReactElement<any> | null
   render?: (state: S, api: A, app: Stapp<State, A>) => ReactElement<any> | null
-  component?: ReactType<S & { api: A; app: Stapp<State, A> }>
+  component?: ElementType<S & { api: A; app: Stapp<State, A> }>
 }
 
 export type ConsumerProps<State, Api, Result> = {
@@ -20,7 +20,7 @@ export type ConsumerProps<State, Api, Result> = {
 export type ApiProps<State, Api> = {
   children?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
   render?: (api: Api, app: Stapp<State, Api>) => ReactElement<any> | null
-  component?: ReactType<{ api: Api; app: Stapp<State, Api> }>
+  component?: ElementType<{ api: Api; app: Stapp<State, Api> }>
 }
 
 export type FieldProps<State extends FormBaseState> = RenderProps<FieldApi> & {

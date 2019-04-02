@@ -4,7 +4,11 @@ import { isArray } from '../../helpers/is/isArray/isArray'
 import { createEvent } from '../createEvent/createEvent'
 
 // Models
-import { AnyEventCreator, Event, EventCreators } from '../createEvent/createEvent.h'
+import {
+  AnyEventCreator,
+  Event,
+  EventCreators
+} from '../createEvent/createEvent.h'
 import { EventHandler, EventHandlers, Reducer } from './createReducer.h'
 
 /**
@@ -19,7 +23,7 @@ export const createReducer = <S = {}>(
   handlers: EventHandlers<S, any> = {}
 ): Reducer<S> => {
   const innerHandlers = Object.assign({}, handlers)
-  const reducer: any = (state = initialState, event?: Event) => {
+  const reducer: any = (state: S = initialState, event?: Event) => {
     if (!event) {
       return state
     }
@@ -37,7 +41,10 @@ export const createReducer = <S = {}>(
     has(getEventType(eventOrType), innerHandlers)
 
   reducer.on = <P, M>(
-    eventOrType: AnyEventCreator<P, M> | string | Array<AnyEventCreator | string>,
+    eventOrType:
+      | AnyEventCreator<P, M>
+      | string
+      | Array<AnyEventCreator | string>,
     handler: EventHandler<S, P, M>
   ) => {
     if (isArray(eventOrType)) {
@@ -49,7 +56,9 @@ export const createReducer = <S = {}>(
     return reducer
   }
 
-  reducer.off = (eventOrType: AnyEventCreator | string | Array<AnyEventCreator | string>) => {
+  reducer.off = (
+    eventOrType: AnyEventCreator | string | Array<AnyEventCreator | string>
+  ) => {
     if (isArray(eventOrType)) {
       eventOrType.forEach((event) => reducer.off(event))
       return reducer
@@ -59,7 +68,9 @@ export const createReducer = <S = {}>(
     return reducer
   }
 
-  reducer.reset = (eventOrType: AnyEventCreator | string | Array<AnyEventCreator | string>) => {
+  reducer.reset = (
+    eventOrType: AnyEventCreator | string | Array<AnyEventCreator | string>
+  ) => {
     if (isArray(eventOrType)) {
       eventOrType.forEach((event) => reducer.reset(event))
       return reducer
@@ -69,7 +80,9 @@ export const createReducer = <S = {}>(
     return reducer
   }
 
-  reducer.createEvents = <T extends string, P>(model: { [K in T]: EventHandler<S, P, any> }) => {
+  reducer.createEvents = <T extends string, P>(
+    model: { [K in T]: EventHandler<S, P, any> }
+  ) => {
     const eventNames = Object.keys(model) as T[]
     const events: EventCreators = {}
 
