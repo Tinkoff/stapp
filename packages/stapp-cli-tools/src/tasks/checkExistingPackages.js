@@ -19,18 +19,11 @@ const checkExistingPackages = async (context) => {
 
     const currentVersion = removeCaret(dependencies[name])
 
-    if (currentVersion !== version) {
-      return
-    }
-
-    if (context.reinstall) {
-      return
-    }
-
     context.dependencies.set(name, {
       name,
       version,
-      skip: `Package ${name}@${version} already installed and is up to date`
+      currentVersion,
+      skip: (currentVersion !== version || context.reinstall) ? null : `Package ${name}@${version} already installed and is up to date`
     })
   })
 }

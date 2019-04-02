@@ -18,7 +18,7 @@ const installationLog = require('./utils/installationLog')
 const delay = (fn, ms) => (context, task) => minDelay(fn(context, task), ms)
 
 program
-  .description('Update existing stapp packages.')
+  .description('Updates existing stapp packages.')
   .option('--no-peer', 'Skip peer dependencies installation.')
   .option('--no-save', 'Prevents saving to dependencies. Same as --no-save for npm-install.')
   .option('-E, --save-exact', 'Saved dependencies will be configured with an exact version. Same as --save-exact for npm-install.')

@@ -19,7 +19,7 @@ const delay = (fn, ms) => (context, task) => minDelay(fn(context, task), ms)
 
 program
   .description(dedent`
-    Install one or more stapp packages and related dependencies.
+    Installs one or more stapp packages and related dependencies.
     
     Automatically handles tags, versions and peerDependencies.
   `)

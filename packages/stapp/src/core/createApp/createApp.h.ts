@@ -105,7 +105,6 @@ export type Dispatch<State> = <T>(
   event: T
 ) =>
   T extends Subscribable<any> ? Promise<void> :
-  T extends Promise<infer P> ? P :
   T extends Thunk<State, infer R> ? R : T
 
 export type Thunk<State, Result> = (
