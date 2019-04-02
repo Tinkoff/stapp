@@ -50,6 +50,6 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.3.4000"
+    "typescript": "3.3.4000"
   }
 }
