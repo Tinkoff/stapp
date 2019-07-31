@@ -68,7 +68,7 @@ export const createApp: CreateApp = <Api, State, Extra>(config: {
   const moduleDependencies = new Set<string>()
   const reducers: any = {}
   const api: any = {}
-  let waitFor: WaitFor = []
+  let waitFor: WaitFor<State> = []
 
   const subscriptions: Subscription[] = []
 

@@ -806,6 +806,34 @@ describe('createApp', () => {
       await null
       expect(resolved).toBe(true)
     })
+
+    it('condition function should receive state', async () => {
+      let state: any
+      const module: Module<any, any> = {
+        name: 'test',
+        state: {
+          t: createReducer('test')
+        },
+        waitFor: [
+          {
+            event: fire1,
+            condition(s) {
+              state = s
+              return true
+            }
+          }
+        ]
+      }
+
+      createApp({
+        modules: [module]
+      })
+
+      await null
+      expect(state).toEqual({
+        t: 'test'
+      })
+    })
   })
 
   describe('app compatibility', () => {

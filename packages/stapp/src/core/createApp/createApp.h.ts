@@ -34,13 +34,13 @@ export type EventEpic<Payload, Meta, State> = (
  */
 export type Epic<State> = EventEpic<any, any, State>
 
-export type WaitFor = Array<
+export type WaitFor<State> = Array<
   | AnyEventCreator
   | string
   | {
       event: AnyEventCreator | string
       timeout?: number
-      condition?: () => boolean
+      condition?: (state: Partial<State>) => boolean
     }
 >
 
@@ -60,7 +60,7 @@ export type Module<Api, State, Full extends Partial<State> = State> = {
   // Api
   events?: Api
   api?: Api
-  waitFor?: WaitFor
+  waitFor?: WaitFor<Full>
 
   // State
   reducers?: ReducersMap<State>
