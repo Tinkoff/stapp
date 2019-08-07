@@ -126,7 +126,6 @@ type setError = EventCreator<{ [K: string]: any }>
 type setTouched = EventCreator<{ [K: string]: boolean }> 
 type setActive = EventCreator<string>
 type setSubmitting = EventCreator<boolean>
-type setReady = EventCreator<{ [K: string]: boolean }> 
 type clearFields = EventCreator<string[]> 
 type pickFields = EventCreator<string[]> 
 type setReady = EventCreator<{ [K: string]: boolean }> 
