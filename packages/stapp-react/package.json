@@ -62,7 +62,7 @@
     "enzyme-adapter-react-16": "^1.11.2",
     "jest": "^24.6.0",
     "react": "^16.9.0",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.9.0",
     "redux": "^4.0.1",
     "request": "^2.88.0",
     "reselect": "^4.0.0",
