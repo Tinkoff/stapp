@@ -48,7 +48,7 @@
     "babel-jest": "^24.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
-    "flux-standard-action": "^2.0.4",
+    "flux-standard-action": "^2.1.1",
     "jest": "^24.6.0",
     "redux": ">= 4",
     "rxjs": ">= 6",
