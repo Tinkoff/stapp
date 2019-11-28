@@ -54,7 +54,7 @@
     "rxjs": ">= 6",
     "stapp": "^2.7.0-0",
     "ts-jest": "^24.0.1",
-    "ts-node": "^8.0.3",
+    "ts-node": "^8.5.3",
     "tslib": "^1.9.3",
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.18.0",
