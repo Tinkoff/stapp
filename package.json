@@ -52,7 +52,7 @@
     "npm-check-updates": "^2.14.3",
     "p-series": "^2.1.0",
     "prettier": "^1.15.2",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.1",
     "size-limit": "^1.0.1",
     "webpack": "^4.26.0"
   },
