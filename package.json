@@ -54,7 +54,7 @@
     "prettier": "^1.15.2",
     "rimraf": "^2.6.2",
     "size-limit": "^1.0.1",
-    "webpack": "^4.26.0"
+    "webpack": "^4.41.6"
   },
   "config": {
     "commitizen": {
