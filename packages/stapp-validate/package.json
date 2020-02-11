@@ -50,7 +50,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jest": "^24.6.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "reselect": "^4.0.0",
     "rxjs": ">= 6",
     "stapp": "^2.7.0-0",
