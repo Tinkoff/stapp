@@ -18,7 +18,7 @@
     "stapp-persist": "^2.6.0",
     "stapp-react": "^2.6.0",
     "stapp-validate": "^2.6.0",
-    "styled-components": "^4.2.0"
+    "styled-components": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
