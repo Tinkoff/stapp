@@ -58,7 +58,7 @@
     "babel-jest": "^24.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
-    "enzyme": "^3.9.0",
+    "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.11.2",
     "jest": "^24.6.0",
     "react": "^16.8.6",
