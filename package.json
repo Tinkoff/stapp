@@ -37,7 +37,7 @@
   "devDependencies": {
     "cash-cp": "^0.2.0",
     "cash-mv": "^0.2.0",
-    "commitizen": "^3.0.4",
+    "commitizen": "^4.0.5",
     "coveralls": "^3.0.2",
     "doctoc": "^1.3.1",
     "gh-pages": "^2.0.1",
