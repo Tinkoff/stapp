@@ -33,6 +33,6 @@
   "devDependencies": {
     "dotenv": "^8.0.0",
     "eslint": "^5.16.0",
-    "node-pre-gyp": "^0.13.0"
+    "node-pre-gyp": "^0.15.0"
   }
 }
